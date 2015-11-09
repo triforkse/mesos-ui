@@ -1,32 +1,59 @@
 [![Build Status](https://travis-ci.org/triforkse/base-project-js.svg)](https://travis-ci.org/triforkse/base-project-js)
 
-# Project Base for JavaScript
+# YAMU - Yet Another Mesos UI
 
-This is a base project that can be used to bootstrap new applications.
+A UI for getting an overview of your Mesos cluster.
 
-# Features
+## Planned Features
 
-☑ Dockerfile  
-☑ Unit Tests  
-☑ Integration Tests  
-☑ End to end Tests  
-☑ Client-Side Analytics  
-☑ Logging  
-☑ HTTP Server  
-☑ Simple SSL/HTTPS  
-☐ WebSockets  
-☑ Auth  
-☑ Health checks  
-☑ Rendering  
-☑ Coverage
+☐ Nice Looking Visual Overview of Cluster Resources  
+☐ Simple Configuration of Frameworks through ProtoBuf.
+☐ Client Library for supporting frameworks to expose their configuration
+☐ REST API
+☐ Adaptors for Frameworks that do not yet support YAMU
 
-# TODO
+# Developer Setup
 
-☐ Enable Coverage even on JSX files.
-☐ Integrate Travis with Coveralls.io.
-☐ Write more README.
+To get started run
+
+```bash
+$ make setup
+```
+
+This will install any dependencies.
+
+The project consists of a web client, and an API. These two can be deployed
+separately. You also need to start them separately:
+
+```bash
+$ cd api && make run
+$ cd client && make run
+```
+
+This will also run your unit tests while developing.
 
 ## Tests
+
+You can run the tests manually by running:
+
+```bash
+make test
+```
+
+If you wish to run the E2E tests you can either do it by running:
+
+```bash
+$ make test-e2e
+```
+
+This requires that you have both the `client` and `api` running on
+your machine.
+
+You can also execute them in docker containers, using:
+
+```bash
+$ make docker-e2e
+```
 
 ### To Get Growl Test Notifications Working
 
@@ -42,13 +69,6 @@ $ sudo gem install terminal-notifier
 $ sudo apt-get install libnotify-bin
 ```
 
-## HTTPS Security
+## License
 
-The API is equipped with basic security and HTTPS enabled.
-You need to provide SSL certificates yourself and put them
-in the /api/certs folder.
-
-The files should be called: `key.pem` and `cert.pem`.
-
-If you want to scale out your service it is recommended that
-you use `nginx` instead of letting NodeJS handle SSL.
+MIT, see the LICENSE file for details.
