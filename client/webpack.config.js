@@ -2,7 +2,7 @@ var webpack = require('webpack');
 var path = require("path");
 
 var config = {
-  entry: "./src/app",
+  entry: "./src/index",
   output: {
     path: path.join(__dirname, 'build', 'static'),
     filename: 'app.js',
