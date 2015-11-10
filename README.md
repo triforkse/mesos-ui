@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/triforkse/base-project-js.svg)](https://travis-ci.org/triforkse/base-project-js)
+[![Build Status](https://travis-ci.org/triforkse/mesos-ui.svg)](https://travis-ci.org/triforkse/mesos-ui)
 
 # YAMU - Yet Another Mesos UI
 
