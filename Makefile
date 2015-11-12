@@ -37,5 +37,14 @@ docker-e2e:
 	docker-compose --project-name=app build
 	docker-compose --project-name=app run e2e
 
+run:
+	$(MAKE) -j4 start-api start-client
+
+start-api:
+	cd api && $(MAKE) run
+
+start-client:
+	cd client && $(MAKE) run
+
 .PHONY: git-hooks setup coverage docker-e2e test test-e2e test-integration \
-	test-unit lint pre-commit
+	test-unit lint pre-commit run start-api start-client
