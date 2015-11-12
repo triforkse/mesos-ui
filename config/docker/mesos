@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+
+# Create a Mesos cluster and start up
+# * 3 Zookeepers
+# * 1 Mesos Master
+# * 1 Mesos Framework (Marathon)
+# * 1 Mesos Slave
+
+# Requires docker-machine to work. If you're on Linux just start creating the
+# containers instead of running this script.
+
+docker-machine ip mesos >/dev/null
+if [ $? -ne 0 ]; then echo "Maybe create the machine (mesos) first"; echo "For example:"; echo "docker-machine create -d virtualbox mesos"; exit 1; fi
+eval "$(docker-machine env mesos)"
+HOST_IP=$(docker-machine ip mesos)
+read -p "About to start a lot of Docker containers at $HOST_IP. Press any key to continue..."
+
+# Starting 3 Zookeepers
+docker run -d \
+-p 2181:2181 \
+-p 2888:2888 \
+-p 3888:3888 \
+garland/zookeeper
+
+docker run --net="host" \
+-p 5050:5050 \
+-e "MESOS_HOSTNAME=${HOST_IP}" \
+-e "MESOS_IP=${HOST_IP}" \
+-e "MESOS_ZK=zk://${HOST_IP}:2181/mesos" \
+-e "MESOS_PORT=5050" \
+-e "MESOS_LOG_DIR=/var/log/mesos" \
+-e "MESOS_QUORUM=1" \
+-e "MESOS_REGISTRY=in_memory" \
+-e "MESOS_WORK_DIR=/var/lib/mesos" \
+-d \
+garland/mesosphere-docker-mesos-master
+
+docker run \
+-d \
+-p 8080:8080 \
+garland/mesosphere-docker-marathon --master zk://${HOST_IP}:2181/mesos --zk zk://${HOST_IP}:2181/marathon
+
+docker run -d \
+--name mesos_slave_1 \
+--entrypoint="mesos-slave" \
+-e "MESOS_MASTER=zk://${HOST_IP}:2181/mesos" \
+-e "MESOS_LOG_DIR=/var/log/mesos" \
+-e "MESOS_LOGGING_LEVEL=INFO" \
+garland/mesosphere-docker-mesos-master:latest
+
+echo "Now go to http://$HOST_IP:5050 to see your cluster in action"
