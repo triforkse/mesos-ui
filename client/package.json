@@ -88,6 +88,7 @@
   "devDependencies": {
     "express": "^4.13.3",
     "glob": "^5.0.15",
-    "istanbul": "^0.4.0"
+    "istanbul": "^0.4.0",
+    "redux-devtools": "^2.1.5"
   }
 }
