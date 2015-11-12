@@ -20,5 +20,6 @@ export function connectWebSocket(cb) {
   const base = config.apiAddress();
   socket = io(`http://${base}`);
   socket.on('greeting', cb);
+  socket.on('mesos', cb);
   socket.emit('greeting', 'hi from client');
 }

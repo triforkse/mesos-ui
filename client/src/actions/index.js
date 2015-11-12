@@ -41,6 +41,6 @@ export function webSocketMessage(message) {
 export function connectWebSocket() {
   return dispatch => {
     dispatch(requestWebSocketConnection());
-    api.fetchStatus(message => dispatch(webSocketMessage(message)));
+    api.connectWebSocket(message => dispatch(webSocketMessage(message)));
   };
 }
