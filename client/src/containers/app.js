@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from '../actions';
-import ActivityIndicator from '../components/activity-indicator.js';
+import Cluster from '../components/cluster.js';
 
 class App extends React.Component {
 
@@ -16,14 +16,9 @@ class App extends React.Component {
   }
 
   render() {
-    const {api, socket} = this.props;
     return (
       <div className="page">
-        <div className="box">
-          <h1>Welcome to your new project!</h1>
-          <div className="box__center">{api.requesting ? <ActivityIndicator /> : ('API Status: ' + api.status)}</div>
-          <div className="box__center">{socket.connecting ? <ActivityIndicator /> : ('Web socket Status: ' + socket.status)}</div>
-        </div>
+        <Cluster nodes={this.props.nodes} />
       </div>);
   }
 }
@@ -32,6 +27,7 @@ class App extends React.Component {
 App.propTypes = {
   api: React.PropTypes.object.isRequired,
   socket: React.PropTypes.object.isRequired,
+  nodes: React.PropTypes.object.isRequired,
   actions: React.PropTypes.object.isRequired,
 };
 
@@ -42,11 +38,12 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mapStateToProps(state) {
-  const {apiStatus, socketStatus} = state;
+  const {apiStatus, socketStatus, nodes} = state;
 
   return {
     api: apiStatus,
     socket: socketStatus,
+    nodes,
   };
 }
 
