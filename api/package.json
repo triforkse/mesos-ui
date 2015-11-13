@@ -39,7 +39,10 @@
     "winston": "^2.1.0"
   },
   "eslintConfig": {
-    "extends": "airbnb"
+    "extends": "airbnb",
+    "rules": {
+      "new-cap": 0
+    }
   },
   "babel": {
     "stage": 0
