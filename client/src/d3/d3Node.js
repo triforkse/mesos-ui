@@ -3,6 +3,15 @@ import {find, filter, flatten} from 'lodash';
 
 require('./d3Node.scss');
 
+function createPackFormatter(props, selector) {
+  const {padding, diameter, margin} = props;
+
+  return d3.layout.pack()
+    .padding(padding)
+    .size([diameter - margin, diameter - margin])
+    .value(selector);
+}
+
 function getNodeClass(data) {
   if (data.parent) {
     return data.children ? 'node' : 'node node--leaf';
@@ -38,19 +47,20 @@ const color = d3.scale.linear()
               .range(['hsl(152,80%,80%)', 'hsl(228,30%,40%)'])
               .interpolate(d3.interpolateHcl);
 
-function drawPoints(svg, props, pack, data) {
-  const nodes = pack.nodes(data);
+function drawPoints(el, props, nodes) {
+  const cluster = d3.select(el).selectAll('.cluster');
 
-  svg.selectAll('circle')
+  cluster.selectAll('circle')
       .data(nodes)
       .enter().append('circle')
       .attr('class', getNodeClass)
       .attr('cx', d => d.x)
       .attr('cy', d => d.y)
       .attr('r', d => d.r)
+      .on('click', props.onClick)
       .style('fill', d => d.children ? color(d.depth) : d.color);
 
-  svg.selectAll('line')
+  cluster.selectAll('line')
        .data(calculateLinks(nodes))
        .enter().append('line')
        .attr('class', 'link')
@@ -60,7 +70,7 @@ function drawPoints(svg, props, pack, data) {
        .attr('x2', d => d.x2)
        .attr('y2', d => d.y2);
 
-  const node = svg.selectAll('circle,text,line');
+  const node = cluster.selectAll('circle,text,line');
 
   function zoomHandler() {
     node.attr('transform', 'translate(' + d3.event.translate + ')scale(' + d3.event.scale + ')');
@@ -69,28 +79,22 @@ function drawPoints(svg, props, pack, data) {
     .scaleExtent([0.1, 3])
     .on('zoom', zoomHandler);
 
-  zoomListener(svg);
+  zoomListener(cluster);
 }
 
-export function update(el, props, pack, data) {
-  drawPoints(el, props, pack, data);
+export function update(el, props) {
+  const nodes = createPackFormatter({padding: 100, margin: 20, diameter: 960 }, d => d.cpu)(props.nodes);
+  drawPoints(el, props, nodes);
 }
 
-export function create(el, props, data) {
-  const diameter = props.diameter;
-  const margin = props.margin;
-
-  const pack = d3.layout.pack()
-        .padding(100)
-        .size([diameter - margin, diameter - margin])
-        .value(d => d.cpu);
-
-  const svg = d3.select(el).append('svg')
-      .attr('class', 'd3')
-      .attr('width', diameter)
-      .attr('height', diameter)
+export function create(el, props) {
+  d3.select(el).append('svg')
+      .attr('class', 'cluster')
+      .attr('width', props.diameter)
+      .attr('height', props.diameter)
       .append('g')
+      .attr('class', 'cluster')
       .style('background', color(-1));
 
-  update(svg, props, pack, data);
+  update(el, props);
 }

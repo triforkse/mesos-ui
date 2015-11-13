@@ -15,10 +15,14 @@ class App extends React.Component {
     }, 1000);
   }
 
+  onNodeClick(node) {
+    this.props.actions.selectNode(node);
+  }
+
   render() {
     return (
       <div className="page">
-        <Cluster nodes={this.props.nodes} />
+        <Cluster nodes={this.props.nodes} onNodeClick={(node) => this.onNodeClick(node)} />
       </div>);
   }
 }

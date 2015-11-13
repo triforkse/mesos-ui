@@ -9,7 +9,19 @@ export default class Cluster extends React.Component {
     d3Node.create(el, {
       diameter: 960,
       margin: 20,
-    }, this.props.nodes);
+      nodes: this.props.nodes.toJS(),
+      onClick: this.props.onNodeClick,
+    });
+  }
+
+  componentDidUpdate() {
+    const el = ReactDOM.findDOMNode(this);
+    d3Node.update(el, {
+      diameter: 960,
+      margin: 20,
+      nodes: this.props.nodes.toJS(),
+      onClick: this.props.onNodeClick,
+    });
   }
 
   render() {
@@ -19,4 +31,5 @@ export default class Cluster extends React.Component {
 
 Cluster.propTypes = {
   nodes: React.PropTypes.object,
+  onNodeClick: React.PropTypes.func,
 };

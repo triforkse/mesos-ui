@@ -4,6 +4,7 @@ export const API_STATUS_REQUESTED = 'API_STATUS_REQUESTED';
 export const API_STATUS_RECEIVED = 'API_STATUS_RECEIVED';
 export const WEB_SOCKET_CONNECTION_REQUESTED = 'WEB_SOCKET_CONNECTION_REQUESTED';
 export const WEB_SOCKET_MESSAGE = 'WEB_SOCKET_MESSAGE';
+export const NODE_SELECTION = 'NODE_SELECTION';
 
 export function requestApiStatus() {
   return {
@@ -42,5 +43,12 @@ export function connectWebSocket() {
   return dispatch => {
     dispatch(requestWebSocketConnection());
     api.connectWebSocket(message => dispatch(webSocketMessage(message)));
+  };
+}
+
+export function selectNode(node) {
+  return {
+    type: NODE_SELECTION,
+    node,
   };
 }
