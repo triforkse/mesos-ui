@@ -2,9 +2,12 @@
 // Not just the files that have been required.
 
 const glob = require('glob');
+const path = require('path');
 glob(__dirname + '/../src/**/*.js', (err, files) => {
   files.map((file) => {
-    require(file);
+    if(path.basename(file)) !== 'app.js' {
+      require(file);
+    }
   });
 });
 
