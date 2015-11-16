@@ -5,6 +5,7 @@ export const API_STATUS_RECEIVED = 'API_STATUS_RECEIVED';
 export const WEB_SOCKET_CONNECTION_REQUESTED = 'WEB_SOCKET_CONNECTION_REQUESTED';
 export const WEB_SOCKET_MESSAGE = 'WEB_SOCKET_MESSAGE';
 export const NODE_SELECTION = 'NODE_SELECTION';
+export const SHOW_NODE_DETAILS = 'SHOW_NODE_DETAILS';
 
 export function requestApiStatus() {
   return {
@@ -49,6 +50,13 @@ export function connectWebSocket() {
 export function selectNode(node) {
   return {
     type: NODE_SELECTION,
+    node,
+  };
+}
+
+export function showDetails(node) {
+  return {
+    type: SHOW_NODE_DETAILS,
     node,
   };
 }

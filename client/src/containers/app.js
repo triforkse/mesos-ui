@@ -19,10 +19,14 @@ class App extends React.Component {
     this.props.actions.selectNode(node);
   }
 
+  onNodeMouseOver(node) {
+    this.props.actions.showDetails(node);
+  }
+
   render() {
     return (
       <div className="page">
-        <Cluster nodes={this.props.nodes} onNodeClick={(node) => this.onNodeClick(node)} />
+        <Cluster nodes={this.props.nodes} mouseOverHandler={(node) => this.onNodeMouseOver(node)} />
       </div>);
   }
 }

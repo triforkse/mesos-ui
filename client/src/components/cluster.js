@@ -1,27 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import * as d3Node from '../d3/d3Node';
+import * as d3Grid from '../d3/d3Grid';
 
 export default class Cluster extends React.Component {
 
   componentDidMount() {
     const el = ReactDOM.findDOMNode(this);
-    d3Node.create(el, {
-      diameter: 960,
-      margin: 20,
-      nodes: this.props.nodes.toJS(),
-      onClick: this.props.onNodeClick,
-    });
+    d3Grid.create(el, this.props, this.props.nodes.toJS());
   }
 
   componentDidUpdate() {
     const el = ReactDOM.findDOMNode(this);
-    d3Node.update(el, {
-      diameter: 960,
-      margin: 20,
-      nodes: this.props.nodes.toJS(),
-      onClick: this.props.onNodeClick,
-    });
+    d3Grid.update(el, this.props, this.props.nodes.toJS());
   }
 
   render() {
@@ -31,5 +21,5 @@ export default class Cluster extends React.Component {
 
 Cluster.propTypes = {
   nodes: React.PropTypes.object,
-  onNodeClick: React.PropTypes.func,
+  mouseOverHandler: React.PropTypes.func,
 };
