@@ -1,62 +1,103 @@
 import request from 'request';
 import Immutable from 'immutable';
+import diff from 'immutablediff';
+import Q from 'q';
 
 let state = Immutable.Map({initial: true});
 let prevState = state;
+let clients = Immutable.List([]);
+
+function parse(json) {
+  const frameworks = json.frameworks.map((fw) => {
+    return {
+      active: fw.active,
+      name: fw.name,
+      id: fw.id,
+      resources: fw.resources,
+      used_resources: fw.used_resources,
+      webui_url: fw.webui_url,
+    };
+  });
+
+  const slaves = json.slaves.map((slave) => {
+    slave.url = slave.pid.split('@')[1];
+
+    return {
+      pid: slave.pid,
+      hostname: slave.hostname,
+      resources: slave.resources,
+      used_resources: slave.used_resources,
+    };
+  });
+
+  const data = {
+    activated_slaves: json.activated_slaves,
+    cluster: json.cluster,
+    flags: json.flags,
+    frameworks,
+    git_tag: json.git_tag,
+    hostname: json.hostname,
+    slaves,
+    version: json.version,
+  };
+
+  const newState = Immutable.fromJS({ mesos: data });
+
+  return newState;
+}
 
 function getJSON() {
+  const deferred = Q.defer();
   request({
-    url: 'http://192.168.99.101:5050/state.json',
+    url: process.env.MESOS_MASTER + '/state.json',
     json: true,
   }, (err, res) => {
     if (err) {
-      return;
+      deferred.reject(err);
     }
-    const mesos = res.body;
+    deferred.resolve(parse(res.body));
+  });
+  return deferred.promise;
+}
 
-    const frameworks = mesos.frameworks.map((fw) => {
-      return {
-        name: fw.name,
-        id: fw.id,
-        resources: fw.resources,
-        used_resources: fw.used_resources,
-        webui_url: fw.webui_url,
-      };
+function updateState(newState) {
+  if (!Immutable.is(state, newState)) {
+    state = newState;
+    clients = clients.map(client => {
+      return client.set('nextMessage', diff(client.get('state'), newState))
+        .set('state', newState);
     });
+  }
+  return clients;
+}
 
-    const slaves = mesos.slaves.map((slave) => {
-      // let port = slave.pid.split(':')[1]; // use this to query slaves
-      // let port = slave.pid.split('@')[1]; // or maybe this
-                                             // Need to figure out which one
-                                             // would be correct in a real cluster
-      return {
-        pid: slave.pid,
-        hostname: slave.hostname,
-        resources: slave.resources,
-        used_resources: slave.used_resources,
-      };
-    });
-
-    const data = {
-      cluster: mesos.cluster,
-      version: mesos.version,
-      flags: mesos.flags,
-      git_tag: mesos.git_tag,
-      hostname: mesos.hostname,
-      frameworks,
-      slaves,
-    };
-
-    const newState = Immutable.Map({ mesos: data });
-    if (!Immutable.is(state, newState)) {
-      state = newState;
+function updateClients(allClients) {
+  allClients.forEach(client => {
+    if (client.get('newMessage')) {
+      client.get('socket').emit('NEW_MESSAGE', client.get('newMessage'));
     }
   });
 }
 
 setInterval(() => {
-  getJSON();
+  getJSON().then(updateState).then(updateClients);
 }, 5000);
+
+export function connect(socket) {
+  socket.emit('mesos', state);
+  clients = clients.push({
+    state: state,
+    socket,
+  });
+}
+
+export function disconnect(id) {
+  clients = clients.filter(client => client.socket.id !== id);
+}
+
+export function listClients() {
+  return clients;
+}
 
 export function start(socket) {
   setInterval(() => {

@@ -3,7 +3,6 @@ import authMiddleware from './auth';
 import * as ws from './webSockets';
 import cors from './cors';
 import https from './https';
-import * as mesos from './mesos';
 
 export default {
   create(port) {
@@ -35,7 +34,7 @@ export default {
         const secure = (expressApp) => opts.certRoot ? https(expressApp, opts.certRoot) : expressApp;
 
         this.server = secure(app).listen(port, done);
-        this.io = ws.init(this.server).then(mesos.start);
+        this.io = ws.init(this.server);
 
         return this;
       },
