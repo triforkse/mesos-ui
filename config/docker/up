@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+if [ -z "$1" ]
+then
+echo "Please specify the docker-machine"
+exit 1
+fi
+
+DM_IP=$(docker-machine ip $1)
+eval "$(docker-machine env $1)"
+DOCKER_MACHINE=$DM_IP docker-compose up

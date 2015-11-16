@@ -10,6 +10,10 @@ master:
   image: mesosphere/mesos-master:0.25.0-0.2.70.ubuntu1404
   net: host
   environment:
+    LIBPROCESS_IP: ${DOCKER_MACHINE}
+    # Changes LIBPROCESS_IP to your docker-machine IP
+    # This is so zookeper will register the master with
+    # the correct IP address instead of 127.0.0.1
     MESOS_ZK: zk://127.0.0.1:2181/mesos
     MESOS_QUORUM: 1
     MESOS_CLUSTER: docker-compose
