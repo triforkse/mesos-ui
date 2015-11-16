@@ -1,5 +1,6 @@
 import d3 from 'd3';
 import d3Grid from 'd3-grid'; // eslint-disable-line
+import {FULL_ARC, calculateQuota} from './calculations';
 
 require('./d3Grid.scss');
 
@@ -28,6 +29,44 @@ function addCircle(radius, translateOffset, color, className, elements, mouseOve
     .remove();
 }
 
+function addArc(outerRadius, innerRadius, offset, quotaFn, color, className, elements) {
+  const arc = d3.svg.arc()
+    .outerRadius(outerRadius)
+    .innerRadius(innerRadius)
+    .startAngle(0);
+
+  // Background arc
+  elements.enter()
+    .append('path')
+    .datum(d => {
+      return { endAngle: FULL_ARC, x: d.x, y: d.y };
+    })
+    .attr('class', className)
+    .style('stroke', '#ddd')
+    .style('fill', '#000')
+    .attr('d', arc);
+
+  // Foreground arc
+  elements.enter()
+    .append('path')
+    .datum(d => {
+      return { endAngle: quotaFn(d), x: d.x, y: d.y };
+    })
+    .attr('class', className)
+    .attr('d', arc)
+    .style('fill', color);
+
+  elements.transition()
+    .duration(750);
+
+  elements.transition()
+    .attr('transform', d => 'translate(' + (d.x + offset) + ',' + (d.y + offset) + ')');
+}
+
+function quota(quotaSelector) {
+  return d => calculateQuota(d.resources[quotaSelector], d.used_resources[quotaSelector]);
+}
+
 export function update(el, props, data) {
   const {mouseOverHandler} = props;
 
@@ -44,19 +83,21 @@ export function update(el, props, data) {
 
   const cpus = cluster.selectAll('.cpu')
     .data(gridData);
-  addCircle(0.8 * radius, radius, '#0DFF19', 'cpu', cpus, mouseOverHandler);
+  addArc(0.8 * radius, 0.7 * radius,
+     radius, quota('cpus'),
+     '#0DFF19', 'cpu', cpus, mouseOverHandler);
 
   const memory = cluster.selectAll('.memory')
     .data(gridData);
-  addCircle(0.7 * radius, radius, '#3D300C', 'memory', memory, mouseOverHandler);
+  addArc(0.7 * radius, 0.6 * radius,
+    radius, quota('mem'),
+    '#3D300C', 'memory', memory, mouseOverHandler);
 
   const storage = cluster.selectAll('.storage')
     .data(gridData);
-  addCircle(0.6 * radius, radius, '#FF0000', 'storage', storage, mouseOverHandler);
-
-  const inner = cluster.selectAll('.inner')
-    .data(gridData);
-  addCircle(0.5 * radius, radius, '#505A66', 'inner', inner, mouseOverHandler);
+  addArc(0.6 * radius, 0.5 * radius,
+    radius, quota('disk'),
+    '#FF0000', 'storage', storage, mouseOverHandler);
 }
 
 export function create(el, props, data) {
