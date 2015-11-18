@@ -4,6 +4,9 @@ export const API_STATUS_REQUESTED = 'API_STATUS_REQUESTED';
 export const API_STATUS_RECEIVED = 'API_STATUS_RECEIVED';
 export const WEB_SOCKET_CONNECTION_REQUESTED = 'WEB_SOCKET_CONNECTION_REQUESTED';
 export const WEB_SOCKET_MESSAGE = 'WEB_SOCKET_MESSAGE';
+export const CLUSTER_NODE_UPDATE = 'CLUSTER_NODE_UPDATE';
+export const CLUSTER_NODE_ADDED = 'CLUSTER_NODE_ADDED';
+export const CLUSTER_NODE_REMOVED = 'CLUSTER_NODE_REMOVED';
 export const NODE_SELECTION = 'NODE_SELECTION';
 export const SHOW_NODE_DETAILS = 'SHOW_NODE_DETAILS';
 
@@ -36,6 +39,27 @@ export function requestWebSocketConnection() {
 export function webSocketMessage(message) {
   return {
     type: WEB_SOCKET_MESSAGE,
+    message,
+  };
+}
+
+export function clusterUpdate(message) {
+  return {
+    type: CLUSTER_NODE_UPDATE,
+    message,
+  };
+}
+
+export function addNodes(message) {
+  return {
+    type: CLUSTER_NODE_ADDED,
+    message,
+  };
+}
+
+export function removeNodes(message) {
+  return {
+    type: CLUSTER_NODE_REMOVED,
     message,
   };
 }

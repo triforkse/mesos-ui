@@ -1,6 +1,7 @@
 import d3 from 'd3';
 import d3Grid from 'd3-grid'; // eslint-disable-line
-import {FULL_ARC, calculateQuota} from './calculations';
+
+import {calculateQuota} from './calculations';
 
 require('./d3Grid.scss');
 
@@ -11,12 +12,32 @@ function createGridLayout(width, height) {
     .padding([0.1, 0.1]);
 }
 
+function createDropShadowFilter(svg) {
+  const filter = svg.append('filter')
+    .attr('id', 'drop-shadow');
+
+  filter.append('feGaussianBlur')
+    .attr('in', 'SourceAlpha')
+    .attr('stdDeviation', 3);
+
+  filter.append('feOffset')
+    .attr('dx', 2)
+    .attr('dy', 4);
+
+  const merge = filter.append('feMerge');
+
+  merge.append('feMergeNode');
+  merge.append('feMergeNode')
+    .attr('in', 'SourceGraphic');
+}
+
 function addCircle(radius, translateOffset, color, className, elements, mouseOverHandler) {
   elements.enter()
     .append('circle')
     .attr('class', className)
     .attr('r', 1e-6)
     .style('fill', color)
+    .style('filter', 'url(#drop-shadow)')
     .attr('transform', d => 'translate(' + (d.x + translateOffset) + ',' + (d.y + translateOffset) + ')')
     .on('mouseover', mouseOverHandler);
 
@@ -29,38 +50,37 @@ function addCircle(radius, translateOffset, color, className, elements, mouseOve
     .remove();
 }
 
-function addArc(outerRadius, innerRadius, offset, quotaFn, color, className, elements) {
+function addArc(outerRadius, offset, quotaFn, color, className, elements) {
   const arc = d3.svg.arc()
     .outerRadius(outerRadius)
-    .innerRadius(innerRadius)
-    .startAngle(0);
+    .innerRadius(0)
+    .startAngle(0)
+    .endAngle(d => {
+      return d;
+    });
 
-  // Background arc
+  const tween = (d) => {
+    d.endAngle = d.endAngle || 1e-6;
+    const interpolate = d3.interpolate(d.endAngle, quotaFn(d));
+    return t => {
+      return arc(interpolate(t));
+    };
+  };
+
   elements.enter()
     .append('path')
-    .datum(d => {
-      return { endAngle: FULL_ARC, x: d.x, y: d.y };
-    })
+    .attr('id', d => d.pid)
     .attr('class', className)
-    .style('stroke', '#ddd')
-    .style('fill', '#000')
-    .attr('d', arc);
-
-  // Foreground arc
-  elements.enter()
-    .append('path')
-    .datum(d => {
-      return { endAngle: quotaFn(d), x: d.x, y: d.y };
-    })
-    .attr('class', className)
-    .attr('d', arc)
+    .attr('transform', d => 'translate(' + (d.x + offset) + ',' + (d.y + offset) + ')')
     .style('fill', color);
 
   elements.transition()
-    .duration(750);
+    .attr('transform', d => 'translate(' + (d.x + offset) + ',' + (d.y + offset) + ')')
+    .duration(750)
+    .attrTween('d', tween);
 
-  elements.transition()
-    .attr('transform', d => 'translate(' + (d.x + offset) + ',' + (d.y + offset) + ')');
+  elements.exit().transition()
+    .remove();
 }
 
 function quota(quotaSelector) {
@@ -83,29 +103,19 @@ export function update(el, props, data) {
 
   const cpus = cluster.selectAll('.cpu')
     .data(gridData);
-  addArc(0.8 * radius, 0.7 * radius,
-     radius, quota('cpus'),
-     '#0DFF19', 'cpu', cpus, mouseOverHandler);
-
-  const memory = cluster.selectAll('.memory')
-    .data(gridData);
-  addArc(0.7 * radius, 0.6 * radius,
-    radius, quota('mem'),
-    '#3D300C', 'memory', memory, mouseOverHandler);
-
-  const storage = cluster.selectAll('.storage')
-    .data(gridData);
-  addArc(0.6 * radius, 0.5 * radius,
-    radius, quota('disk'),
-    '#FF0000', 'storage', storage, mouseOverHandler);
+  addArc(radius, radius, quota('cpus'),
+     '#0DFF19', 'cpu', cpus);
 }
 
 export function create(el, props, data) {
-  d3.select(el).append('svg')
+  const svg = d3.select(el).append('svg')
     .attr('class', 'cluster')
     .attr('width', 800)
-    .attr('height', 800)
-    .append('g');
+    .attr('height', 800);
+
+  svg.append('g');
+
+  createDropShadowFilter(svg);
 
   update(el, props, data);
 }
