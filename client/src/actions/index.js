@@ -9,6 +9,7 @@ export const CLUSTER_NODE_ADDED = 'CLUSTER_NODE_ADDED';
 export const CLUSTER_NODE_REMOVED = 'CLUSTER_NODE_REMOVED';
 export const NODE_SELECTION = 'NODE_SELECTION';
 export const SHOW_NODE_DETAILS = 'SHOW_NODE_DETAILS';
+export const TOGGLE_PANEL = 'TOGGLE_PANEL';
 
 export function requestApiStatus() {
   return {
@@ -68,6 +69,13 @@ export function connectWebSocket() {
   return dispatch => {
     dispatch(requestWebSocketConnection());
     api.connectWebSocket(message => dispatch(webSocketMessage(message)));
+  };
+}
+
+export function togglePanel(id) {
+  return {
+    type: TOGGLE_PANEL,
+    id,
   };
 }
 

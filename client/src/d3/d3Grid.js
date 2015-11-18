@@ -116,6 +116,5 @@ export function create(el, props, data) {
   svg.append('g');
 
   createDropShadowFilter(svg);
-
   update(el, props, data);
 }

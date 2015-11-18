@@ -4,6 +4,10 @@ import { bindActionCreators } from 'redux';
 import Immutable from 'immutable';
 import * as actions from '../actions';
 import Cluster from '../components/cluster.js';
+import Galaxy from '../components/galaxy.js';
+import Panel from '../components/panel.js';
+
+require('./app.scss');
 
 class App extends React.Component {
 
@@ -37,6 +41,7 @@ class App extends React.Component {
         ]));
     };
 
+    // REVIEW: Why, are we not stopping this on componentWillUnmount or something?
     setInterval(() => {
       const rand = Math.random() * 10;
       if (this.props.nodes.count() > 50 && rand > 5) {
@@ -60,11 +65,43 @@ class App extends React.Component {
   render() {
     return (
       <div className="page">
-        <Cluster nodes={this.props.nodes} selector="cpus" mouseOverHandler={(node) => this.onNodeMouseOver(node)} />
+        <div className="page__master">
+          <div className="menu">
+            <div className="menu__logo">
+              <img src={require('./logo.svg')} alt="Mesos UI" />
+            </div>
+            <div className="menu__items">
+              <a href="google.com" className="menu__item">
+                <div className="menu__label">Infrastructure</div>
+              </a>
+              <div className="menu__item">
+                <div className="menu__label">Applications</div>
+                <a href="#_" className="menu__subitem">
+                  Elastic Search
+                </a>
+                <a href="#_" className="menu__subitem">
+                  Logstash
+                </a>
+                <a href="#_" className="menu__subitem">
+                  Hadoop
+                </a>
+                <a href="#_" className="menu__subitem">
+                  HDFS
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="page__slave">
+          <Galaxy />
+          <Panel id="details" {...this.props}>
+            {/* REVIEW: Why (node) => f(node) instead of just "f"? */}
+            <Cluster nodes={this.props.nodes} selector="cpus" mouseOverHandler={(node) => this.onNodeMouseOver(node)} />
+          </Panel>
+        </div>
       </div>);
   }
 }
-
 
 App.propTypes = {
   api: React.PropTypes.object.isRequired,

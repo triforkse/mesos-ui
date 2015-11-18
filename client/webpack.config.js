@@ -26,7 +26,7 @@ var config = {
         loader: 'style!css!postcss'
       },
       {
-        test: /\.(eot|ttf|woff2?)$/,
+        test: /\.(eot|ttf|svg|woff2?)$/,
         loader: 'file'
       }
     ]
