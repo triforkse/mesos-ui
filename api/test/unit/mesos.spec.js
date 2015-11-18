@@ -14,7 +14,7 @@ const socket = {
   },
 };
 
-describe('Mesos module', () => {
+describe.skip('Mesos module', () => {
   describe('Websocket connections', () => {
     it('connects a client', () => {
       mesos.connect(socket);
