@@ -1,4 +1,5 @@
 import Immutable from 'immutable';
+import {compose} from 'lodash';
 import {
   NODE_SELECTION, SHOW_NODE_DETAILS,
   CLUSTER_NODE_UPDATE, CLUSTER_NODE_ADDED,
@@ -165,16 +166,38 @@ function removeNodes(state, message) {
   }, state);
 }
 
-export function nodes(state = initialState, action) {
+
+const FULL_ARC = 2 * Math.PI;
+function calculateQuota(fullQuota, usedQuota) {
+  return (usedQuota / fullQuota) * FULL_ARC;
+}
+
+function quota(node, selector) {
+  return calculateQuota(
+    node.getIn(['resources', selector]),
+    node.getIn(['used_resources', selector]),
+  );
+}
+
+function setQuota(state) {
+  return state.map(n => n.set('prevCpusQuota', n.get('cpusQuota') || 0)
+                         .set('cpusQuota', quota(n, 'cpus'))
+                         .set('prevDiskQuota', n.get('diskQuota') || 0)
+                         .set('diskQuota', quota(n, 'disk'))
+                         .set('prevMemQuota', n.get('memQuota') || 0)
+                         .set('memQuota', quota(n, 'mem')));
+}
+
+export function nodes(state = setQuota(initialState), action) {
   switch (action.type) {
   case NODE_SELECTION:
     return selectNode(state, action.node);
   case SHOW_NODE_DETAILS:
     return showDetails(state, action.node);
   case CLUSTER_NODE_UPDATE:
-    return updateCluster(state, action.message);
+    return compose(setQuota, updateCluster)(state, action.message);
   case CLUSTER_NODE_ADDED:
-    return addNodes(state, action.message);
+    return compose(setQuota, addNodes)(state, action.message);
   case CLUSTER_NODE_REMOVED:
     return removeNodes(state, action.message);
   default:

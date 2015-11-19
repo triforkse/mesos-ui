@@ -1,8 +1,6 @@
 import d3 from 'd3';
 import d3Grid from 'd3-grid'; // eslint-disable-line
 
-import {calculateQuota} from './calculations';
-
 require('./d3Grid.scss');
 
 function createGridLayout(width, height) {
@@ -50,7 +48,7 @@ function addCircle(radius, translateOffset, color, className, elements, mouseOve
     .remove();
 }
 
-function addArc(outerRadius, offset, quotaFn, color, className, elements) {
+function addArc(outerRadius, offset, color, className, elements) {
   const arc = d3.svg.arc()
     .outerRadius(outerRadius)
     .innerRadius(0)
@@ -60,8 +58,7 @@ function addArc(outerRadius, offset, quotaFn, color, className, elements) {
     });
 
   const tween = (d) => {
-    d.endAngle = d.endAngle || 1e-6;
-    const interpolate = d3.interpolate(d.endAngle, quotaFn(d));
+    const interpolate = d3.interpolate(d.prevCpusQuota, d.cpusQuota);
     return t => {
       return arc(interpolate(t));
     };
@@ -83,10 +80,6 @@ function addArc(outerRadius, offset, quotaFn, color, className, elements) {
     .remove();
 }
 
-function quota(quotaSelector) {
-  return d => calculateQuota(d.resources[quotaSelector], d.used_resources[quotaSelector]);
-}
-
 export function update(el, props, data) {
   const {mouseOverHandler} = props;
 
@@ -103,8 +96,7 @@ export function update(el, props, data) {
 
   const cpus = cluster.selectAll('.cpu')
     .data(gridData);
-  addArc(radius, radius, quota('cpus'),
-     '#0DFF19', 'cpu', cpus);
+  addArc(radius, radius, '#0DFF19', 'cpu', cpus);
 }
 
 export function create(el, props, data) {
