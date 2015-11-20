@@ -143,7 +143,7 @@ function updateCluster(state, message) {
         return node;
       }
       return n;
-    });
+    }).sort();
   });
 }
 
@@ -158,11 +158,7 @@ function addNodes(state, message) {
 
 function removeNodes(state, message) {
   return message.reduce((newState, node) => {
-    const existingNode = newState.find(n => n.get('pid') === node.get('pid'));
-    if (existingNode) {
-      return state.pop(node);
-    }
-    return state;
+    return newState.filter(n => n.get('pid') !== node.get('pid'));
   }, state);
 }
 
