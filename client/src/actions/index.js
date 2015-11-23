@@ -72,13 +72,6 @@ export function connectWebSocket() {
   };
 }
 
-export function togglePanel(id) {
-  return {
-    type: TOGGLE_PANEL,
-    id,
-  };
-}
-
 export function selectNode(node) {
   return {
     type: NODE_SELECTION,
@@ -91,4 +84,26 @@ export function showDetails(node) {
     type: SHOW_NODE_DETAILS,
     node,
   };
+}
+
+let actionCreators = {
+  requestApiStatus,
+  respondeWithApiStatus,
+  checkApi,
+  requestWebSocketConnection,
+  webSocketMessage,
+  clusterUpdate,
+  addNodes,
+  removeNodes,
+  connectWebSocket,
+  selectNode,
+  showDetails,
+};
+
+export function registerActionCreators(creators) {
+  actionCreators = Object.assign({}, actionCreators, creators);
+}
+
+export function getActionCreators() {
+  return actionCreators;
 }

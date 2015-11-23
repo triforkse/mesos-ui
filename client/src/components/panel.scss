@@ -1,12 +1,11 @@
 .panel {
   background-color: white;
-  min-height: 200px;
+  height: 200px;
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
-  overflow-y: scroll;
-  padding: 20px;
+  overflow-y: hidden;
 }
 
 .panel__handle {
@@ -17,9 +16,12 @@
   top: 0;
   left: 0;
   right: 0;
+  cursor: ns-resize;
 }
 
 .panel__content {
   margin-top: 10px;
   padding: 15px;
+  overflow-y: scroll;
+  height: 100%;
 }

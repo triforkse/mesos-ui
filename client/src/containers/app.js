@@ -94,7 +94,7 @@ class App extends React.Component {
         </div>
         <div className="page__slave">
           <Galaxy />
-          <Panel id="details" {...this.props}>
+          <Panel id="details" panel={this.props.panel} actions={this.props.actions}>
             {/* REVIEW: Why (node) => f(node) instead of just "f"? */}
             <Cluster nodes={this.props.nodes} selector="cpus" mouseOverHandler={(node) => this.onNodeMouseOver(node)} />
           </Panel>
@@ -108,21 +108,23 @@ App.propTypes = {
   socket: React.PropTypes.object.isRequired,
   nodes: React.PropTypes.object.isRequired,
   actions: React.PropTypes.object.isRequired,
+  panel: React.PropTypes.object.isRequired,
 };
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(actions, dispatch),
+    actions: bindActionCreators(actions.getActionCreators(), dispatch),
   };
 }
 
 function mapStateToProps(state) {
-  const {apiStatus, socketStatus, nodes} = state;
+  const {apiStatus, socketStatus, nodes, panel} = state;
 
   return {
     api: apiStatus,
     socket: socketStatus,
     nodes,
+    panel,
   };
 }
 
