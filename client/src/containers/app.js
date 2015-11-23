@@ -52,6 +52,10 @@ class App extends React.Component {
         update();
       }
     }, 10000);
+
+    setTimeout(() => {
+      this.props.actions.connectWebSocket();
+    }, 0);
   }
 
   onNodeClick(node) {

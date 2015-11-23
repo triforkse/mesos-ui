@@ -182,7 +182,7 @@ setInterval(() => {
     data.slaves.splice(-1, 1);
     data.frameworks.splice(-1, 1);
   }
-}, 500);
+}, 5000);
 
 setInterval(() => {
   const sampleSlave = sample(data.slaves);

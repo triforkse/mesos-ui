@@ -1,5 +1,5 @@
 import request from 'request';
-import { Map, List, fromJS, is } from 'immutable';
+import { Map, List, fromJS } from 'immutable';
 import diff from 'immutablediff';
 import Q from 'q';
 
@@ -59,27 +59,25 @@ function getJSON() {
 }
 
 export function updateState(context, newState) {
-  if (!is(context.state, newState)) {
-    context.state = newState;
-    context.clients = context.clients.map(client => {
-      return client.set('nextMessage', diff(client.get('state'), newState))
-        .set('state', newState);
-    });
-  }
+  context.state = newState;
+  context.clients = context.clients.map(client => {
+    return client.set('newMessage', diff(client.get('state'), newState))
+      .set('state', newState);
+  });
 
   return context.clients;
 }
 
 function notifyListeners(allClients) {
   allClients.forEach(client => {
-    if (client.get('newMessage')) {
-      client.get('socket').emit('NEW_MESSAGE', client.get('newMessage'));
+    if (client.get('newMessage').count() > 0) {
+      client.get('socket').emit('MESOS_DIFF', client.get('newMessage'));
     }
   });
 }
 
 export function connect(context, socket) {
-  socket.emit('mesos', context.state);
+  socket.emit('MESOS_INIT', context.state);
   context.clients = context.clients.push(fromJS({
     state: context.state,
     socket,
