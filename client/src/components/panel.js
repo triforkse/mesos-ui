@@ -9,6 +9,7 @@ require('./panel.scss');
 const TOGGLE_PANEL = 'TOGGLE_PANEL';
 const PANEL_DRAGGING_START = 'PANEL_DRAGGING_START';
 const PANEL_DRAGGING_STOP = 'PANEL_DRAGGING_STOP';
+const PANEL_DRAGGING = 'PANEL_DRAGGING';
 
 const initialState = Immutable.fromJS({details: {dragging: false}});
 
@@ -33,21 +34,31 @@ function stopDragging(id) {
   };
 }
 
+function panelDragging(id, height) {
+  return {
+    type: PANEL_DRAGGING,
+    id,
+    height,
+  };
+}
+
 function panel(state = initialState, action) {
   switch (action.type) {
   case TOGGLE_PANEL:
-    return state.update(action.id, v => !v);
+    return state;
   case PANEL_DRAGGING_START:
     return state.update(action.id, v => v.set('dragging', true));
   case PANEL_DRAGGING_STOP:
     return state.update(action.id, v => v.set('dragging', false));
+  case PANEL_DRAGGING:
+    return state.update(action.id, v => v.set('height', action.height));
   default:
     return state;
   }
 }
 
 registerReducer('panel', panel);
-registerActionCreators({togglePanel, startDragging, stopDragging});
+registerActionCreators({togglePanel, startDragging, stopDragging, panelDragging});
 
 export default class Panel extends React.Component {
 
@@ -66,9 +77,10 @@ export default class Panel extends React.Component {
         const height = styles.height.replace('px', '');
 
         const newHeight = height - e.movementY;
-        this.setState({height: newHeight});
+        this.props.actions.panelDragging(this.props.id, newHeight);
       }
     };
+
     document.addEventListener('mousemove', (e) => this.onMouseMove(e));
     document.addEventListener('mouseup', () => this.onMouseUp());
   }
@@ -82,17 +94,22 @@ export default class Panel extends React.Component {
     this.props.actions.stopDragging(this.props.id);
   }
 
+  startDragging(e, id) {
+    e.preventDefault();
+    this.props.actions.startDragging(id);
+  }
+
   render() {
-    const height = this.state.height;
-    const style = height
-                ? {height: height}
+    const panelProps = this.props.panel.get(this.props.id);
+    const style = panelProps && panelProps.has('height')
+                ? {height: panelProps.get('height')}
                 : {};
 
     return (
       <div className="panel" style={style}>
         <div className="panel__handle"
-           onMouseDown={() => this.props.actions.startDragging(this.props.id)}
-           onClick={() => this.props.actions.togglePanel(this.props.id)}></div>
+           onMouseDown={(e) => this.startDragging(e, this.props.id)}
+           onDoubleClick={() => this.props.actions.togglePanel(this.props.id)}></div>
         <div className="panel__content">
           {this.props.children}
         </div>
