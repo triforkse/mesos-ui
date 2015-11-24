@@ -4,7 +4,6 @@ import diff from 'immutablediff';
 import Q from 'q';
 
 function parse(json) {
-  console.log(json);
   const frameworks = json.frameworks.map((fw) => {
     return {
       active: fw.active,
@@ -43,11 +42,11 @@ function parse(json) {
   return newState;
 }
 
-function getJSON() {
-  const master = process.env.MESOS_MASTER || 'http://localhost:5050';
+function getState(url) {
+  // const master = process.env.MESOS_MASTER || 'http://localhost:5050';
   const deferred = Q.defer();
   request({
-    url: master + '/state.json',
+    url: url + '/state.json',
     json: true,
   }, (err, res) => {
     if (err) {
@@ -57,6 +56,25 @@ function getJSON() {
     deferred.resolve(parse(res.body));
   });
   return deferred.promise;
+}
+
+function glueMasterAndSlaves(data) {
+  let temp = fromJS(data.master);
+  const temp2 = fromJS({ slaves: data.slaves });
+  temp = temp.mergeDeep(temp2);
+  return temp;
+}
+
+function getSlaves(json) {
+  return Q.all(json.get('slaves').map((slave) => {
+    const url = 'http://localhost:5050/' + slave.get('pid').split(':')[1];
+    return getState(url);
+  }).toJS()).then(values => {
+    return {
+      master: json,
+      slaves: values,
+    };
+  });
 }
 
 export function updateState(context, newState) {
@@ -103,7 +121,11 @@ export function createContext() {
 
 export function start(context) {
   context.pollId = setInterval(() => {
-    getJSON().then(data => updateState(context, data)).then(notifyListeners);
+    getState('http://localhost:5050')
+      .then(getSlaves)
+      .then(glueMasterAndSlaves)
+      .then(data => updateState(context, data))
+      .then(notifyListeners);
   }, 5000);
 }
 
