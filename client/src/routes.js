@@ -5,7 +5,7 @@ import App from './containers/app';
 const Error404 = React.createClass({
   render() {
     return <div>404</div>;
-  }
+  },
 });
 
 export default (

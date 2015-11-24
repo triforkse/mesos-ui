@@ -1,11 +1,9 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
-import { DevTools, DebugPanel, LogMonitor } from 'redux-devtools/lib/react';
-import App from './containers/app';
+import { DevTools, DebugPanel, LogMonitor } from 'redux-devtools/lib/react'; // eslint-disable-line
 import configureStore from './store/configureStore';
 import {ReduxRouter} from 'redux-router';
-import { Route, Link } from 'react-router';
 
 require('./index.scss');
 
@@ -17,7 +15,7 @@ render(
       <ReduxRouter />
     </Provider>
     <DebugPanel top right bottom>
-      {/*<DevTools store={store} monitor={LogMonitor} />*/}
+      {/* <DevTools store={store} monitor={LogMonitor} /> */}
     </DebugPanel>
   </div>,
   document.getElementById('app')

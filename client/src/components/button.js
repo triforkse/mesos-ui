@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 
 require('./button.scss');
 
@@ -10,4 +9,5 @@ export default class Button extends React.Component {
 }
 
 Button.propTypes = {
+  children: React.PropTypes.string,
 };

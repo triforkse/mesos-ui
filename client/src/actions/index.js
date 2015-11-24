@@ -59,14 +59,13 @@ export function connectWebSocket() {
       type: WEB_SOCKET_CONNECTION_REQUESTED,
     });
 
-    api.connectWebSocket(function({type, payload}) {
+    api.connectWebSocket(({type, payload}) => {
       if (type === 'MESOS_INIT') {
         dispatch({
           type: WEB_SOCKET_INIT,
           message: payload,
         });
-      }
-      else {
+      } else {
         dispatch({
           type: WEB_SOCKET_DIFF,
           changes: payload,

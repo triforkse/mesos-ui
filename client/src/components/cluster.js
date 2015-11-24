@@ -1,6 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-//import * as d3Grid from '../d3/d3Grid';
+// import * as d3Grid from '../d3/d3Grid';
 import RingChart from './ring-chart';
 
 require('./cluster.scss');
@@ -8,13 +7,13 @@ require('./cluster.scss');
 export default class Cluster extends React.Component {
 
   componentDidMount() {
-    //const el = ReactDOM.findDOMNode(this);
-    //d3Grid.create(el, this.props, this.props.nodes.toJS());
+    // const el = ReactDOM.findDOMNode(this);
+    // d3Grid.create(el, this.props, this.props.nodes.toJS());
   }
 
   componentDidUpdate() {
-    //const el = ReactDOM.findDOMNode(this);
-    //d3Grid.update(el, this.props, this.props.nodes.toJS());
+    // const el = ReactDOM.findDOMNode(this);
+    // d3Grid.update(el, this.props, this.props.nodes.toJS());
   }
 
   getUsage(node, resourceName) {

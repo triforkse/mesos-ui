@@ -33,7 +33,7 @@ export default class RingChart extends React.Component {
           height: maxWidth,
         });
 
-    svg.select('text.ring-chart__label').text(value.toFixed(0)).style("text-anchor", "middle");
+    svg.select('text.ring-chart__label').text(value.toFixed(0)).style('text-anchor', 'middle');
 
     // Add the groups that will hold the arcs
     var groups = svg.selectAll('g.arc')
@@ -48,8 +48,8 @@ export default class RingChart extends React.Component {
 
     function arcTween(finish) {
       var start = {
-          startAngle: 0,
-          endAngle: 0
+        startAngle: 0,
+        endAngle: 0
       };
       var i = d3.interpolate(start, finish);
       return function(d) { return arc(i(d)); };
@@ -60,7 +60,7 @@ export default class RingChart extends React.Component {
       'fill': (d, i) => color(i),
       'd': arc
     })
-    .transition().duration(200).attrTween("d", arcTween);
+    .transition().duration(200).attrTween('d', arcTween);
   }
 
   componentDidMount() {

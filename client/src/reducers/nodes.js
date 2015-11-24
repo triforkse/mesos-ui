@@ -1,5 +1,4 @@
 import Immutable from 'immutable';
-import {compose} from 'lodash';
 import {
   NODE_SELECTION, SHOW_NODE_DETAILS,
   CLUSTER_NODE_UPDATE, CLUSTER_NODE_ADDED,
@@ -135,8 +134,8 @@ function showDetails(state, node) {
   });
 }
 
-function updateCluster(nodes, updatedNodes) {
-  return nodes.map(existingNode => {
+function updateCluster(allNodes, updatedNodes) {
+  return allNodes.map(existingNode => {
     const updatedNode = updatedNodes.find(un => un.get('pid') === existingNode.get('pid'));
     if (updatedNode) {
       return updatedNode;
@@ -161,20 +160,6 @@ function removeNodes(state, message) {
     return newState.filter(n => n.get('pid') !== node.get('pid'));
   }, state);
 }
-
-
-const FULL_ARC = 2 * Math.PI;
-function calculateQuota(fullQuota, usedQuota) {
-  return (usedQuota / fullQuota) * FULL_ARC;
-}
-
-function quota(node, selector) {
-  return calculateQuota(
-    node.getIn(['resources', selector]),
-    node.getIn(['used_resources', selector]),
-  );
-}
-
 
 export function nodes(state = initialState, action) {
   switch (action.type) {

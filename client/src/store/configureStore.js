@@ -14,7 +14,7 @@ const finalCreateStore = compose(
   ),
   reduxReactRouter({
     routes,
-    createHistory
+    createHistory,
   }),
   devTools(),
   // Lets you write ?debug_session=<name> in address bar to persist debug sessions
