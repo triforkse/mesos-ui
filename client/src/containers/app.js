@@ -6,56 +6,17 @@ import * as actions from '../actions';
 import Cluster from '../components/cluster.js';
 import Galaxy from '../components/galaxy.js';
 import Panel from '../components/panel.js';
+import Button from '../components/button.js';
+import {pushState} from 'redux-router';
 
 require('./app.scss');
 
 class App extends React.Component {
 
-  constructor() {
-    super();
-
-    const update = () => {
-      const index = Math.floor(Math.random() * (this.props.nodes.count() - 1), 1);
-      const node = this.props.nodes.get(index).setIn(['used_resources', 'cpus'], Math.random(1));
-      this.props.actions.clusterUpdate(
-        Immutable.List([
-          node,
-        ]));
-    };
-
-    const add = () => {
-      const index = Math.floor(Math.random() * (this.props.nodes.count() - 1), 1);
-      const blueprint = this.props.nodes.get(index);
-      const pid = blueprint.get('pid') + Math.floor(Math.random() * 10, 1);
-      this.props.actions.addNodes(
-        Immutable.List([
-          blueprint.set('pid', pid).setIn(['used_resources', 'cpus'], 0),
-        ]));
-    };
-
-    const remove = () => {
-      const index = Math.floor(Math.random() * (this.props.nodes.count() - 1), 1);
-      this.props.actions.removeNodes(
-        Immutable.List([
-          this.props.nodes.get(index),
-        ]));
-    };
-
-    // REVIEW: Why, are we not stopping this on componentWillUnmount or something?
-    setInterval(() => {
-      const rand = Math.random() * 10;
-      if (this.props.nodes.count() > 50 && rand > 5) {
-        remove();
-      } else if (this.props.nodes.count() <= 50 && rand < 5) {
-        add();
-      } else {
-        update();
-      }
-    }, 10000);
-
-    setTimeout(() => {
-      this.props.actions.connectWebSocket();
-    }, 0);
+  componentDidMount() {
+    // TODO: We need to save a reference to this, so
+    // we can disconnect.
+    this.props.actions.connectWebSocket();
   }
 
   onNodeClick(node) {
@@ -67,6 +28,8 @@ class App extends React.Component {
   }
 
   render() {
+    const {cluster} = this.props;
+
     return (
       <div className="page">
         <div className="page__master">
@@ -75,7 +38,7 @@ class App extends React.Component {
               <img src={require('./logo.svg')} alt="Mesos UI" />
             </div>
             <div className="menu__items">
-              <a href="google.com" className="menu__item">
+              <a href="google.com" className="menu__item menu__item--active">
                 <div className="menu__label">Infrastructure</div>
               </a>
               <div className="menu__item">
@@ -94,13 +57,16 @@ class App extends React.Component {
                 </a>
               </div>
             </div>
+            <div id="install-button">
+              <Button>Install Application</Button>
+            </div>
           </div>
         </div>
         <div className="page__slave">
           <Galaxy />
           <Panel id="details" panel={this.props.panel} actions={this.props.actions}>
             {/* REVIEW: Why (node) => f(node) instead of just "f"? */}
-            <Cluster nodes={this.props.nodes} selector="cpus" mouseOverHandler={(node) => this.onNodeMouseOver(node)} />
+            {cluster && <Cluster nodes={cluster.get('slaves')} selector="cpus" mouseOverHandler={(node) => this.onNodeMouseOver(node)} />}
           </Panel>
         </div>
       </div>);
@@ -113,6 +79,7 @@ App.propTypes = {
   nodes: React.PropTypes.object.isRequired,
   actions: React.PropTypes.object.isRequired,
   panel: React.PropTypes.object.isRequired,
+  cluster: React.PropTypes.object, // We might not have it yet.
 };
 
 function mapDispatchToProps(dispatch) {
@@ -122,17 +89,20 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mapStateToProps(state) {
-  const {apiStatus, socketStatus, nodes, panel} = state;
+  const {apiStatus, socketStatus, nodes, panel, query, router, actions} = state;
 
   return {
     api: apiStatus,
     socket: socketStatus,
+    cluster: socketStatus.get('status') ? socketStatus.get('status') : null,
     nodes,
     panel,
+    query: state.router.location.query,
+    router,
   };
 }
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(App);

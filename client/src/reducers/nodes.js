@@ -135,24 +135,24 @@ function showDetails(state, node) {
   });
 }
 
-function updateCluster(state, message) {
-  return state.update(s => {
-    return s.map(n => {
-      const node = message.find(un => un.get('pid') === n.get('pid'));
-      if (node) {
-        return node;
-      }
-      return n;
-    }).sort();
+function updateCluster(nodes, updatedNodes) {
+  return nodes.map(existingNode => {
+    const updatedNode = updatedNodes.find(un => un.get('pid') === existingNode.get('pid'));
+    if (updatedNode) {
+      return updatedNode;
+    }
+    return existingNode;
   });
 }
 
-function addNodes(state, message) {
-  return message.reduce((newState, node) => {
-    if (!newState.find(n => n.get('pid') === node.get('pid'))) {
-      return state.push(node);
+function addNodes(state, newNodes) {
+  // Add the ones that don't exist.
+  return newNodes.reduce((newState, newNode) => {
+    const exists = newState.find(n => n.get('pid') === newNode.get('pid'));
+    if (!exists) {
+      return newState.push(newNode);
     }
-    return state;
+    return newState;
   }, state);
 }
 
@@ -175,25 +175,17 @@ function quota(node, selector) {
   );
 }
 
-function setQuota(state) {
-  return state.map(n => n.set('prevCpusQuota', n.get('cpusQuota') || 0)
-                         .set('cpusQuota', quota(n, 'cpus'))
-                         .set('prevDiskQuota', n.get('diskQuota') || 0)
-                         .set('diskQuota', quota(n, 'disk'))
-                         .set('prevMemQuota', n.get('memQuota') || 0)
-                         .set('memQuota', quota(n, 'mem')));
-}
 
-export function nodes(state = setQuota(initialState), action) {
+export function nodes(state = initialState, action) {
   switch (action.type) {
   case NODE_SELECTION:
     return selectNode(state, action.node);
   case SHOW_NODE_DETAILS:
     return showDetails(state, action.node);
   case CLUSTER_NODE_UPDATE:
-    return compose(setQuota, updateCluster)(state, action.message);
+    return updateCluster(state, action.message);
   case CLUSTER_NODE_ADDED:
-    return compose(setQuota, addNodes)(state, action.message);
+    return addNodes(state, action.message);
   case CLUSTER_NODE_REMOVED:
     return removeNodes(state, action.message);
   default:

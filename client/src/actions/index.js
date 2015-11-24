@@ -3,7 +3,8 @@ import * as api from '../api-client';
 export const API_STATUS_REQUESTED = 'API_STATUS_REQUESTED';
 export const API_STATUS_RECEIVED = 'API_STATUS_RECEIVED';
 export const WEB_SOCKET_CONNECTION_REQUESTED = 'WEB_SOCKET_CONNECTION_REQUESTED';
-export const WEB_SOCKET_MESSAGE = 'WEB_SOCKET_MESSAGE';
+export const WEB_SOCKET_INIT = 'WEB_SOCKET_INIT';
+export const WEB_SOCKET_DIFF = 'WEB_SOCKET_DIFF';
 export const CLUSTER_NODE_UPDATE = 'CLUSTER_NODE_UPDATE';
 export const CLUSTER_NODE_ADDED = 'CLUSTER_NODE_ADDED';
 export const CLUSTER_NODE_REMOVED = 'CLUSTER_NODE_REMOVED';
@@ -31,19 +32,6 @@ export function checkApi() {
   };
 }
 
-export function requestWebSocketConnection() {
-  return {
-    type: WEB_SOCKET_CONNECTION_REQUESTED,
-  };
-}
-
-export function webSocketMessage(message) {
-  return {
-    type: WEB_SOCKET_MESSAGE,
-    message,
-  };
-}
-
 export function clusterUpdate(message) {
   return {
     type: CLUSTER_NODE_UPDATE,
@@ -67,8 +55,24 @@ export function removeNodes(message) {
 
 export function connectWebSocket() {
   return dispatch => {
-    dispatch(requestWebSocketConnection());
-    api.connectWebSocket(message => dispatch(webSocketMessage(message)));
+    dispatch({
+      type: WEB_SOCKET_CONNECTION_REQUESTED,
+    });
+
+    api.connectWebSocket(function({type, payload}) {
+      if (type === 'MESOS_INIT') {
+        dispatch({
+          type: WEB_SOCKET_INIT,
+          message: payload,
+        });
+      }
+      else {
+        dispatch({
+          type: WEB_SOCKET_DIFF,
+          changes: payload,
+        });
+      }
+    });
   };
 }
 
@@ -90,8 +94,6 @@ let actionCreators = {
   requestApiStatus,
   respondeWithApiStatus,
   checkApi,
-  requestWebSocketConnection,
-  webSocketMessage,
   clusterUpdate,
   addNodes,
   removeNodes,

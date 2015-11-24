@@ -1,9 +1,16 @@
+$bg-color: #292C3E;
+
 body,
 html,
 #app {
   margin: 0;
   height: 100%;
   width: 100%;
+}
+
+#install-button {
+  margin: 20px 0;
+  text-align: center;
 }
 
 .page {
@@ -21,7 +28,10 @@ html,
   align-items: stretch;
   background-color: white;
   align-self: stretch;
-  border-right: solid 1px #ADADAD;
+  border-right: solid 1px #222E55;
+  background-color: $bg-color;
+  color: white;
+  overflow-y: scroll;
 }
 
 .page__slave {
@@ -32,32 +42,44 @@ html,
 }
 
 .menu__logo {
-  padding: 60px 15px 15px;
+  padding: 30px 15px 15px;
   text-align: center;
 }
 
 .menu__logo img {
-  width: 130px;
+  width: 80px;
 }
 
 .menu__items {
 
 }
 
+.menu__label {
+  color: white;
+}
+
 .menu__item {
   min-height: 30px;
   padding: 15px 30px;
-  border-bottom: solid 1px green;
   display: block;
   display: flex;
   justify-content: center;
   text-decoration: none;
-  color: black;
   flex-direction: column;
+  color: #C9D2F5;
+}
+
+.menu__item--active {
+  color: #2D92B3;
+}
+
+.menu__item > a:link,
+.menu__item > a:visited {
+  color: #C9D2F5;
+  text-decoration: none;
 }
 
 .menu__item:first-child {
-  border-top: solid 1px green;
 }
 
 .menu__item:link:hover {

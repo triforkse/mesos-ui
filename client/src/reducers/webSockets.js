@@ -1,11 +1,16 @@
-import {WEB_SOCKET_CONNECTION_REQUESTED, WEB_SOCKET_MESSAGE} from '../actions';
+import * as actions from '../actions';
+import patch from 'immutablepatch';
+import {Map, fromJS} from 'immutable';
 
-export function socketStatus(state = { status: null, connecting: false }, action) {
+const initialState = new Map({ status: null, connecting: true });
+
+export function socketStatus(state = initialState, action) {
   switch (action.type) {
-  case WEB_SOCKET_CONNECTION_REQUESTED:
-    return Object.assign({}, state, { connecting: true });
-  case WEB_SOCKET_MESSAGE:
-    return Object.assign({}, state, { connecting: false, status: action.message });
+  case actions.WEB_SOCKET_INIT:
+    return state.merge({ connecting: false, status: action.message });
+  case actions.WEB_SOCKET_DIFF:
+    const changes = fromJS(action.changes);
+    return state.update('status', s => patch(s, changes));
   default:
     return state;
   }

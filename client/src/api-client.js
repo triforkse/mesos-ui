@@ -20,7 +20,7 @@ export function connectWebSocket(cb) {
   const base = config.apiAddress();
   socket = io(`http://${base}`);
   socket.on('greeting', cb);
-  socket.on('MESOS_INIT', cb);
-  socket.on('MESOS_DIFF', cb);
+  socket.on('MESOS_INIT', m => cb({type: 'MESOS_INIT', payload: m}));
+  socket.on('MESOS_DIFF', m => cb({type: 'MESOS_DIFF', payload: m}));
   socket.emit('greeting', 'hi from client');
 }

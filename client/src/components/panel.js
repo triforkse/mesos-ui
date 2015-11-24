@@ -121,5 +121,5 @@ Panel.propTypes = {
   id: React.PropTypes.string.isRequired,
   panel: React.PropTypes.object,
   actions: React.PropTypes.object,
-  children: React.PropTypes.node.isRequired,
+  children: React.PropTypes.node,
 };

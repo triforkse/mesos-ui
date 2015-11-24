@@ -4,6 +4,7 @@ import diff from 'immutablediff';
 import Q from 'q';
 
 function parse(json) {
+  console.log(json);
   const frameworks = json.frameworks.map((fw) => {
     return {
       active: fw.active,
@@ -37,7 +38,7 @@ function parse(json) {
     version: json.version,
   };
 
-  const newState = fromJS({ mesos: data });
+  const newState = fromJS(data);
 
   return newState;
 }

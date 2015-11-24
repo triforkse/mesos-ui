@@ -1,19 +1,11 @@
 import express from 'express';
-import {last, sample} from 'lodash';
+import {last, sample, range} from 'lodash';
+import {fromJS} from 'immutable';
+
 const app = express();
 
-app.get('/state.json', (req, res) => {
-  res.json(data); // eslint-disable-line
-});
-
-export function start() {
-  app.listen(5050, () => {
-    console.log('fake server started at 5050'); // eslint-disable-line
-  });
-}
-
 /*eslint-disable */
-const data = {
+let data = fromJS({
   "activated_slaves": 2,
   "build_date": "2015-10-12 20:57:28",
   "build_time": 1444683448,
@@ -166,25 +158,37 @@ const data = {
   "start_time": 1448273613.72155,
   "unregistered_frameworks": [],
   "version": "0.25.0"
-}
+});
 /*eslint-enable */
 
-const framework = data.frameworks[0];
-const slave = last(data.slaves);
+let nextId = 1000;
 
 setInterval(() => {
-  if (Math.random() > 0.9) {
-    data.frameworks.push(framework);
-    slave.pid = slave.pid.split(':')[0] + ':' + (+slave.pid.split(':')[1] + 10);
-    data.slaves.push(slave);
+  if (Math.random() < 0.7) {
+    //const framework = data.getIn(['frameworks', 0]);
+    //data = data.update('frameworks', f => f.push(framework));
+
+    const slave = data.get('slaves').last();
+    data = data.update('slaves', s => s.push(slave.set('pid', 'SLAVE:' + nextId++)));
   }
-  if (Math.random() < 0.1 && data.slaves.length > 1) {
-    data.slaves.splice(-1, 1);
-    data.frameworks.splice(-1, 1);
+  else if (data.get('slaves').count() > 1) {
+    data = data.removeIn(['slaves', 0]);
+    //data = data.removeIn(['frameworks', 0]);
   }
-}, 5000);
+}, 2000);
 
 setInterval(() => {
-  const sampleSlave = sample(data.slaves);
-  sampleSlave.used_resources.cpus = Math.random();
+  const max = data.get('slaves').count();
+  const index = sample(range(max));
+  data = data.setIn(['slaves', index, 'used_resources', 'cpus'], Math.random());
 }, 1000);
+
+app.get('/state.json', (req, res) => {
+  res.json(data.toJS()); // eslint-disable-line
+});
+
+export function start() {
+  app.listen(5050, () => {
+    console.log('fake server started at 5050'); // eslint-disable-line
+  });
+}
