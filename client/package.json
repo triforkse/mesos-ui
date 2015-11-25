@@ -33,6 +33,7 @@
     "file-loader": "^0.8.4",
     "growl": "^1.8.1",
     "immutable": "^3.7.5",
+    "immutablediff": "^0.4.2",
     "isparta": "^3.5.3",
     "jsdom": "^7.0.2",
     "lil-http": "^0.1.16",

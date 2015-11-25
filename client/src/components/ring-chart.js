@@ -2,73 +2,70 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import d3 from 'd3';
 
-var maxWidth = 60;
+const maxWidth = 60;
 
 export default class RingChart extends React.Component {
 
-  renderD3(value) {
-    var data = [
-        {id: 0, value: value},
-        {id: 1, value: 100 - value},
-    ];
+  componentDidMount() {
+    this.renderD3(this.props);
+  }
+
+  shouldComponentUpdate(nextProps) {
+    return !(nextProps.value === this.props.value);
+  }
+
+  componentDidUpdate() {
+    this.renderD3(this.props);
+  }
+
+  renderD3(props) {
+    const {value, prevValue, id} = props;
+    const data = [value, 100 - value];
+    const prevData = [prevValue, 100 - prevValue];
 
     const outerRadius = maxWidth / 2;
     const innerRadius = outerRadius / 1.5;
 
     const el = ReactDOM.findDOMNode(this);
 
-    var pie = d3.layout.pie().value(function(d) {
-      return d.value;
-    });
+    const pie = d3.layout.pie().sort(null);
 
-    var color = i => (i === 0 ? '#AF00D3' : '#EFEFEF');
-    var arc = d3.svg.arc();
-
-    arc.outerRadius(outerRadius)
+    const color = i => (i === 0 ? '#AF00D3' : '#EFEFEF');
+    const arc = d3.svg.arc()
+        .outerRadius(outerRadius)
         .innerRadius(innerRadius);
 
-    var svg = d3.select(el)
+    const svg = d3.select(el)
         .attr({
-          width : maxWidth,
+          width: maxWidth,
           height: maxWidth,
-        });
+        })
+        .append('g');
 
     svg.select('text.ring-chart__label').text(value.toFixed(0)).style('text-anchor', 'middle');
 
     // Add the groups that will hold the arcs
-    var groups = svg.selectAll('g.arc')
-    .data(pie(data))
-    .enter()
-    .append('g');
+    const groups = svg.selectAll('g.arc')
+      .data(pie(data));
 
-    groups.attr({
-      'class': 'arc',
-      'transform': 'translate(' + outerRadius + ', ' + outerRadius + ')'
-    });
+    groups.enter()
+      .append('path').attr({
+        'fill': (d, i) => color(i),
+        'd': arc,
+        'id': (d, i) => id + i,
+        'class': 'arc',
+        'transform': 'translate(' + outerRadius + ', ' + outerRadius + ')',
+      });
 
-    function arcTween(finish) {
-      var start = {
-        startAngle: 0,
-        endAngle: 0
-      };
-      var i = d3.interpolate(start, finish);
-      return function(d) { return arc(i(d)); };
+    function arcTween(finish, index) {
+      const start = pie(prevData)[index];
+      const i = d3.interpolate(start, finish);
+      return d => arc(i(d));
     }
 
     // Create the actual slices of the pie
-    groups.append('path').attr({
-      'fill': (d, i) => color(i),
-      'd': arc
-    })
-    .transition().duration(200).attrTween('d', arcTween);
-  }
-
-  componentDidMount() {
-    this.renderD3(this.props.value);
-  }
-
-  componentDidUpdate() {
-    this.renderD3(this.props.value);
+    groups.transition()
+      .duration(750).attrTween('d', arcTween);
   }
 
   render() {
@@ -78,5 +75,7 @@ export default class RingChart extends React.Component {
 
 RingChart.propTypes = {
   text: React.PropTypes.string,
+  id: React.PropTypes.string,
   value: React.PropTypes.number.isRequired,
+  prevValue: React.PropTypes.number.isRequired,
 };
