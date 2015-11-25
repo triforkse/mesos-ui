@@ -26,6 +26,6 @@ describe('Start Page', function() {
 
   it("should have a title", function * () {
     const title = yield nightmare.goto(base).title();
-    expect(title).to.equal('Project Start');
+    expect(title).to.equal('Mesos UI');
   });
 });
