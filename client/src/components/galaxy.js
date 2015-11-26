@@ -1,6 +1,7 @@
 /*eslint-disable */
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {distirbuteNodes} from '../d3/calculations';
 
 require('./galaxy.scss');
 
@@ -60,6 +61,8 @@ export default class Galaxy extends React.Component {
 
     const graph = getData(width, height);
 
+    graph.nodes = distirbuteNodes(graph.nodes, width, height * 0.7);
+
     force
         .nodes(graph.nodes)
         .links(graph.links)
@@ -78,7 +81,7 @@ export default class Galaxy extends React.Component {
         .call(drag);
 
     const circle = node.append('circle')
-      .attr('r', d => d.r || 40)
+      .attr('r', d => d.r)
       .each(d => d.fixed = true)
       .style('fill', function(d) { return color(d.group); });
 
@@ -88,7 +91,6 @@ export default class Galaxy extends React.Component {
           .attr('x2', function(d) { return d.target.x; })
           .attr('y2', function(d) { return d.target.y; });
 
-      // node.attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
       circle.attr('cx', d => d.x).attr('cy', d => d.y);
     });
   }
@@ -103,7 +105,7 @@ export default class Galaxy extends React.Component {
 function getData(width, height) {
   return {
   'nodes':[
-    {'name':'MesosMaster','group':0, x: width/2, y: height/2, r: 80},
+    {'name':'MesosMaster','group':0, master: true},
     {'name':'Node1','group':1, x: 100, y: 50},
     {'name':'Node2','group':2, x: 200, y: 50},
     {'name':'Node3','group':3, x: 400, y: 50},
