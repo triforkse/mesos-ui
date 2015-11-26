@@ -58,7 +58,7 @@ export default class Galaxy extends React.Component {
 
     var container = svg.append('g');
 
-    const graph = getData();
+    const graph = getData(width, height);
 
     force
         .nodes(graph.nodes)
@@ -75,12 +75,11 @@ export default class Galaxy extends React.Component {
         .data(graph.nodes)
         .enter().append('g')
         .attr('class', 'galaxy__node')
-        .attr('cx', d => d.x)
-        .attr('cy', d => d.y)
         .call(drag);
 
-    node.append('circle')
-      .attr('r', 40)
+    const circle = node.append('circle')
+      .attr('r', d => d.r || 40)
+      .each(d => d.fixed = true)
       .style('fill', function(d) { return color(d.group); });
 
     force.on('tick', function() {
@@ -89,7 +88,8 @@ export default class Galaxy extends React.Component {
           .attr('x2', function(d) { return d.target.x; })
           .attr('y2', function(d) { return d.target.y; });
 
-      node.attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+      // node.attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+      circle.attr('cx', d => d.x).attr('cy', d => d.y);
     });
   }
 
@@ -100,25 +100,24 @@ export default class Galaxy extends React.Component {
 
 
 
-function getData() {
+function getData(width, height) {
   return {
   'nodes':[
-    {'name':'MesosMaster','group':0},
-    {'name':'Node1','group':1},
-    {'name':'Node2','group':2},
-    {'name':'Node3','group':3},
-    {'name':'Node4','group':4},
-    {'name':'Node5','group':5},
-    {'name':'Node6','group':6},
-    {'name':'Node7','group':7},
-    {'name':'Node8','group':8},
-    {'name':'Node9','group':9},
+    {'name':'MesosMaster','group':0, x: width/2, y: height/2, r: 80},
+    {'name':'Node1','group':1, x: 100, y: 50},
+    {'name':'Node2','group':2, x: 200, y: 50},
+    {'name':'Node3','group':3, x: 400, y: 50},
+    {'name':'Node4','group':4, x: 600, y: 50},
+    {'name':'Node5','group':5, x: 100, y: 300},
+    {'name':'Node6','group':6, x: 200, y: 300},
+    {'name':'Node7','group':7, x: 400, y: 300},
+    {'name':'Node8','group':8, x: 600, y: 300},
+    {'name':'Node9','group':9, x: 600, y: 150},
   ],
   'links':[
     {'source':1,'target':0,'value':10},
     {'source':2,'target':0,'value':10},
     {'source':3,'target':0,'value':10},
-    {'source':3,'target':2,'value':10},
     {'source':4,'target':0,'value':10},
     {'source':5,'target':0,'value':10},
     {'source':6,'target':0,'value':10},

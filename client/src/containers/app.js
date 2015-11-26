@@ -33,7 +33,7 @@ class App extends React.Component {
         <div className="page__master">
           <div className="menu">
             <div className="menu__logo">
-              <img src={require('./logo.svg')} alt="Mesos UI" />
+              <img src={require('../images/logo.svg')} alt="Mesos UI" />
             </div>
             <div className="menu__items">
               <a href="google.com" className="menu__item menu__item--active">
