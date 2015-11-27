@@ -6,7 +6,7 @@
     "test:integration": "npm run test -- test/integration",
     "test:unit": "npm run test -- test/unit",
     "test:watch": "npm run test:unit -- --watch --growl",
-    "start:production": "printenv && node build/app.js",
+    "start:production": "node build/app.js",
     "start:dev": "nodemon --exec babel-node src/app.js",
     "start": "concurrent 'npm run start:dev' 'npm run test:watch' 'npm run lint:watch'",
     "lint:watch": "npm run lint -- -w --fix",

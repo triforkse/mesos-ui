@@ -1,4 +1,4 @@
-FROM node:5.0
+FROM node:5.0-slim
 
 # To get a virtual screen for GUI testing we need
 # a few extra dependencies. Also look in the run.sh
@@ -10,7 +10,7 @@ RUN apt-get update && \
 ENV NODE_ENV=production
 
 ADD package.json /tmp/package.json
-RUN cd /tmp && npm install --production
+RUN cd /tmp && npm install --production --log-level=warn
 
 ADD . /app
 RUN rm -rf /app/node_modules

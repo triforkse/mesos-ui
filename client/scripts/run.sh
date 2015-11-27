@@ -2,8 +2,6 @@
 
 set -e
 
-printenv
-
 if [ "$API_ADDR" = "" ]
 then
   echo "Setting API_ADDR to Docker linked address."

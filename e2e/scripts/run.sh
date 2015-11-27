@@ -1,7 +1,5 @@
 #!/bin/bash
 
-printenv
-
 if [ "$CLIENT_ADDR" = "" ]
 then
    export CLIENT_ADDR=$APP_CLIENT_1_PORT_3001_TCP_ADDR
