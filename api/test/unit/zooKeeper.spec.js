@@ -1,6 +1,6 @@
 /* global it expect describe beforeEach */
 
-import * as zookeeper from '../../src/zookeeper.js';
+import * as zookeeper from '../../src/zooKeeper.js';
 
 const zkData = '{"address":{"hostname":"192.168.99.100","ip":"192.168.99.100","port":5050},"hostname":"192.168.99.100","id":"8b3ebf2c-7c89-4a85-bd7a-fbe7337f6303","ip":1684252864,"pid":"master@192.168.99.100:5050","port":5050,"version":"0.25.0"}';
 
