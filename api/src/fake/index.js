@@ -1,6 +1,7 @@
 import express from 'express';
 import {fromJS} from 'immutable';
 import fs from 'fs';
+import logger from 'winston';
 
 const app = express();
 
@@ -106,6 +107,6 @@ app.get('/:pid/state.json', (req, res) => {
 
 export function start() {
   app.listen(5050, () => {
-    console.log('fake server started at 5050'); // eslint-disable-line
+    logger.info('fake server started at 5050');
   });
 }
