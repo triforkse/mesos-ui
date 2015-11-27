@@ -10,7 +10,7 @@ RUN apt-get update && \
 ENV NODE_ENV=production
 
 ADD package.json /tmp/package.json
-RUN cd /tmp && npm install --production --log-level=warn
+RUN cd /tmp && npm install --production --quiet
 
 ADD . /app
 RUN rm -rf /app/node_modules
