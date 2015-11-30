@@ -104,6 +104,10 @@ export default class Galaxy extends React.Component {
 
     link.enter().append('line')
         .attr('id', d => d.source.pid)
+        .attr('x1', d => d.source.x)
+        .attr('y1', d => d.source.y)
+        .attr('x2', d => d.target.x)
+        .attr('y2', d => d.target.y)
         .attr('class', 'galaxy__link')
         .style('stroke-width', d => Math.sqrt(d.value));
 
@@ -117,8 +121,10 @@ export default class Galaxy extends React.Component {
         .attr('class', 'galaxy__node')
         .call(drag);
 
-    const circle = nodeEnter.append('circle')
+    nodeEnter.append('circle')
       .attr('r', d => d.r)
+      .attr('cx', d => d.x)
+      .attr('cy', d => d.y)
       .style('fill', '#F6F6F6');
 
     node.exit().remove();
@@ -133,15 +139,6 @@ export default class Galaxy extends React.Component {
       d3.select(this).select('circle').transition()
         .duration(500)
         .attr('r', d.r);
-    });
-
-    force.on('tick', () => {
-      link.attr('x1', d => d.source.x)
-          .attr('y1', d => d.source.y)
-          .attr('x2', d => d.target.x)
-          .attr('y2', d => d.target.y);
-
-      circle.attr('cx', d => d.x).attr('cy', d => d.y);
     });
   }
 
