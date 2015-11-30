@@ -11,6 +11,9 @@ export const CLUSTER_NODE_REMOVED = 'CLUSTER_NODE_REMOVED';
 export const NODE_SELECTION = 'NODE_SELECTION';
 export const SHOW_NODE_DETAILS = 'SHOW_NODE_DETAILS';
 export const TOGGLE_PANEL = 'TOGGLE_PANEL';
+export const FRAMEWORK_FOCUS = 'FRAMEWORK_FOCUS';
+export const FRAMEWORK_BLUR = 'FRAMEWORK_BLUR';
+export const FRAMEWORK_TOGGLE = 'FRAMEWORK_TOGGLE';
 
 export function requestApiStatus() {
   return {
@@ -89,6 +92,27 @@ export function showDetails(node) {
   };
 }
 
+export function focusFramework(framework) {
+  return {
+    type: FRAMEWORK_FOCUS,
+    framework,
+  };
+}
+
+export function blurFramework(framework) {
+  return {
+    type: FRAMEWORK_BLUR,
+    framework,
+  };
+}
+
+export function toggleFramework(framework) {
+  return {
+    type: FRAMEWORK_TOGGLE,
+    framework,
+  };
+}
+
 let actionCreators = {
   requestApiStatus,
   respondeWithApiStatus,
@@ -99,6 +123,9 @@ let actionCreators = {
   connectWebSocket,
   selectNode,
   showDetails,
+  focusFramework,
+  blurFramework,
+  toggleFramework,
 };
 
 export function registerActionCreators(creators) {

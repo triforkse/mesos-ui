@@ -6,6 +6,7 @@ import Cluster from '../components/cluster.js';
 import Galaxy from '../components/galaxy.js';
 import Panel from '../components/panel.js';
 import Button from '../components/button.js';
+import Frameworks from '../components/frameworks.js';
 
 require('./app.scss');
 
@@ -33,6 +34,13 @@ class App extends React.Component {
     }
 
     const slaveNodes = cluster.get('slaves');
+    const frameworks = cluster.get('frameworks');
+    console.log("actions", this.props.actions);
+    const frameworksActions = {
+      focusFramework: this.props.actions.focusFramework,
+      blurFramework: this.props.actions.blurFramework,
+      toggleFramework: this.props.actions.toggleFramework,
+    };
 
     return (
       <div className="page">
@@ -45,21 +53,7 @@ class App extends React.Component {
               <a href="google.com" className="menu__item menu__item--active">
                 <div className="menu__label">Infrastructure</div>
               </a>
-              <div className="menu__item">
-                <div className="menu__label">Applications</div>
-                <a href="#_" className="menu__subitem">
-                  Elastic Search
-                </a>
-                <a href="#_" className="menu__subitem">
-                  Logstash
-                </a>
-                <a href="#_" className="menu__subitem">
-                  Hadoop
-                </a>
-                <a href="#_" className="menu__subitem">
-                  HDFS
-                </a>
-              </div>
+              <Frameworks frameworks={frameworks} frameworksActions={frameworksActions} />
             </div>
             <div id="install-button">
               <Button>Install Application</Button>
