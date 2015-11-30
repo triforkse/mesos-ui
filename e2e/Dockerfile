@@ -1,4 +1,4 @@
-FROM node:5.0-slim
+FROM node:5.0
 
 # To get a virtual screen for GUI testing we need
 # a few extra dependencies. Also look in the run.sh

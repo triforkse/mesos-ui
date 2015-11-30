@@ -1,6 +1,4 @@
-FROM mhart/alpine-node:5.0
-
-RUN apk --update add python
+FROM node:5.0
 
 ENV NODE_ENV=production
 
