@@ -1,6 +1,3 @@
-import d3 from 'd3';
-import {zipWith} from 'lodash';
-
 export const FULL_ARC = 2 * Math.PI;
 
 export function calculateQuota(fullQuota, usedQuota) {
@@ -8,13 +5,28 @@ export function calculateQuota(fullQuota, usedQuota) {
 }
 
 export function distirbuteNodes(data, width, height) {
-  const bubble = d3.layout.pack()
-      .size([width, height])
-      .value(d => d.size)
-      .padding(50);
+  const masterWidthFactor = 0.6;
+  const masterHeightFactor = 0.1;
 
-  const nodesWithWeight = data.map(n => Object.assign({}, {size: n.master ? 100 : 50}));
-  const positions = bubble.nodes({children: nodesWithWeight}).filter(d => !d.children);
+  const rowHeight = height * 0.2;
+  const offset = 50;
 
-  return zipWith(data, positions, (n, p) => Object.assign(n, {x: p.x, y: p.y, r: p.r}));
+  const master = {x: width * masterWidthFactor, y: height * masterHeightFactor, r: 45, fixed: true};
+  const slave = i => {
+    const col = (i % 10) * 0.1;
+    const row = Math.ceil(i / 10);
+    return {x: width * col + offset, y: rowHeight * row, r: 30, fixed: true};
+  };
+
+  return data.map((n, i) => Object.assign({}, n, n.master ? master : slave(i)));
+}
+
+export function createLinks(nodes) {
+  if (!nodes || nodes.length < 1) {
+    return [];
+  }
+
+  return nodes.map((n, i) => {
+    return {source: i + 1, target: 0, value: 10, fixed: true};
+  });
 }

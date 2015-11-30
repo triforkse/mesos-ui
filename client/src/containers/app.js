@@ -28,6 +28,12 @@ class App extends React.Component {
   render() {
     const {cluster} = this.props;
 
+    if (!cluster) {
+      return <div></div>;
+    }
+
+    const slaveNodes = cluster.get('slaves');
+
     return (
       <div className="page">
         <div className="page__master">
@@ -61,10 +67,10 @@ class App extends React.Component {
           </div>
         </div>
         <div className="page__slave">
-          <Galaxy />
+          <Galaxy master={{master: true}} nodes={slaveNodes} />
           <Panel id="details" panel={this.props.panel} actions={this.props.actions}>
             {/* REVIEW: Why (node) => f(node) instead of just "f"? */}
-            {cluster && <Cluster nodes={cluster.get('slaves')} selector="cpus" mouseOverHandler={(node) => this.onNodeMouseOver(node)} />}
+            {cluster && <Cluster nodes={slaveNodes} selector="cpus" mouseOverHandler={(node) => this.onNodeMouseOver(node)} />}
           </Panel>
         </div>
       </div>);

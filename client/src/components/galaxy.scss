@@ -1,5 +1,5 @@
 .galaxy {
-  background-color: black;
+  background-color: white;
   width: 100%;
   height: 100%;
   position: absolute;
@@ -10,11 +10,15 @@
 }
 
 .galaxy__node {
-  stroke: #fff;
-  stroke-width: 1.5px;
+  stroke: #C3E7F5;
+  stroke-width: 3px;
+}
+
+.galaxy__node:hover {
+  stroke-width: 4.5px;
 }
 
 .galaxy__link {
-  stroke: #FFF;
+  stroke: #C3E7F5;
   stroke-opacity: .6;
 }
