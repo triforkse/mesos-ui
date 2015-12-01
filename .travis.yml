@@ -1,18 +1,17 @@
 sudo: required
-
 language: node_js
 node_js:
-  - "5.0.0"
-
+- 5.0.0
 services:
-  - docker
-
+- docker
 install: true
-
 script:
-  - make setup
-  - make test-unit
-  - make test-integration
-  - make lint
-  - make docker-e2e
-  - make coverage
+- make setup
+- make test-unit
+- make test-integration
+- make lint
+- make docker-e2e
+- make coverage
+notifications:
+  slack:
+    secure: Qfoyg7bVIMo5Pziy1f18ZLR/4EWE7Dmn81+gfuVN0AtFzc/QRR7dHYXmL09jGXGDx46vPvEgQ8NRlF8S6dBlw0C4gdZdugQ98IBJ5jHkpfd/nnD8JQCnpvxirQ0hOLUvo2U+ygWZaIwDlkJY2Q+BFgCuTi1nYnV2RoVeL2AqFKTkfFcaf3cBoyIH60BxiPout4/oF3jGAkckgY2F3pk7qpHiie20oLROMd+4pKmH0cDZ/wNOFjmkdy44vZCRKou15aFrR26IjylCCj0nkQOiwlHGy0m3yrANMX5RqxCyRucWFvdXN792fBU/14AqNXiNBgrf9F3Mgbio0bOmMfkWcxUP1fqQTOgfOmUSLv0F3CxDXmEBWegI+bZQNfmByluaUoOCccAY0hyACJevb/uK9OFCkWOt2tpYqVYiUT+m7l0ejO3S8FC+NPw4x4IKdmExSr/RsOmJnm99bsMCepzg8O2cN4LFvsipXQHDLmO2vSsvt0y0AHbFSnuN5jZ2/NQunS3IsG3M9brk4aftBDzh07BT+UXUghhpY5XhNsvGCYTR9p32kNLQzc2WxwKjLqOwEs1pXz4lYfkmRjwixk05DyTzFGEgkZARWoGjGbrGuNV00hnU66WXDwg8T4MtJBbQdQ31o5F4UgIzcKzUM5E4bHqJWFm5BZFsmlr3pm6t90Y=
