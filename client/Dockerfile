@@ -1,6 +1,4 @@
-FROM gliderlabs/alpine:3.2
-
-RUN apk-install python
+FROM python:2.7
 
 ADD /public/ /app/
 
