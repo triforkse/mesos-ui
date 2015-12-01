@@ -99,7 +99,10 @@ export default class Galaxy extends React.Component {
             .on('drag', dragged)
             .on('dragend', dragended);
 
-    const link = container.selectAll('.galaxy__link')
+    container.append('g').attr('id', 'galaxy__links');
+    container.append('g').attr('id', 'galaxy__nodes');
+
+    const link = container.select('#galaxy__links').selectAll('.galaxy__link')
         .data(force.links(), d => d.source.pid);
 
     link.enter().append('line')
@@ -113,7 +116,7 @@ export default class Galaxy extends React.Component {
 
     link.exit().remove();
 
-    const node = container.selectAll('.galaxy__node')
+    const node = container.select('#galaxy__nodes').selectAll('.galaxy__node')
         .data(force.nodes(), d => d.pid || 'master');
 
     const nodeEnter = node.enter()

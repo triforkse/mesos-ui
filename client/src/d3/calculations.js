@@ -12,13 +12,12 @@ export function distirbuteNodes(data, width, height) {
   const offset = 50;
 
   const master = {x: width * masterWidthFactor, y: height * masterHeightFactor, r: 45, fixed: true};
-  const slave = i => {
-    const col = (i % 10) * 0.1;
-    const row = Math.ceil(i / 10);
-    return {x: width * col + offset, y: rowHeight * row, r: 30, fixed: true};
+  const slave = s => {
+    const {row, col} = s.pos_in_grid;
+    return {x: width * (col * 0.1) + offset, y: rowHeight * row, r: 30, fixed: true};
   };
 
-  return data.map((n, i) => Object.assign({}, n, n.master ? master : slave(i)));
+  return data.map(s => Object.assign({}, s, s.master ? master : slave(s)));
 }
 
 export function createLinks(nodes) {
