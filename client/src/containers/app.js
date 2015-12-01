@@ -52,7 +52,6 @@ class App extends React.Component {
               <a href="google.com" className="menu__item menu__item--active">
                 <div className="menu__label">Infrastructure</div>
               </a>
-              <Frameworks frameworks={slaveFrameworks} frameworksActions={frameworksActions} active={frameworks} />
             </div>
             <div id="install-button">
               <Button>Install Application</Button>
@@ -61,6 +60,7 @@ class App extends React.Component {
         </div>
         <div className="page__slave">
           <Galaxy master={{master: true}} nodes={slaveNodes} />
+          <Frameworks frameworks={slaveFrameworks} frameworksActions={frameworksActions} active={frameworks} />
           <Panel id="details" panel={this.props.panel} actions={this.props.actions}>
             {/* REVIEW: Why (node) => f(node) instead of just "f"? */}
             {cluster && <Cluster nodes={slaveNodes} selector="cpus" mouseOverHandler={(node) => this.onNodeMouseOver(node)} />}

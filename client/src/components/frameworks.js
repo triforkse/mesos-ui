@@ -1,5 +1,7 @@
 import React from 'react';
 
+require('./frameworks.scss');
+
 export default class Frameworks extends React.Component {
   renderList(frameworks) {
     const { focusFramework, blurFramework, toggleFramework } = this.props.frameworksActions;
@@ -7,7 +9,7 @@ export default class Frameworks extends React.Component {
 
     return frameworks.map(i => {
       const name = i.get('name');
-      const className = active.includes(name) ? 'menu__subitem menu__subitem--active' : 'menu__subitem';
+      const className = active.includes(name) ? 'frameworks__item frameworks__item--active' : 'frameworks__item';
       return (<a href="#_" className={className}
         onMouseOver={() => focusFramework(name)}
         onMouseOut={() => blurFramework(name)}
@@ -18,8 +20,8 @@ export default class Frameworks extends React.Component {
     });
   }
   render() {
-    return (<div className="menu__item">
-      <div className="menu__label">Frameworks</div>
+    return (<div className="frameworks">
+      <div className="frameworks__label">Frameworks</div>
       {this.renderList(this.props.frameworks)}
     </div>);
   }

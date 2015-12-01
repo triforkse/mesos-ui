@@ -1,0 +1,30 @@
+.frameworks {
+  padding: 10px;
+  position: absolute;
+  text-align: right;
+  right: 0;
+  width: 200px;
+}
+
+.frameworks__label {
+  color: #555;
+}
+
+.frameworks__item {
+  display: block;
+  display: flex;
+  justify-content: center;
+  text-decoration: none;
+  flex-direction: column;
+  color: #000;
+}
+
+.frameworks__item > a:link,
+.frameworks__item > a:visited {
+  color: #C9D2F5;
+  text-decoration: none;
+}
+
+.frameworks__item > a.frameworks__subitem--active {
+  color: #9E4496;
+}
