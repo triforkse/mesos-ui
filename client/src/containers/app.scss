@@ -79,6 +79,10 @@ html,
   text-decoration: none;
 }
 
+.menu__item > a.menu__subitem--active {
+  color: #9E4496;
+}
+
 .menu__item:first-child {
 }
 

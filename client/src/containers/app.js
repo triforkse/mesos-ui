@@ -27,15 +27,14 @@ class App extends React.Component {
   }
 
   render() {
-    const {cluster} = this.props;
+    const {cluster, frameworks } = this.props;
 
     if (!cluster) {
       return <div></div>;
     }
 
     const slaveNodes = cluster.get('slaves');
-    const frameworks = cluster.get('frameworks');
-    console.log("actions", this.props.actions);
+    const slaveFrameworks = cluster.get('frameworks');
     const frameworksActions = {
       focusFramework: this.props.actions.focusFramework,
       blurFramework: this.props.actions.blurFramework,
@@ -53,7 +52,7 @@ class App extends React.Component {
               <a href="google.com" className="menu__item menu__item--active">
                 <div className="menu__label">Infrastructure</div>
               </a>
-              <Frameworks frameworks={frameworks} frameworksActions={frameworksActions} />
+              <Frameworks frameworks={slaveFrameworks} frameworksActions={frameworksActions} active={frameworks} />
             </div>
             <div id="install-button">
               <Button>Install Application</Button>
@@ -78,6 +77,7 @@ App.propTypes = {
   actions: React.PropTypes.object.isRequired,
   panel: React.PropTypes.object.isRequired,
   cluster: React.PropTypes.object, // We might not have it yet.
+  frameworks: React.PropTypes.object.isRequired,
 };
 
 function mapDispatchToProps(dispatch) {
@@ -87,7 +87,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mapStateToProps(state) {
-  const {apiStatus, socketStatus, nodes, panel, router } = state;
+  const {apiStatus, socketStatus, nodes, panel, router, frameworks } = state;
 
   return {
     api: apiStatus,
@@ -97,6 +97,7 @@ function mapStateToProps(state) {
     panel,
     query: state.router.location.query,
     router,
+    frameworks,
   };
 }
 
