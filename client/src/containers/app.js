@@ -2,9 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from '../actions';
-import Cluster from '../components/cluster.js';
 import Galaxy from '../components/galaxy.js';
-import Panel from '../components/panel.js';
 import Button from '../components/button.js';
 import Frameworks from '../components/frameworks.js';
 

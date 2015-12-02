@@ -1,5 +1,5 @@
 import React from 'react';
-import RingChart from './ring-chart';
+// import RingChart from './ring-chart';
 
 require('./cluster.scss');
 
@@ -18,14 +18,14 @@ export default class Cluster extends React.Component {
   }
 
   render() {
-    const nodes = this.props.nodes;
+    // const nodes = this.props.nodes;
     return <div></div>;
-    return (<div className="cluster-rings">{nodes.map(n =>
-              <RingChart key={n.get('pid')}
-                         id={n.get('pid')}
-                         value={this.getUsage(n, 'cpus')}
-                         prevValue={this.getPrevUsage(n, 'cpus')} />)}
-            </div>);
+    // return (<div className="cluster-rings">{nodes.map(n =>
+    //           <RingChart key={n.get('pid')}
+    //                      id={n.get('pid')}
+    //                      value={this.getUsage(n, 'cpus')}
+    //                      prevValue={this.getPrevUsage(n, 'cpus')} />)}
+    //         </div>);
   }
 }
 
