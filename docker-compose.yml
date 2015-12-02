@@ -19,3 +19,4 @@ e2e:
   build: ./e2e
   links:
     - client
+    - api
