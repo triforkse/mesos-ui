@@ -1,4 +1,6 @@
-FROM node:5.0-slim
+FROM mhart/alpine-node:5.1
+
+RUN apk add --update make gcc g++ python
 
 ENV NODE_ENV=production
 
@@ -11,6 +13,9 @@ COPY ./src /app/build
 WORKDIR /app
 
 RUN npm run build
+
+RUN apk del make gcc g++ python && \
+  rm -rf /tmp/* /var/cache/apk/* /root/.npm /root/.node-gyp
 
 VOLUME /data /tmp/app-data
 
