@@ -22,16 +22,14 @@ function updateStatus(state, changes) {
 
 function generateGrid(rowSize) {
   return Range(1, 1000).map(i => {
-    return {col: (i % 10), row: Math.ceil(i / rowSize)};
+    return Map({col: (i % 10), row: Math.ceil(i / rowSize)});
   }).toSeq();
 }
 
 function getAvailableSlots(slaves) {
   const grid = generateGrid(10);
   const usedSlots = slaves.filter(s => s.get('pos_in_grid')).map(s => s.get('pos_in_grid'));
-  return grid.filter(slot => {
-    return !usedSlots.includes(slot);
-  });
+  return grid.filter(slot => !usedSlots.includes(slot));
 }
 
 function placeSalavesInGrid(state) {

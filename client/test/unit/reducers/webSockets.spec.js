@@ -104,50 +104,50 @@ describe('reducers - webSockets', () => {
         expect(newState.status.slaves[0].prev_used_resources).to.be.undefined; // eslint-disable-line
       });
 
-      // it('should set not pos_in_grid to fist available slot', () => {
-      //   const state = fromJS({
-      //     status: {
-      //       slaves: [
-      //         {
-      //           resources: {
-      //             mem: 200,
-      //           },
-      //           used_resources: {
-      //             cpus: 0.5,
-      //           },
-      //           pos_in_grid: {
-      //             col: 2,
-      //             row: 1,
-      //           },
-      //         },
-      //         {
-      //           resources: {
-      //             mem: 200,
-      //           },
-      //           used_resources: {
-      //             cpus: 0.5,
-      //           },
-      //         },
-      //       ],
-      //     },
-      //     connecting: false,
-      //   });
-      //   const action = {
-      //     changes: fromJS([{
-      //       op: 'replace',
-      //       path: '/slaves/0/resources/mem',
-      //       value: 300,
-      //     }]),
-      //     type: WEB_SOCKET_DIFF,
-      //   };
-      //
-      //   const newState = Reducers.socketStatus(state, action).toJS();
-      //
-      //   expect(newState.status.slaves[0].pos_in_grid.col).to.equal(2);
-      //   expect(newState.status.slaves[0].pos_in_grid.row).to.equal(1);
-      //   expect(newState.status.slaves[1].pos_in_grid.row).to.equal(1);
-      //   expect(newState.status.slaves[1].pos_in_grid.col).to.equal(1);
-      // });
+       it('should set not pos_in_grid to fist available slot', () => {
+         const state = fromJS({
+           status: {
+             slaves: [
+               {
+                 resources: {
+                   mem: 200,
+                 },
+                 used_resources: {
+                   cpus: 0.5,
+                 },
+                 pos_in_grid: {
+                   col: 2,
+                   row: 1,
+                 },
+               },
+               {
+                 resources: {
+                   mem: 200,
+                 },
+                 used_resources: {
+                   cpus: 0.5,
+                 },
+               },
+             ],
+           },
+           connecting: false,
+         });
+         const action = {
+           changes: fromJS([{
+             op: 'replace',
+             path: '/slaves/0/resources/mem',
+             value: 300,
+           }]),
+           type: WEB_SOCKET_DIFF,
+         };
+
+         const newState = Reducers.socketStatus(state, action).toJS();
+
+         expect(newState.status.slaves[0].pos_in_grid.col).to.equal(2);
+         expect(newState.status.slaves[0].pos_in_grid.row).to.equal(1);
+         expect(newState.status.slaves[1].pos_in_grid.row).to.equal(1);
+         expect(newState.status.slaves[1].pos_in_grid.col).to.equal(1);
+       });
     });
   });
 });

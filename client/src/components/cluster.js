@@ -1,20 +1,9 @@
 import React from 'react';
-// import * as d3Grid from '../d3/d3Grid';
 import RingChart from './ring-chart';
 
 require('./cluster.scss');
 
 export default class Cluster extends React.Component {
-
-  componentDidMount() {
-    // const el = ReactDOM.findDOMNode(this);
-    // d3Grid.create(el, this.props, this.props.nodes.toJS());
-  }
-
-  componentDidUpdate() {
-    // const el = ReactDOM.findDOMNode(this);
-    // d3Grid.update(el, this.props, this.props.nodes.toJS());
-  }
 
   getUsage(node, resourceName) {
     const n = node.toJS();
@@ -30,6 +19,7 @@ export default class Cluster extends React.Component {
 
   render() {
     const nodes = this.props.nodes;
+    return <div></div>;
     return (<div className="cluster-rings">{nodes.map(n =>
               <RingChart key={n.get('pid')}
                          id={n.get('pid')}

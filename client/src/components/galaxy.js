@@ -53,6 +53,8 @@ export default class Galaxy extends React.Component {
         .call(zoom);
 
     container = svg.append('g').attr('class', 'galaxy');
+    container.append('g').attr('id', 'galaxy__links');
+    container.append('g').attr('id', 'galaxy__nodes');
   }
 
   formatData(props, width, height) {
@@ -77,6 +79,7 @@ export default class Galaxy extends React.Component {
       .nodes(nodes)
       .links(links)
       .size([width, height])
+      .on('tick', tick) //eslint-disable-line
       .start();
 
     function dragstarted(d) {
@@ -99,25 +102,18 @@ export default class Galaxy extends React.Component {
             .on('drag', dragged)
             .on('dragend', dragended);
 
-    container.append('g').attr('id', 'galaxy__links');
-    container.append('g').attr('id', 'galaxy__nodes');
-
     const link = container.select('#galaxy__links').selectAll('.galaxy__link')
-        .data(force.links(), d => d.source.pid);
+        .data(links, d => d.source.pid);
 
     link.enter().append('line')
         .attr('id', d => d.source.pid)
-        .attr('x1', d => d.source.x)
-        .attr('y1', d => d.source.y)
-        .attr('x2', d => d.target.x)
-        .attr('y2', d => d.target.y)
         .attr('class', 'galaxy__link')
         .style('stroke-width', d => Math.sqrt(d.value));
 
     link.exit().remove();
 
     const node = container.select('#galaxy__nodes').selectAll('.galaxy__node')
-        .data(force.nodes(), d => d.pid || 'master');
+        .data(nodes, d => d.pid || 'master');
 
     const nodeEnter = node.enter()
         .append('g')
@@ -125,9 +121,8 @@ export default class Galaxy extends React.Component {
         .call(drag);
 
     nodeEnter.append('circle')
+      .attr('id', d => d.pid)
       .attr('r', d => d.r)
-      .attr('cx', d => d.x)
-      .attr('cy', d => d.y)
       .style('fill', '#F6F6F6');
 
     node.exit().remove();
@@ -143,6 +138,17 @@ export default class Galaxy extends React.Component {
         .duration(500)
         .attr('r', d.r);
     });
+
+    function tick() {
+      link.attr('x1', d => d.source.x)
+          .attr('y1', d => d.source.y)
+          .attr('x2', d => d.target.x)
+          .attr('y2', d => d.target.x);
+
+      node.attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+    }
+
+    tick();
   }
 
   render() {
@@ -154,33 +160,3 @@ Galaxy.propTypes = {
   nodes: React.PropTypes.object,
   master: React.PropTypes.object,
 };
-
-
-//
-// function getData(width, height) {
-//   return {
-//   'nodes':[
-//     {'name':'MesosMaster','group':0, master: true, imageUrl: require("../images/logo.svg")},
-//     {'name':'Node1','group':1, x: 100, y: 50},
-//     {'name':'Node2','group':2, x: 200, y: 50},
-//     {'name':'Node3','group':3, x: 400, y: 50},
-//     {'name':'Node4','group':4, x: 600, y: 50},
-//     {'name':'Node5','group':5, x: 100, y: 300},
-//     {'name':'Node6','group':6, x: 200, y: 300},
-//     {'name':'Node7','group':7, x: 400, y: 300},
-//     {'name':'Node8','group':8, x: 600, y: 300},
-//     {'name':'Node9','group':9, x: 600, y: 150},
-//   ],
-//   'links':[
-//     {'source':1,'target':0,'value':10},
-//     {'source':2,'target':0,'value':10},
-//     {'source':3,'target':0,'value':10},
-//     {'source':4,'target':0,'value':10},
-//     {'source':5,'target':0,'value':10},
-//     {'source':6,'target':0,'value':10},
-//     {'source':7,'target':0,'value':10},
-//     {'source':8,'target':0,'value':10},
-//     {'source':9,'target':0,'value':10},
-//   ]
-// };
-// }

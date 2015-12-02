@@ -61,10 +61,6 @@ class App extends React.Component {
         <div className="page__slave">
           <Galaxy master={{master: true}} nodes={slaveNodes} />
           <Frameworks frameworks={slaveFrameworks} frameworksActions={frameworksActions} active={frameworks} />
-          <Panel id="details" panel={this.props.panel} actions={this.props.actions}>
-            {/* REVIEW: Why (node) => f(node) instead of just "f"? */}
-            {cluster && <Cluster nodes={slaveNodes} selector="cpus" mouseOverHandler={(node) => this.onNodeMouseOver(node)} />}
-          </Panel>
         </div>
       </div>);
   }
@@ -103,5 +99,5 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps,
+  mapDispatchToProps
 )(App);
