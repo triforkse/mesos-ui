@@ -2,12 +2,11 @@ FROM node:5.0-slim
 
 ENV NODE_ENV=production
 
-ADD package.json /tmp/package.json
-RUN cd /tmp && npm install --production --quiet
+ADD package.json /app/package.json
+RUN cd /app && npm install --production --quiet
 
 ADD . /app
-RUN rm -rf /app/node_modules
-RUN cp -r /tmp/node_modules /app/
+COPY ./src /app/build
 
 WORKDIR /app
 
