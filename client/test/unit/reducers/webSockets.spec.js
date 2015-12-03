@@ -104,8 +104,8 @@ describe('reducers - webSockets', () => {
         expect(newState.status.slaves[0].prev_used_resources).to.be.undefined; // eslint-disable-line
       });
 
-       it('should set not pos_in_grid to fist available slot', () => {
-         const state = fromJS({
+      it('should set not pos_in_grid to fist available slot', () => {
+        const state = fromJS({
            status: {
              slaves: [
                {

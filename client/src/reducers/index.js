@@ -1,6 +1,7 @@
 import {combineReducers} from 'redux';
 import {apiStatus} from './api';
 import {socketStatus} from './webSockets';
+import {clusterLayout} from './cluster-layout';
 import {nodes} from './nodes';
 import {frameworks} from './frameworks.js';
 import { routerStateReducer } from 'redux-router';
@@ -10,6 +11,7 @@ const reducers = {
   socketStatus,
   nodes,
   frameworks,
+  clusterLayout,
   router: routerStateReducer,
 };
 

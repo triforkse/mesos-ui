@@ -25,7 +25,7 @@ class App extends React.Component {
   }
 
   render() {
-    const {cluster, frameworks } = this.props;
+    const {cluster, frameworks, clusterLayout } = this.props;
 
     if (!cluster) {
       return <div></div>;
@@ -57,7 +57,7 @@ class App extends React.Component {
           </div>
         </div>
         <div className="page__slave">
-          <Galaxy master={{master: true}} nodes={slaveNodes} />
+          <Galaxy master={{master: true}} nodes={slaveNodes} layout={clusterLayout} />
           <Frameworks frameworks={slaveFrameworks} frameworksActions={frameworksActions} active={frameworks} />
         </div>
       </div>);
@@ -72,6 +72,7 @@ App.propTypes = {
   panel: React.PropTypes.object.isRequired,
   cluster: React.PropTypes.object, // We might not have it yet.
   frameworks: React.PropTypes.object.isRequired,
+  clusterLayout: React.PropTypes.object.isRequired,
 };
 
 function mapDispatchToProps(dispatch) {
@@ -81,7 +82,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mapStateToProps(state) {
-  const {apiStatus, socketStatus, nodes, panel, router, frameworks } = state;
+  const {apiStatus, socketStatus, nodes, panel, router, frameworks, clusterLayout } = state;
 
   return {
     api: apiStatus,
@@ -92,6 +93,7 @@ function mapStateToProps(state) {
     query: state.router.location.query,
     router,
     frameworks,
+    clusterLayout,
   };
 }
 
