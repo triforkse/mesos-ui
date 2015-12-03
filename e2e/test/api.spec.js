@@ -8,7 +8,9 @@ process.setMaxListeners(0);
 const innerHTML = (selector) => document.querySelector(selector).innerHTML;
 const innerText = (selector) => innerHTML(selector).trim();
 
-describe('API endpoint', () => {
+describe('API endpoint', function () {
+  this.timeout(15000);
+
   const hostname = process.env.API_ADDR || 'localhost';
   const base = 'http://' + hostname + ':3000';
 
