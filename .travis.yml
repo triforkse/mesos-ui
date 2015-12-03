@@ -16,7 +16,18 @@ branches:
   except:
     - /^travis-.*$/
 after_success:
-- test $TRAVIS_BRANCH = "master" && curl -H "Content-Type:application/json" --data '{"build":true}' -X POST https://registry.hub.docker.com/u/triforksthlm/mesos-ui-api/trigger/$TRIGGER_TOKEN/
+- docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+- export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
+- export REPO=triforksthlm/mesos-ui-api
+- docker build -t $REPO:$COMMIT api
+- docker tag $REPO:$COMMIT $REPO:$TAG
+- docker tag $REPO:$COMMIT $REPO:travis-$TRAVIS_BUILD_NUMBER
+- docker push $REPO
+- export REPO=triforksthlm/mesos-ui-client
+- docker build -t $REPO:$COMMIT client
+- docker tag $REPO:$COMMIT $REPO:$TAG
+- docker tag $REPO:$COMMIT $REPO:travis-$TRAVIS_BUILD_NUMBER
+- docker push $REPO
 notifications:
   slack:
     secure: Qfoyg7bVIMo5Pziy1f18ZLR/4EWE7Dmn81+gfuVN0AtFzc/QRR7dHYXmL09jGXGDx46vPvEgQ8NRlF8S6dBlw0C4gdZdugQ98IBJ5jHkpfd/nnD8JQCnpvxirQ0hOLUvo2U+ygWZaIwDlkJY2Q+BFgCuTi1nYnV2RoVeL2AqFKTkfFcaf3cBoyIH60BxiPout4/oF3jGAkckgY2F3pk7qpHiie20oLROMd+4pKmH0cDZ/wNOFjmkdy44vZCRKou15aFrR26IjylCCj0nkQOiwlHGy0m3yrANMX5RqxCyRucWFvdXN792fBU/14AqNXiNBgrf9F3Mgbio0bOmMfkWcxUP1fqQTOgfOmUSLv0F3CxDXmEBWegI+bZQNfmByluaUoOCccAY0hyACJevb/uK9OFCkWOt2tpYqVYiUT+m7l0ejO3S8FC+NPw4x4IKdmExSr/RsOmJnm99bsMCepzg8O2cN4LFvsipXQHDLmO2vSsvt0y0AHbFSnuN5jZ2/NQunS3IsG3M9brk4aftBDzh07BT+UXUghhpY5XhNsvGCYTR9p32kNLQzc2WxwKjLqOwEs1pXz4lYfkmRjwixk05DyTzFGEgkZARWoGjGbrGuNV00hnU66WXDwg8T4MtJBbQdQ31o5F4UgIzcKzUM5E4bHqJWFm5BZFsmlr3pm6t90Y=
