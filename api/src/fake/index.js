@@ -35,15 +35,17 @@ function createContext() {
 const fakeContext = createContext();
 
 function addSlave(context) {
-  const last = context.slaves[context.slaves.length - 1];
-  context.slaves.push({
-    pid: +last.pid + 1,
-    cpus: Math.random(),
-  });
+  if (context.slaves.length < 25) {
+    const last = context.slaves[context.slaves.length - 1];
+    context.slaves.push({
+      pid: +last.pid + 1,
+      cpus: Math.random(),
+    });
+  }
 }
 
 function removeSlave(context) {
-  if (context.slaves.length > 1) {
+  if (context.slaves.length > 3) {
     const index = Math.floor(Math.random() * context.slaves.length);
     context.slaves.splice(index, 1);
   }
