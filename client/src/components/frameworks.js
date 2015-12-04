@@ -10,19 +10,21 @@ export default class Frameworks extends React.Component {
     return frameworks.map(i => {
       const name = i.get('name');
       const className = active.includes(name) ? 'frameworks__item frameworks__item--active' : 'frameworks__item';
-      return (<a href="#_" className={className}
+      return (<li className={className}
         onMouseOver={() => focusFramework(name)}
         onMouseOut={() => blurFramework(name)}
         onClick={() => toggleFramework(name)}
         key={name}>
         {name}
-      </a>);
+      </li>);
     });
   }
   render() {
     return (<div className="frameworks">
       <div className="frameworks__label">Frameworks</div>
-      {this.renderList(this.props.frameworks)}
+      <ul>
+       {this.renderList(this.props.frameworks)}
+     </ul>
     </div>);
   }
 }

@@ -34,7 +34,13 @@ export default class Galaxy extends React.Component {
   }
 
   render() {
-    return (<svg className="galaxy"></svg>);
+    return (<svg className="galaxy">
+     <defs id="mdef">
+        <pattern id="mesos-logo" x="0" y="0" height="1" width="1">
+          <image x="-5" y="-5" width="100" height="100" xlinkHref={require('../images/logo-with-background.svg')}></image>
+        </pattern>
+      </defs>
+    </svg>);
   }
 }
 

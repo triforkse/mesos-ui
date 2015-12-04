@@ -124,7 +124,7 @@ export default class Cluster {
       g.append('circle')
         .attr('id', slave => slave.pid)
         .attr('r', slave => slave.r)
-        .style('fill', '#F6F6F6');
+        .style('fill', n => n.master ? 'url(#mesos-logo)' : '#F6F6F6');
 
       // Frameworks for node
       if (!d.master) {
@@ -135,10 +135,10 @@ export default class Cluster {
 
     node.exit().remove();
 
-    node.on('mouseover', function onMouseOver(d) {
+    node.on('mouseover', function onMouseOver() {
       d3.select(this).select('circle').transition()
         .duration(500)
-        .attr('r', d.r * 1.5);
+        .attr('r', d => d.master ? d.r : (d.r * 1.5));
     });
 
     node.on('mouseout', function onMouseOut(d) {
