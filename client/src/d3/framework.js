@@ -5,7 +5,7 @@ export function createFrameworks(selection, radius, data, colors) {
   const offset = radius;
   d3.layout.force()
     .size([diameter, diameter])
-    .charge(-200)
+    .charge(-100)
     .gravity(1)
     .links([])
     .nodes(data)
