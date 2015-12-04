@@ -9,23 +9,18 @@ function createContext() {
   let data = fromJS(JSON.parse(fs.readFileSync(__dirname + '/data.json', 'utf8')));
   const frameworkDummy = data.getIn(['frameworks', 0]);
   const slaveDummy = data.getIn(['slaves', 0]);
-  data = data.set('frameworks', fromJS([]));
-  data = data.set('slaves', fromJS([]));
+  data = data.set('frameworks', fromJS([])).set('slaves', fromJS([]));
+  const frameworks = [
+    'Hadoop',
+    'ElasticSearch',
+    'Marathon',
+    'Chronos',
+    'Logstash',
+  ];
 
   return {
-    frameworks: [
-      'Hadoop',
-      'ElasticSearch',
-      'Marathon',
-      'Chronos',
-      'Logstash',
-    ],
-    slaves: [
-      {
-        pid: 5051,
-        cpus: Math.random(),
-      },
-    ],
+    frameworks,
+    slaves: [],
     data,
     frameworkDummy,
     slaveDummy,
@@ -34,12 +29,25 @@ function createContext() {
 
 const fakeContext = createContext();
 
+function addFrameworks(context, threshhold = 0.75) {
+  let frameworks = context.frameworks.filter(() => Math.random() < threshhold)
+    .map(framework => context.frameworkDummy.set('name', framework)
+      .setIn(['used_resources', 'cpus'], Math.random())
+      .setIn(['resources', 'cpus'], 1));
+
+  if (frameworks.length === 0) {
+    frameworks = [];
+  }
+  return frameworks;
+}
+
 function addSlave(context) {
   if (context.slaves.length < 25) {
-    const last = context.slaves[context.slaves.length - 1];
+    const last = context.slaves[context.slaves.length - 1] || { pid: 5050 };
     context.slaves.push({
       pid: +last.pid + 1,
       cpus: Math.random(),
+      frameworks: addFrameworks(context),
     });
   }
 }
@@ -62,27 +70,35 @@ function build(context, pid = 5050) {
   // pid 5050 is the master
   const master = pid === 5050;
   let buildData = context.data;
-  buildData = buildData.set('frameworks', context.frameworks.map((fw) => {
-    let cpus = Math.random();
-    let maxCpus = 1;
-    if (master) {
-      cpus = cpus * context.slaves.length;
-      maxCpus = context.slaves.length;
-    }
-    return context.frameworkDummy.set('name', fw)
-      .setIn(['used_resources', 'cpus'], cpus)
-      .setIn(['resources', 'cpus'], maxCpus);
-  }));
   if (master) {
-    buildData = buildData.set('slaves', context.slaves.map((slave) => {
-      return context.slaveDummy
-        .setIn(['used_resources', 'cpus'], slave.cpus)
-        .setIn(['unreserved_resources', 'cpus'], 1 - slave.cpus)
-        .set('pid', 'SLAVE:' + slave.pid);
+    buildData = buildData.set('frameworks', context.frameworks.map((fw) => {
+      const length = context.slaves.length || 1;
+      const cpus = Math.random() * length;
+      const maxCpus = length;
+      return context.frameworkDummy
+        .set('name', fw)
+        .setIn(['used_resources', 'cpus'], cpus)
+        .setIn(['resources', 'cpus'], maxCpus);
     }));
-  }
-  if (!master) {
-    buildData = buildData.set('pid', 'SLAVE:' + pid);
+    buildData = buildData
+      .set('slaves', context.slaves.map((slave) => {
+        return context.slaveDummy
+          .setIn(['used_resources', 'cpus'], slave.cpus)
+          .setIn(['unreserved_resources', 'cpus'], 1 - slave.cpus)
+          .set('pid', 'SLAVE:' + slave.pid);
+      }))
+      .set('activated_slaves', context.slaves.length || 0);
+  } else {
+    const pidSlave = context.slaves.filter(slave => slave.pid === +pid)[0];
+    let frameworks;
+    if (typeof(pidSlave) === 'undefined') {
+      frameworks = [];
+    } else {
+      frameworks = pidSlave.frameworks;
+    }
+    buildData = buildData
+      .set('frameworks', frameworks)
+      .set('pid', 'SLAVE:' + pid);
   }
   return buildData;
 }
