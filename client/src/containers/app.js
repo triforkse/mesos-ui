@@ -25,14 +25,9 @@ class App extends React.Component {
   }
 
   render() {
-    const {cluster, frameworks, clusterLayout } = this.props;
-
-    if (!cluster) {
-      return <div></div>;
-    }
-
-    const slaveNodes = cluster.get('slaves');
-    const slaveFrameworks = cluster.get('frameworks');
+    const { frameworkList, colors, status } = this.props.clusterLayout;
+    const slaveNodes = status.slaves;
+    const slaveFrameworks = status.frameworks;
     const frameworksActions = {
       focusFramework: this.props.actions.focusFramework,
       blurFramework: this.props.actions.blurFramework,
@@ -57,8 +52,11 @@ class App extends React.Component {
           </div>
         </div>
         <div className="page__slave">
-          <Galaxy master={{master: true}} nodes={slaveNodes} layout={clusterLayout} />
-          <Frameworks frameworks={slaveFrameworks} frameworksActions={frameworksActions} active={frameworks} />
+          <Galaxy
+            master={status.layout}
+            nodes={slaveNodes}
+            frameworkColors={colors.frameworks}/>
+          <Frameworks frameworks={slaveFrameworks} frameworksActions={frameworksActions} active={frameworkList.selected} />
         </div>
       </div>);
   }
@@ -71,7 +69,6 @@ App.propTypes = {
   actions: React.PropTypes.object.isRequired,
   panel: React.PropTypes.object.isRequired,
   cluster: React.PropTypes.object, // We might not have it yet.
-  frameworks: React.PropTypes.object.isRequired,
   clusterLayout: React.PropTypes.object.isRequired,
 };
 
@@ -82,17 +79,16 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mapStateToProps(state) {
-  const {apiStatus, socketStatus, nodes, panel, router, frameworks, clusterLayout } = state;
+  const {apiStatus, socketStatus, nodes, panel, router, clusterLayout } = state;
 
   return {
     api: apiStatus,
     socket: socketStatus,
-    cluster: socketStatus.get('status') ? socketStatus.get('status') : null,
+    cluster: clusterLayout.get('status') ? clusterLayout.get('status') : null,
     nodes,
     panel,
     query: state.router.location.query,
     router,
-    frameworks,
     clusterLayout,
   };
 }

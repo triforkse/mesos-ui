@@ -13,15 +13,15 @@ export function createFrameworks(selection, radius, data, colors) {
     .start();
 
   const framework = selection.selectAll('g.galaxy__node__framework')
-    .data(data, d => d.name);
+    .data(data, d => d.id);
 
   framework.enter().append('g')
     .attr('class', 'galaxy__node__framework');
 
   framework.append('circle')
-    .attr('id', d => d.name)
+    .attr('id', d => d.id)
     .attr('r', radius * 0.2)
-    .style('fill', d => colors.get(d.name));
+    .style('fill', d => colors.get(d.id));
 
   function innerTick() {
     framework.attr('transform', d => 'translate(' + (d.x - offset) + ',' + (d.y - offset) + ')');

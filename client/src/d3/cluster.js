@@ -1,12 +1,7 @@
 import d3 from 'd3';
 import {distirbuteNodes, createLinks} from './calculations';
 import {createFrameworks} from './framework';
-import {sample, merge, remove, any, each, find} from 'lodash';
-
-function dummyTakeFramewoks(frameworks) {
-  const numberToTake = Math.floor(Math.random() * frameworks.length);
-  return sample(frameworks, numberToTake);
-}
+import {merge, remove, any, each, find} from 'lodash';
 
 export default class Cluster {
   constructor({el, width, height}, data) {
@@ -44,17 +39,13 @@ export default class Cluster {
   }
 
   formatData(data, width, height) {
-    const {nodes, master} = data;
-    const nodesArray = nodes.toJS();
-    const masterAndNodes = [master].concat(nodesArray);
-
-    return {nodes: distirbuteNodes(masterAndNodes, width, height), links: createLinks(nodesArray)};
+    return {nodes: distirbuteNodes(data, width, height), links: createLinks(data.nodes.toJS())};
   }
 
   renderD3(width, height, data) {
     const force = this.force;
     const container = this.container;
-    const layout = data.layout;
+    const frameworkColors = data.frameworkColors;
     const {nodes} = this.formatData(data, width, height);
 
     // Begin hack to update force layout witch will otherwise reanimate the whole cluster
@@ -128,8 +119,7 @@ export default class Cluster {
 
       // Frameworks for node
       if (!d.master) {
-        createFrameworks(g, d.r, dummyTakeFramewoks(d.frameworks),
-           layout.getIn(['colors', 'frameworks']));
+        createFrameworks(g, d.r, d.frameworks, frameworkColors);
       }
     });
 

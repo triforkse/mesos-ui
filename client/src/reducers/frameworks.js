@@ -1,7 +1,8 @@
 import { FRAMEWORK_FOCUS, FRAMEWORK_BLUR, FRAMEWORK_TOGGLE } from '../actions';
-import { fromJS } from 'immutable';
+import { fromJS, Record } from 'immutable';
 
-const initialState = fromJS({ focus: null, selected: [] });
+const FramworkState = Record({ focus: null, selected: fromJS([]) });
+const initialState = new FramworkState();
 
 function toggle(state, framework) {
   return state.update('selected', s => {

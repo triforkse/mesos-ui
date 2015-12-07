@@ -47,5 +47,5 @@ export default class Galaxy extends React.Component {
 Galaxy.propTypes = {
   nodes: React.PropTypes.object,
   master: React.PropTypes.object,
-  layout: React.PropTypes.object,
+  frameworkColors: React.PropTypes.object,
 };

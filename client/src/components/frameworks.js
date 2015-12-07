@@ -5,7 +5,7 @@ require('./frameworks.scss');
 export default class Frameworks extends React.Component {
   renderList(frameworks) {
     const { focusFramework, blurFramework, toggleFramework } = this.props.frameworksActions;
-    const active = this.props.active.get('selected');
+    const active = this.props.active;
 
     return frameworks.map(i => {
       const name = i.get('name');
