@@ -119,14 +119,16 @@ export function createContext() {
   };
 }
 
+async function poll(context) {
+  let state = await getState('http://localhost:5050');
+  state = await getSlaves(state);
+  state = glueMasterAndSlaves(state);
+  const clients = updateState(context, state);
+  notifyListeners(clients);
+}
+
 export function start(context) {
-  context.pollId = setInterval(() => {
-    getState('http://localhost:5050')
-      .then(getSlaves)
-      .then(glueMasterAndSlaves)
-      .then(data => updateState(context, data))
-      .then(notifyListeners);
-  }, 5000);
+  context.pollId = setInterval(() => poll(context), 5000);
 }
 
 export function stop(context) {
