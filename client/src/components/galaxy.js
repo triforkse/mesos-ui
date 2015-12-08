@@ -21,7 +21,7 @@ export default class Galaxy extends React.Component {
 
   componentDidUpdate() {
     const {width, height} = this.getDOMProperties();
-    this.state.cluster.renderD3(width, height, this.props);
+    this.state.cluster.update(this.props, width, height);
   }
 
   getDOMProperties() {
@@ -48,4 +48,5 @@ Galaxy.propTypes = {
   nodes: React.PropTypes.object,
   master: React.PropTypes.object,
   frameworkColors: React.PropTypes.object,
+  clusterActions: React.PropTypes.object,
 };

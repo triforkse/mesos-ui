@@ -1,8 +1,8 @@
-/* global it expect describe */
+/*eslint-disable*/
 
 import {fromJS, Map} from 'immutable';
 import d3 from 'd3';
-import {WEB_SOCKET_INIT, WEB_SOCKET_DIFF, FRAMEWORK_BLUR, FRAMEWORK_TOGGLE, FRAMEWORK_FOCUS} from '../../../src/actions';
+import {WEB_SOCKET_INIT, WEB_SOCKET_DIFF, FRAMEWORK_BLUR, FRAMEWORK_TOGGLE, FRAMEWORK_FOCUS, SLAVE_TOGGLE} from '../../../src/actions';
 import {clusterLayout} from '../../../src/reducers/cluster-layout';
 import {ClusterState, Cluster, Slave, Framework, Colors, FrameworkList, Layout} from '../../../src/records';
 
@@ -142,6 +142,29 @@ describe('reducers - cluster-layout', () => {
       expect(result.status.frameworks.get(1).name).to.equal('framework2');
       expect(result.status.frameworks.get(2).name).to.equal('framework3');
     });
+
+    it('should keep selected slaves as selected', () => {
+      const state = new ClusterState({
+        status: new Cluster({
+          slaves: fromJS([
+            new Slave({pid: 'slave1', layout: new Layout({selected: true})}),
+            new Slave({pid: 'slave2', layout: new Layout({selected: false})}),
+          ]),
+        }),
+      });
+
+      const changes = [
+        {op: 'replace', path: '/slaves/0/used_resources/cpus', value: 0.5 },
+        {op: 'replace', path: '/slaves/1/used_resources/cpus', value: 0.5 },
+        {op: 'add', path: '/slaves/2', value: {pid: 'slave3'} },
+      ];
+
+      const result = clusterLayout(state, {type: WEB_SOCKET_DIFF, changes: changes}).status.slaves;
+
+      expect(result.get(0).layout.selected).to.be.true;
+      expect(result.get(1).layout.selected).to.be.false;
+      expect(result.get(2).layout.selected).to.be.false;
+    });
   });
 
   describe('#FRAMEWORK_TOGGLE', () => {
@@ -259,6 +282,24 @@ describe('reducers - cluster-layout', () => {
       expect(result.status.slaves.get(0).layout.fixed).to.be.false
       expect(result.status.slaves.get(1).layout.fixed).to.be.true
       expect(result.status.slaves.get(2).layout.fixed).to.be.true
+    });
+  });
+
+  describe('#SLAVE_TOGGLE', () => {
+    it('should set slave to selected if it was not', () => {
+      const state = new ClusterState({
+        status: new Cluster({
+          slaves: fromJS([
+            new Slave({pid: 'slave1', layout: new Layout({selected: true})}),
+            new Slave({pid: 'slave2', layout: new Layout({selected: false})}),
+          ]),
+        }),
+      });
+
+      const result = clusterLayout(state, {type: SLAVE_TOGGLE, pid: 'slave2'}).status.slaves;
+
+      expect(result.get(0).layout.selected).to.be.true;
+      expect(result.get(1).layout.selected).to.be.true;
     });
   });
 });

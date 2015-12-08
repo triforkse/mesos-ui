@@ -6,6 +6,7 @@ export const Layout = Record({
   r: 30,
   fixed: false,
   master: false,
+  selected: false,
 });
 
 export const Slave = Record({

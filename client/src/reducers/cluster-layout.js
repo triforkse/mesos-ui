@@ -105,6 +105,16 @@ function blurFramework(state) {
     .update(toggleFixedLayout);
 }
 
+function toggleSlaveSelection(state, pid) {
+  return state.updateIn(['status', 'slaves'], slaves => {
+    return slaves.map(slave => {
+      return slave.pid === pid
+        ? slave.update('layout', layout => layout.set('selected', !layout.selected).set('fixed', !layout.selected))
+        : slave;
+    });
+  });
+}
+
 export function clusterLayout(state = initialState, action) {
   switch (action.type) {
   case actions.WEB_SOCKET_INIT:
@@ -117,6 +127,8 @@ export function clusterLayout(state = initialState, action) {
     return blurFramework(state);
   case actions.FRAMEWORK_TOGGLE:
     return toggleSelectionOfFrameworks(state, action.framework);
+  case actions.SLAVE_TOGGLE:
+    return toggleSlaveSelection(state, action.pid);
   default:
     return state;
   }

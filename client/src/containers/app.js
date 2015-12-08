@@ -33,6 +33,9 @@ class App extends React.Component {
       blurFramework: this.props.actions.blurFramework,
       toggleFramework: this.props.actions.toggleFramework,
     };
+    const clusterActions = {
+      toggleSlave: this.props.actions.toggleSlave,
+    };
 
     return (
       <div className="page">
@@ -55,7 +58,8 @@ class App extends React.Component {
           <Galaxy
             master={status.layout}
             nodes={slaveNodes}
-            frameworkColors={colors.frameworks}/>
+            frameworkColors={colors.frameworks}
+            actions={clusterActions}/>
           <Frameworks frameworks={slaveFrameworks} frameworksActions={frameworksActions} active={frameworkList.selected} />
         </div>
       </div>);
@@ -79,12 +83,11 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mapStateToProps(state) {
-  const {apiStatus, socketStatus, nodes, panel, router, clusterLayout } = state;
+  const {apiStatus, nodes, panel, router, clusterLayout } = state;
 
   return {
     api: apiStatus,
-    socket: socketStatus,
-    cluster: clusterLayout.get('status') ? clusterLayout.get('status') : null,
+    cluster: clusterLayout.get('status'),
     nodes,
     panel,
     query: state.router.location.query,

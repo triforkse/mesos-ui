@@ -14,6 +14,7 @@ export const TOGGLE_PANEL = 'TOGGLE_PANEL';
 export const FRAMEWORK_FOCUS = 'FRAMEWORK_FOCUS';
 export const FRAMEWORK_BLUR = 'FRAMEWORK_BLUR';
 export const FRAMEWORK_TOGGLE = 'FRAMEWORK_TOGGLE';
+export const SLAVE_TOGGLE = 'SLAVE_TOGGLE';
 
 export function requestApiStatus() {
   return {
@@ -78,6 +79,13 @@ export function connectWebSocket() {
   };
 }
 
+export function toggleSlave(pid) {
+  return {
+    type: SLAVE_TOGGLE,
+    pid,
+  };
+}
+
 export function selectNode(node) {
   return {
     type: NODE_SELECTION,
@@ -126,6 +134,7 @@ let actionCreators = {
   focusFramework,
   blurFramework,
   toggleFramework,
+  toggleSlave,
 };
 
 export function registerActionCreators(creators) {

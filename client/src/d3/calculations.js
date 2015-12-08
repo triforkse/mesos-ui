@@ -25,21 +25,10 @@ export function distirbuteNodes({master, nodes}, width, height) {
       return {id: f.name};
     })});
 
-    // console.log('slave', s);
     return s;
   };
 
   const masterAndNodes = [master.toJS()].concat(nodes.toJS());
 
   return masterAndNodes.map(s => s.master ? masterFn(s) : slaveFn(s));
-}
-
-export function createLinks(nodes) {
-  if (!nodes || nodes.length < 1) {
-    return [];
-  }
-
-  return nodes.map((n, i) => {
-    return {source: i + 1, target: 0, value: 10, id: n.pid};
-  });
 }

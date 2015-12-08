@@ -1,10 +1,10 @@
 import d3 from 'd3';
-import {distirbuteNodes, createLinks} from './calculations';
+import {distirbuteNodes} from './calculations';
 import {createFrameworks} from './framework';
 import {merge, remove, any, each, find} from 'lodash';
 
 export default class Cluster {
-  constructor({el, width, height}, data) {
+  constructor({el, width, height}, props) {
     let container;
     function zoomed() {
       container.attr('transform', 'translate(' + d3.event.translate + ')scale(' + d3.event.scale + ')');
@@ -27,26 +27,25 @@ export default class Cluster {
 
     this.container = container;
 
-    const {nodes, links} = this.formatData(data, width, height);
+    const nodes = distirbuteNodes(props, width, height);
     this.force = d3.layout.force()
       .charge(-300)
       .linkStrength(0)
       .nodes(nodes)
-      .links(links)
+      .links([])
       .size([width, height]);
 
-    this.renderD3(width, height, data);
+    this.renderD3(nodes, props);
   }
 
-  formatData(data, width, height) {
-    return {nodes: distirbuteNodes(data, width, height), links: createLinks(data.nodes.toJS())};
+  update(props, width, height) {
+    const nodes = distirbuteNodes(props, width, height);
+    this.renderD3(nodes, props);
   }
 
-  renderD3(width, height, data) {
+  renderD3(nodes, {actions, frameworkColors}) {
     const force = this.force;
     const container = this.container;
-    const frameworkColors = data.frameworkColors;
-    const {nodes} = this.formatData(data, width, height);
 
     // Begin hack to update force layout witch will otherwise reanimate the whole cluster
     const forceNodes = force.nodes();
@@ -82,6 +81,7 @@ export default class Cluster {
     }
 
     function dragended() {
+      d3.event.sourceEvent.stopPropagation();
       d3.select(this).classed('dragging', false);
     }
 
@@ -109,15 +109,21 @@ export default class Cluster {
         .attr('class', 'galaxy__node')
         .call(drag);
 
-    nodeEnter.each(function addNode(d) {
-      const g = d3.select(this);
-      // Slave node
-      g.append('circle')
-        .attr('id', slave => slave.pid)
-        .attr('r', slave => slave.r)
-        .style('fill', n => n.master ? 'url(#mesos-logo)' : '#F6F6F6');
+    nodeEnter.append('circle')
+      .attr('id', slave => slave.pid)
+      .attr('r', slave => slave.r);
 
-      // Frameworks for node
+    node.style('fill', n => {
+      if (n.master) {
+        return 'url(#mesos-logo)';
+      } else if (n.selected) {
+        return '#F6F6F6';
+      }
+      return '#FFFFFF';
+    });
+
+    node.each(function addFrameworks(d) {
+      const g = d3.select(this);
       if (!d.master) {
         createFrameworks(g, d.r, d.frameworks, frameworkColors);
       }
@@ -135,6 +141,14 @@ export default class Cluster {
       d3.select(this).select('circle').transition()
         .duration(500)
         .attr('r', d.r);
+    });
+
+    node.on('click', d => {
+      // So dragstart and dragend not triggering click
+      if (d3.event.defaultPrevented) {
+        return;
+      }
+      actions.toggleSlave(d.pid);
     });
 
     function tick() {
