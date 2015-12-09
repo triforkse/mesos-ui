@@ -8,11 +8,9 @@ ADD package.json /app/package.json
 RUN cd /app && npm install --production --quiet
 
 ADD . /app
-COPY ./src /app/build
+COPY ./build/ /app
 
 WORKDIR /app
-
-RUN npm run build
 
 RUN apk del make gcc g++ python && \
   rm -rf /tmp/* /var/cache/apk/* /root/.npm /root/.node-gyp

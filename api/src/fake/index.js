@@ -1,12 +1,11 @@
 import express from 'express';
 import {fromJS} from 'immutable';
-import fs from 'fs';
 import logger from 'winston';
 
 const app = express();
 
 function createContext() {
-  let data = fromJS(JSON.parse(fs.readFileSync(__dirname + '/data.json', 'utf8')));
+  let data = fromJS(require('./data.js'));
   const frameworkDummy = data.getIn(['frameworks', 0]);
   const slaveDummy = data.getIn(['slaves', 0]);
   data = data.set('frameworks', fromJS([])).set('slaves', fromJS([]));
