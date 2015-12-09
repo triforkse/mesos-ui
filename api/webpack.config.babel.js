@@ -1,18 +1,15 @@
-var webpack = require('webpack');
-var path = require('path');
-var fs = require('fs');
+import webpack from 'webpack';
+import path from 'path';
+import fs from 'fs';
 
-var nodeModules = {};
+const nodeModules = {};
 fs.readdirSync('node_modules')
-  .filter(function(x) {
-    return ['.bin'].indexOf(x) === -1;
-  })
-  .forEach(function(mod) {
+  .filter((x) => ['.bin'].indexOf(x) === -1)
+  .forEach((mod) => {
     nodeModules[mod] = 'commonjs ' + mod;
   });
 
-
-var config = {
+const config = {
   entry: [
     'babel-core/polyfill',
     'babel-core/external-helpers',
@@ -36,10 +33,10 @@ var config = {
         test: /\.jsx?$/,
         loaders: ['babel?stage=0&externalHelpers'],
         exclude: /node_modules/,
-        include: path.join(__dirname,  'src')
+        include: path.join(__dirname, 'src'),
       },
     ],
   },
 };
 
-module.exports = config;
+export default config;

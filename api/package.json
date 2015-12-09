@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "build": "NODE_ENV=production webpack --config=./webpack.config.js",
+    "build": "NODE_ENV=production webpack --config=./webpack.config.babel.js",
     "test": "mocha --compilers js:babel-core/register -c --require ./test/setup.js --recursive",
     "test:cov": "babel-node ./node_modules/isparta/bin/isparta cover ./node_modules/mocha/bin/_mocha -- --compilers js:babel-core/register -c --require ./test/setup.js --recursive",
     "test:integration": "npm run test -- test/integration",
