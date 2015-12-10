@@ -58,13 +58,6 @@ function removeSlave(context) {
   }
 }
 
-function changeCpus(context) {
-  context.slaves = context.slaves.map((i) => {
-    i.cpus = Math.random();
-    return i;
-  });
-}
-
 function build(context, pid = 5050) {
   // pid 5050 is the master
   const master = pid === 5050;
@@ -101,10 +94,6 @@ function build(context, pid = 5050) {
   }
   return buildData;
 }
-
-setInterval(() => {
-  changeCpus(fakeContext);
-}, 1000);
 
 setInterval(() => {
   if (Math.random() < 0.5) {

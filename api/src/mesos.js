@@ -1,7 +1,7 @@
-import request from 'request';
+import fetch from 'node-fetch';
 import { Map, List, fromJS } from 'immutable';
 import diff from 'immutablediff';
-import Q from 'q';
+import logger from 'winston';
 
 function parse(json) {
   const frameworks = json.frameworks.map((fw) => {
@@ -42,44 +42,29 @@ function parse(json) {
   return newState;
 }
 
-function getState(url) {
+async function getState(url) {
   // const master = process.env.MESOS_MASTER || 'http://localhost:5050';
-  const deferred = Q.defer();
-  request({
-    url: url + '/state.json',
-    json: true,
-  }, (err, res) => {
-    if (err) {
-      deferred.reject(err);
-      return;
-    }
-    deferred.resolve(parse(res.body));
-  });
-  return deferred.promise;
+  const response = await fetch(url + '/state.json');
+  const json = await response.json();
+  return parse(json);
 }
 
-function glueMasterAndSlaves(data) {
-  let temp = fromJS(data.master);
-  const temp2 = fromJS({ slaves: data.slaves });
-  temp = temp.mergeDeep(temp2);
-  return temp;
+function glueMasterAndSlaves(master, slaves) {
+  return master.mergeDeep(fromJS({'slaves': slaves}));
 }
 
-function getSlaves(json) {
-  return Q.all(json.get('slaves').map((slave) => {
+async function getSlaves(slaves) {
+  const data = await Promise.all(slaves.map((slave) => {
     const url = 'http://localhost:5050/' + slave.get('pid').split(':')[1];
     return getState(url);
-  }).toJS()).then(values => {
-    return {
-      master: json,
-      slaves: values,
-    };
-  });
+  }));
+  return data;
 }
 
 export function updateState(context, newState) {
   context.state = newState;
   context.clients = context.clients.map(client => {
+    // console.log('diff', diff(client.get('state'), newState).toJS());
     return client.set('newMessage', diff(client.get('state'), newState))
       .set('state', newState);
   });
@@ -120,11 +105,15 @@ export function createContext() {
 }
 
 async function poll(context) {
-  let state = await getState('http://localhost:5050');
-  state = await getSlaves(state);
-  state = glueMasterAndSlaves(state);
-  const clients = updateState(context, state);
-  notifyListeners(clients);
+  try {
+    const master = await getState('http://localhost:5050');
+    const slaves = await getSlaves(master.get('slaves'));
+    const state = glueMasterAndSlaves(master, slaves);
+    const clients = updateState(context, state);
+    notifyListeners(clients);
+  } catch (e) {
+    logger.error('Error while fetching state', e);
+  }
 }
 
 export function start(context) {
