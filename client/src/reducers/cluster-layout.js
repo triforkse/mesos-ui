@@ -76,33 +76,33 @@ function toggleSelecton(framework, selectedFrameworks) {
     : selectedFrameworks.push(framework);
 }
 
-function toggleFixedLayout(state) {
+function toggleFocus(state) {
   const selected = state.frameworkList.selected;
   const focused = state.frameworkList.focus;
-  const shouldBeFixed = slave => {
+  const shouldBeFocused = slave => {
     return slave.frameworks.some(f => selected.contains(f.name) || focused === f.name);
   };
 
   return state.updateIn(['status', 'slaves'], slaves => {
     return slaves.map(slave => {
-      return slave.update('layout', l => l.set('fixed', shouldBeFixed(slave)));
+      return slave.update('layout', l => l.set('focus', shouldBeFocused(slave)));
     });
   });
 }
 
 function toggleSelectionOfFrameworks(state, framework) {
   return state.updateIn(['frameworkList', 'selected'], partial(toggleSelecton, framework))
-              .update(toggleFixedLayout);
+              .update(toggleFocus);
 }
 
 function focusFramework(state, framework) {
   return state.setIn(['frameworkList', 'focus'], framework)
-    .update(toggleFixedLayout);
+    .update(toggleFocus);
 }
 
 function blurFramework(state) {
   return state.setIn(['frameworkList', 'focus'], null)
-    .update(toggleFixedLayout);
+    .update(toggleFocus);
 }
 
 function toggleSlaveSelection(state, pid) {

@@ -191,9 +191,9 @@ describe('reducers - cluster-layout', () => {
 
       const result = clusterLayout(state, {type: FRAMEWORK_TOGGLE, framework: 'framework1'});
 
-      expect(result.status.slaves.get(0).layout.fixed).to.be.false
-      expect(result.status.slaves.get(1).layout.fixed).to.be.true
-      expect(result.status.slaves.get(2).layout.fixed).to.be.true
+      expect(result.status.slaves.get(0).layout.focus).to.be.false
+      expect(result.status.slaves.get(1).layout.focus).to.be.true
+      expect(result.status.slaves.get(2).layout.focus).to.be.true
     });
   });
 
@@ -221,9 +221,9 @@ describe('reducers - cluster-layout', () => {
 
       const result = clusterLayout(state, {type: FRAMEWORK_FOCUS, framework: 'framework1'});
 
-      expect(result.status.slaves.get(0).layout.fixed).to.be.false
-      expect(result.status.slaves.get(1).layout.fixed).to.be.true
-      expect(result.status.slaves.get(2).layout.fixed).to.be.true
+      expect(result.status.slaves.get(0).layout.focus).to.be.false
+      expect(result.status.slaves.get(1).layout.focus).to.be.true
+      expect(result.status.slaves.get(2).layout.focus).to.be.true
     });
   });
 
@@ -251,9 +251,9 @@ describe('reducers - cluster-layout', () => {
 
       const result = clusterLayout(state, {type: FRAMEWORK_BLUR});
 
-      expect(result.status.slaves.get(0).layout.fixed).to.be.false
-      expect(result.status.slaves.get(1).layout.fixed).to.be.false
-      expect(result.status.slaves.get(2).layout.fixed).to.be.false
+      expect(result.status.slaves.get(0).layout.focus).to.be.false
+      expect(result.status.slaves.get(1).layout.focus).to.be.false
+      expect(result.status.slaves.get(2).layout.focus).to.be.false
     });
 
     it('should set keep layout fixed when frameworks are selected but not focused', () => {
@@ -279,9 +279,9 @@ describe('reducers - cluster-layout', () => {
 
       const result = clusterLayout(state, {type: FRAMEWORK_BLUR});
 
-      expect(result.status.slaves.get(0).layout.fixed).to.be.false
-      expect(result.status.slaves.get(1).layout.fixed).to.be.true
-      expect(result.status.slaves.get(2).layout.fixed).to.be.true
+      expect(result.status.slaves.get(0).layout.focus).to.be.false
+      expect(result.status.slaves.get(1).layout.focus).to.be.true
+      expect(result.status.slaves.get(2).layout.focus).to.be.true
     });
   });
 

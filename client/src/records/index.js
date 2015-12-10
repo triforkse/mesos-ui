@@ -7,6 +7,7 @@ export const Layout = Record({
   fixed: false,
   master: false,
   selected: false,
+  focus: false,
 });
 
 export const Slave = Record({

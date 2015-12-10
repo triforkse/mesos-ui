@@ -1,6 +1,6 @@
 import d3 from 'd3';
-import {distirbuteNodes} from './calculations';
-import {createFrameworks} from './framework';
+import {distirbuteNodes, onNodeFocus, onNodeBlur, preventCollision} from './calculations';
+import {createFrameworks, updateFrameworkColors} from './framework';
 import {merge, remove, any, each, find} from 'lodash';
 
 export default class Cluster {
@@ -86,32 +86,49 @@ export default class Cluster {
     }
 
     const drag = force.drag()
-            .origin(d => d)
-            .on('dragstart', dragstarted)
-            .on('drag', dragged)
-            .on('dragend', dragended);
+      .origin(d => d)
+      .on('dragstart', dragstarted)
+      .on('drag', dragged)
+      .on('dragend', dragended);
 
     const link = container.select('#galaxy__links').selectAll('.galaxy__link')
-        .data(force.links(), d => d.source.pid);
+      .data(force.links(), d => d.source.pid);
 
     link.enter().append('line')
-        .attr('id', d => d.source.pid)
-        .attr('class', 'galaxy__link')
-        .style('stroke-width', d => Math.sqrt(d.value));
+      .attr('id', d => d.source.pid)
+      .attr('class', 'galaxy__link')
+      .style('stroke-width', d => Math.sqrt(d.value));
 
     link.exit().remove();
 
     const node = container.select('#galaxy__nodes').selectAll('.galaxy__node')
-        .data(force.nodes(), d => d.pid || 'master');
+      .data(force.nodes(), d => d.pid || 'master');
 
     const nodeEnter = node.enter()
-        .append('g')
-        .attr('class', 'galaxy__node')
-        .call(drag);
+      .append('g')
+      .attr('class', 'galaxy__node')
+      .call(drag);
 
-    nodeEnter.append('circle')
+    nodeEnter
+      .append('circle')
       .attr('id', slave => slave.pid)
       .attr('r', slave => slave.r);
+
+    nodeEnter.each(function addFrameworks(d) {
+      const g = d3.select(this);
+      if (!d.master) {
+        createFrameworks(g, d, frameworkColors);
+      }
+    });
+
+    node.each(function update(slave) {
+      if (slave.fixed) {
+        onNodeFocus.call(this);
+      } else {
+        onNodeBlur.call(this);
+      }
+      updateFrameworkColors.call(this, frameworkColors, slave);
+    });
 
     node.style('fill', n => {
       if (n.master) {
@@ -122,26 +139,7 @@ export default class Cluster {
       return '#FFFFFF';
     });
 
-    node.each(function addFrameworks(d) {
-      const g = d3.select(this);
-      if (!d.master) {
-        createFrameworks(g, d.r, d.frameworks, frameworkColors);
-      }
-    });
-
     node.exit().remove();
-
-    node.on('mouseover', function onMouseOver() {
-      d3.select(this).select('circle').transition()
-        .duration(500)
-        .attr('r', d => d.master ? d.r : (d.r * 1.5));
-    });
-
-    node.on('mouseout', function onMouseOut(d) {
-      d3.select(this).select('circle').transition()
-        .duration(500)
-        .attr('r', d.r);
-    });
 
     node.on('click', d => {
       // So dragstart and dragend not triggering click
@@ -157,9 +155,8 @@ export default class Cluster {
           .attr('x2', d => d.target.x)
           .attr('y2', d => d.target.y);
 
-      node.attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+      node.each(preventCollision(0.5, force.nodes()))
+        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
     }
-
-    tick();
   }
 }
