@@ -6,6 +6,7 @@ import Galaxy from '../components/galaxy.js';
 import Button from '../components/button.js';
 import Frameworks from '../components/frameworks.js';
 import Detail from '../components/detail.js';
+import SlavesDetail from '../components/slaves-details.js';
 import {selector} from '../selectors';
 
 require('./app.scss');
@@ -33,6 +34,7 @@ class App extends React.Component {
 
     const cluster = this.props.cluster;
     const selectedFrameworks = this.props.clusterLayout.selectedFrameworks;
+    const selectedSlaves = this.props.clusterLayout.selectedSlaves;
     const frameworkColors = this.props.frameworkColors;
     const slaveNodes = this.props.slaves;
     const slaveFrameworks = cluster.frameworks;
@@ -68,12 +70,20 @@ class App extends React.Component {
             nodes={slaveNodes}
             frameworkColors={frameworkColors}
             actions={clusterActions}/>
-          <Detail title="Agents(s)" />
-          <Detail title="Framework(s)" />
           <Frameworks frameworks={slaveFrameworks}
             frameworksActions={frameworksActions}
             active={selectedFrameworks}
             colors={frameworkColors} />
+
+          {selectedSlaves.count() > 0 &&
+            (<Detail title="Agent(s)">
+              <SlavesDetail slaves={slaveNodes} selectedSlaves={selectedSlaves} />
+            </Detail>)
+          }
+
+          {selectedFrameworks.count() > 0 &&
+            (<Detail title="Framework(s)" />)
+          }
         </div>
       </div>);
   }

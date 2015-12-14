@@ -1,6 +1,6 @@
 import { Record, fromJS } from 'immutable';
 
-const Resources = Record({cpus: 0, mem: 0, disk: 0, ports: null});
+export const Resources = Record({cpus: 0, mem: 0, disk: 0, ports: null});
 
 export const Layout = Record({
   r: 30,
