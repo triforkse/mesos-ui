@@ -10,6 +10,12 @@ export const Layout = Record({
   focus: false,
 });
 
+export const ClusterLayout = Record({
+  selectedSlaves: fromJS([]),
+  selectedFrameworks: fromJS([]),
+  focusedFramework: null,
+});
+
 export const Slave = Record({
   pid: null,
   hostname: null,
@@ -39,6 +45,11 @@ export const Cluster = Record({
   layout: new Layout({r: 45, fixed: true, master: true}),
 });
 
+export const ServerState = Record({
+  connecting: true,
+  cluster: new Cluster(),
+});
+
 export const Colors = Record({
   frameworks: fromJS({}),
 });
@@ -48,8 +59,7 @@ export const FrameworkList = Record({
   selected: fromJS([]),
 });
 
-export const ClusterState = Record({
-  status: new Cluster(),
+export const ClientState = Record({
   colors: new Colors(),
   frameworkList: new FrameworkList(),
 });

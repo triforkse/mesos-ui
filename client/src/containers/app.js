@@ -5,6 +5,8 @@ import * as actions from '../actions';
 import Galaxy from '../components/galaxy.js';
 import Button from '../components/button.js';
 import Frameworks from '../components/frameworks.js';
+import Detail from '../components/detail.js';
+import {selector} from '../selectors';
 
 require('./app.scss');
 
@@ -25,9 +27,15 @@ class App extends React.Component {
   }
 
   render() {
-    const { frameworkList, colors, status } = this.props.clusterLayout;
-    const slaveNodes = status.slaves;
-    const slaveFrameworks = status.frameworks;
+    if (this.props.connecting) {
+      return <div>Connecting...</div>;
+    }
+
+    const cluster = this.props.cluster;
+    const selectedFrameworks = this.props.clusterLayout.selectedFrameworks;
+    const frameworkColors = this.props.frameworkColors;
+    const slaveNodes = this.props.slaves;
+    const slaveFrameworks = cluster.frameworks;
     const frameworksActions = {
       focusFramework: this.props.actions.focusFramework,
       blurFramework: this.props.actions.blurFramework,
@@ -56,11 +64,13 @@ class App extends React.Component {
         </div>
         <div className="page__slave">
           <Galaxy
-            master={status.layout}
+            master={cluster.layout}
             nodes={slaveNodes}
-            frameworkColors={colors.frameworks}
+            frameworkColors={frameworkColors}
             actions={clusterActions}/>
-          <Frameworks frameworks={slaveFrameworks} frameworksActions={frameworksActions} active={frameworkList.selected} />
+          <Detail title="Agents(s)" />
+          <Detail title="Framework(s)" />
+          <Frameworks frameworks={slaveFrameworks} frameworksActions={frameworksActions} active={selectedFrameworks} />
         </div>
       </div>);
   }
@@ -73,7 +83,10 @@ App.propTypes = {
   actions: React.PropTypes.object.isRequired,
   panel: React.PropTypes.object.isRequired,
   cluster: React.PropTypes.object, // We might not have it yet.
+  connecting: React.PropTypes.bool.isRequired,
+  slaves: React.PropTypes.object.isRequired,
   clusterLayout: React.PropTypes.object.isRequired,
+  frameworkColors: React.PropTypes.object.isRequired,
 };
 
 function mapDispatchToProps(dispatch) {
@@ -82,21 +95,7 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-function mapStateToProps(state) {
-  const {apiStatus, nodes, panel, router, clusterLayout } = state;
-
-  return {
-    api: apiStatus,
-    cluster: clusterLayout.get('status'),
-    nodes,
-    panel,
-    query: state.router.location.query,
-    router,
-    clusterLayout,
-  };
-}
-
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+  selector,
+  mapDispatchToProps,
 )(App);
