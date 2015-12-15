@@ -12,11 +12,9 @@
 
 .frameworks__item {
   display: block;
-  display: flex;
-  justify-content: center;
   text-decoration: none;
-  flex-direction: column;
   color: #000;
+  cursor: pointer;
 }
 
 .frameworks__item > a:link,
@@ -25,6 +23,20 @@
   text-decoration: none;
 }
 
-.frameworks__item > a.frameworks__subitem--active {
+.frameworks__item.frameworks__item--active {
   color: #9E4496;
+}
+
+.framework__item__color {
+  border-radius: 100%;
+  width: 10px;
+  height: 10px;
+  margin: 0 5px;
+  display: inline-block;
+}
+
+.framework__item__text {
+  max-width: calc(100% - 30px);
+  display: inline-block;
+  background-color: rgba(255, 255, 255, 0.5);
 }

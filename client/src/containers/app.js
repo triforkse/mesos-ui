@@ -70,7 +70,10 @@ class App extends React.Component {
             actions={clusterActions}/>
           <Detail title="Agents(s)" />
           <Detail title="Framework(s)" />
-          <Frameworks frameworks={slaveFrameworks} frameworksActions={frameworksActions} active={selectedFrameworks} />
+          <Frameworks frameworks={slaveFrameworks}
+            frameworksActions={frameworksActions}
+            active={selectedFrameworks}
+            colors={frameworkColors} />
         </div>
       </div>);
   }

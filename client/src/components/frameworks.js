@@ -10,12 +10,14 @@ export default class Frameworks extends React.Component {
     return frameworks.map(i => {
       const name = i.get('name');
       const className = active.includes(name) ? 'frameworks__item frameworks__item--active' : 'frameworks__item';
+      const style = { backgroundColor: this.props.colors.get(name) };
       return (<li className={className}
         onMouseOver={() => focusFramework(name)}
         onMouseOut={() => blurFramework(name)}
         onClick={() => toggleFramework(name)}
         key={name}>
-        {name}
+        <div className="framework__item__text">{name}</div>
+        <div className="framework__item__color" style={style}></div>
       </li>);
     });
   }
@@ -33,4 +35,5 @@ Frameworks.propTypes = {
   frameworks: React.PropTypes.object.isRequired,
   frameworksActions: React.PropTypes.object.isRequired,
   active: React.PropTypes.object.isRequired,
+  colors: React.PropTypes.object.isRequired,
 };
