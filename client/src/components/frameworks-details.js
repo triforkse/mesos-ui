@@ -6,6 +6,8 @@ require('./detail.scss');
 
 export default class SlavesDetail extends React.Component {
   calculatePercent(used, max) {
+    if (max === 0) return 0;
+    if (used === 0) return 0;
     return Math.round((used / max) * 100);
   }
 
@@ -20,24 +22,23 @@ export default class SlavesDetail extends React.Component {
     return frameworks.map(f => {
       const {cpus: usedCpus, mem: usedMem, disk: usedDisk} = f.used_resources.toJS();
       const {cpus: maxCpus, mem: maxMem, disk: maxDisk} = f.resources.toJS();
+      console.log('resources', f.resources.toJS(), f.used_resources.toJS());
+
       return (<TabPanel key={f.name}>
-                <table>
-                  <tbody>
-                    <tr>
-                      <td>CPU</td>
-                      <td>{usedCpus.toFixed(2)} / {maxCpus} ({this.calculatePercent(usedCpus, maxCpus)}%)</td>
-                    </tr>
-                    <tr>
-                      <td>Memory</td>
-                      <td>{usedMem.toFixed(2)} / {maxMem} ({this.calculatePercent(usedMem, maxMem)}%)</td>
-                    </tr>
-                    <tr>
-                      <td>Disk</td>
-                      <td>{usedDisk.toFixed(2)} / {maxDisk} ({this.calculatePercent(usedDisk, maxDisk)}%)</td>
-                    </tr>
-                  </tbody>
-                </table>
-                <RingChart value={this.calculatePercent(usedCpus, maxCpus)} width={60} color="green" id="test"/>
+        <div className="details-container">
+          <div>
+            <h4 className="details-container-title">CPUS</h4>
+            <RingChart value={this.calculatePercent(usedCpus, maxCpus)} width={60} color="#00CC00" id="cpus"/>
+          </div>
+          <div>
+            <h4 className="details-container-title">Memory</h4>
+            <RingChart value={this.calculatePercent(usedMem, maxMem)} width="60" color="#CD0074" id="mem"/>
+          </div>
+          <div>
+            <h4 className="details-container-title">Disk</h4>
+            <RingChart value={this.calculatePercent(usedDisk, maxDisk)} width={60} color="#FF7400" id="disk"/>
+          </div>
+        </div>
       </TabPanel>);
     });
   }

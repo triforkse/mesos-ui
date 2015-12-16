@@ -11,3 +11,17 @@
 .detail .clear {
   cursor: pointer;
 }
+
+.detail-title {
+  margin: 3px;
+}
+
+.details-container {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.details-container-title {
+  margin: 3px;
+}

@@ -2,7 +2,7 @@ import React from 'react';
 import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 import RingChart from './ring-chart';
 
-require('./slaves-details.scss');
+require('./detail.scss');
 
 export default class SlavesDetail extends React.Component {
   calculatePercent(used, max) {
@@ -20,17 +20,17 @@ export default class SlavesDetail extends React.Component {
     return slaves.map(s => {
       const {cpus: usedCpus, mem: usedMem, disk: usedDisk} = s.used_resources;
       return (<TabPanel>
-        <div className="slaves-details-container">
+        <div className="details-container">
           <div>
-            <h4 className="slave-details-container-title">CPUS</h4>
+            <h4 className="details-container-title">CPUS</h4>
             <RingChart value={usedCpus * 100} width={60} color="#00CC00" id="cpus"/>
           </div>
           <div>
-            <h4 className="slave-details-container-title">Memory</h4>
+            <h4 className="details-container-title">Memory</h4>
             <RingChart value={usedMem * 100} width={60} color="#CD0074" id="mem"/>
           </div>
           <div>
-            <h4 className="slave-details-container-title">Disk</h4>
+            <h4 className="details-container-title">Disk</h4>
             <RingChart value={usedDisk * 100} width={60} color="#FF7400" id="disk"/>
           </div>
         </div>

@@ -21,7 +21,7 @@ export default class Detail extends React.Component {
   render() {
     const {title} = this.props;
     return (<div className="detail">
-      <h4>{title} <span className="clear" onClick={this.props.clear}>(clear)</span></h4>
+      <h4 className="detail-title">{title} <span className="clear" onClick={this.props.clear}>(clear)</span></h4>
       {this.props.children}
     </div>);
   }
