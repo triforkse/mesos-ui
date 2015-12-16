@@ -9,7 +9,7 @@ export default class RingChart extends React.Component {
   }
 
   componentDidMount() {
-    const progress = new Progress(ReactDOM.findDOMNode(this), this.props, 0);
+    const progress = new Progress(ReactDOM.findDOMNode(this), this.props, this.props.value);
     this.setState({progress});
   }
 
@@ -26,7 +26,7 @@ export default class RingChart extends React.Component {
   }
 
   render() {
-    return (<svg className="ring-chart"><text className="ring-chart__label"></text></svg>);
+    return (<svg className="ring-chart"><text fill="black" className="ring-chart__label">Text</text></svg>);
   }
 }
 

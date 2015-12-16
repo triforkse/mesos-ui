@@ -96,6 +96,7 @@ function build(context, pid = 5050) {
 }
 
 setInterval(() => {
+  fakeContext.slaves.forEach(s => s.cpus = Math.random());
   if (Math.random() < 0.5) {
     addSlave(fakeContext);
   } else {

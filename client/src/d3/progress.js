@@ -9,7 +9,7 @@ export default class Progress {
         .outerRadius(outerRadius)
         .innerRadius(innerRadius);
 
-    this.color = i => (i === 0 ? '#AF00D3' : '#EFEFEF');
+    this.color = i => (i === 0 ? color : '#EFEFEF');
 
     this.container = d3.select(el)
         .attr({width, height: width})
@@ -50,14 +50,42 @@ export default class Progress {
       'class': 'arc',
     });
 
+    const percentEnter = arc.enter()
+      .append('text');
+
+    // So we dont add text for background arc
+    percentEnter.each(function addText(d, index) {
+      if (index !== 0) return;
+      d3.select(this)
+        .attr('class', 'progress-text')
+        .attr('y', 5)
+        .attr('text-anchor', 'middle')
+        .text(p => p.value.toFixed(0));
+    });
+
     function arcTween(finish, index) {
       const start = this.pie(prevData)[index];
       const i = d3.interpolate(start, finish);
       return d => this.arc(i(d));
     }
 
+    function textTween(finish, index) {
+      if (index !== 0) return () => finish;
+      const i = d3.interpolate(+this.textContent.replace('%', ''), finish.toFixed(0));
+      const that = this;
+      return (t) => {
+        that.textContent = parseFloat(i(t)).toFixed(0) + '%';
+      };
+    }
+
     // Create the actual slices of the pie
     arc.transition()
-      .duration(750).attrTween('d', arcTween.bind(this));
+      .duration(750)
+      .attrTween('d', arcTween.bind(this));
+
+    container.selectAll('.progress-text')
+      .transition()
+      .duration(750)
+      .tween('text', function tween(_, index) { return textTween.call(this, value, index); });
   }
 }
