@@ -38,11 +38,14 @@ class App extends React.Component {
     const selectedSlaves = this.props.clusterLayout.selectedSlaves;
     const frameworkColors = this.props.frameworkColors;
     const slaveNodes = this.props.slaves;
+    const clearSlaves = this.props.actions.clearSlaves;
     const slaveFrameworks = cluster.frameworks;
+    const clearFrameworks = this.props.actions.clearFrameworks;
     const frameworksActions = {
       focusFramework: this.props.actions.focusFramework,
       blurFramework: this.props.actions.blurFramework,
       toggleFramework: this.props.actions.toggleFramework,
+      clearFrameworks: this.props.actions.clearFrameworks,
     };
     const clusterActions = {
       toggleSlave: this.props.actions.toggleSlave,
@@ -77,13 +80,13 @@ class App extends React.Component {
             colors={frameworkColors} />
 
           {selectedSlaves.count() > 0 &&
-            (<Detail title="Agent(s)">
+            (<Detail title="Agent(s)" clear={clearSlaves}>
               <SlavesDetail slaves={slaveNodes} selectedSlaves={selectedSlaves} />
             </Detail>)
           }
 
           {selectedFrameworks.count() > 0 &&
-            (<Detail title="Framework(s)">
+            (<Detail title="Framework(s)" clear={clearFrameworks}>
               <FrameworksDetail frameworks={slaveFrameworks} selectedFrameworks={selectedFrameworks} />
             </Detail>)
           }

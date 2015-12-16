@@ -14,7 +14,9 @@ export const TOGGLE_PANEL = 'TOGGLE_PANEL';
 export const FRAMEWORK_FOCUS = 'FRAMEWORK_FOCUS';
 export const FRAMEWORK_BLUR = 'FRAMEWORK_BLUR';
 export const FRAMEWORK_TOGGLE = 'FRAMEWORK_TOGGLE';
+export const FRAMEWORK_CLEAR = 'FRAMEWORK_CLEAR';
 export const SLAVE_TOGGLE = 'SLAVE_TOGGLE';
+export const SLAVE_CLEAR = 'SLAVE_CLEAR';
 
 export function requestApiStatus() {
   return {
@@ -86,6 +88,12 @@ export function toggleSlave(pid) {
   };
 }
 
+export function clearSlaves() {
+  return {
+    type: SLAVE_CLEAR,
+  };
+}
+
 export function selectNode(node) {
   return {
     type: NODE_SELECTION,
@@ -121,6 +129,13 @@ export function toggleFramework(framework) {
   };
 }
 
+export function clearFrameworks() {
+  return {
+    type: FRAMEWORK_CLEAR,
+  };
+}
+
+
 let actionCreators = {
   requestApiStatus,
   respondeWithApiStatus,
@@ -135,6 +150,8 @@ let actionCreators = {
   blurFramework,
   toggleFramework,
   toggleSlave,
+  clearFrameworks,
+  clearSlaves,
 };
 
 export function registerActionCreators(creators) {

@@ -45,7 +45,6 @@ export default class SlavesDetail extends React.Component {
   render() {
     const selectedFrameworks = this.props.selectedFrameworks;
     const frameworks = this.props.frameworks.filter(s => selectedFrameworks.contains(s.name));
-    console.log(frameworks.toJS());
     return (<Tabs>
       {this.renderTabHeaders(frameworks)}
       {this.renderTabPanels(frameworks)}
