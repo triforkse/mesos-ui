@@ -8,7 +8,7 @@ export function calculateQuota(fullQuota, usedQuota) {
 
 const focusedOrSelected = node => node.layout.focus || node.layout.selected;
 
-export function distirbuteNodes({master, nodes}, width, height) {
+export function distributeNodes({master, nodes}, width, height) {
   const masterWidthFactor = 0.5;
   const masterHeightFactor = 0.5;
   const masterFn = d => {

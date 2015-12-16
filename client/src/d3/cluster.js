@@ -1,5 +1,5 @@
 import d3 from 'd3';
-import {distirbuteNodes, onNodeFocus, onNodeBlur, preventCollision} from './calculations';
+import {distributeNodes, onNodeFocus, onNodeBlur, preventCollision} from './calculations';
 import {createFrameworks, updateFrameworkColors} from './framework';
 import {merge, rest, remove, any, each, find, partial} from 'lodash';
 
@@ -27,7 +27,7 @@ export default class Cluster {
 
     this.container = container;
 
-    const nodes = distirbuteNodes(props, width, height);
+    const nodes = distributeNodes(props, width, height);
     const links = rest(nodes).map(partial(this.addLink, nodes[0]));
 
     this.force = d3.layout.force()
@@ -45,7 +45,7 @@ export default class Cluster {
   }
 
   update(props, width, height) {
-    const nodes = distirbuteNodes(props, width, height);
+    const nodes = distributeNodes(props, width, height);
     this.renderD3(nodes, props);
   }
 
