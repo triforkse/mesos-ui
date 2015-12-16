@@ -4,6 +4,20 @@ require('./detail.scss');
 
 export default class Detail extends React.Component {
 
+  componentDidMount() {
+    document.addEventListener('keydown', this.handleEscape.bind(this), false);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.handleEscape.bind(this), false);
+  }
+
+  handleEscape(e) {
+    if (e.keyCode === 27) {
+      this.props.clear(); // Uncaught TypeError: Cannot read property 'clear' of undefined
+    }
+  }
+
   render() {
     const {title} = this.props;
     return (<div className="detail">
@@ -16,5 +30,5 @@ export default class Detail extends React.Component {
 Detail.propTypes = {
   title: React.PropTypes.string,
   children: React.PropTypes.object,
-  clear: React.PropTypes.func,
+  clear: React.PropTypes.func.isRequired,
 };
