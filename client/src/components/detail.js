@@ -15,5 +15,5 @@ export default class Detail extends React.Component {
 
 Detail.propTypes = {
   title: React.PropTypes.string,
-  children: React.PropTypes.array,
+  children: React.PropTypes.object,
 };

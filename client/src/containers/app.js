@@ -7,6 +7,7 @@ import Button from '../components/button.js';
 import Frameworks from '../components/frameworks.js';
 import Detail from '../components/detail.js';
 import SlavesDetail from '../components/slaves-details.js';
+import FrameworksDetail from '../components/frameworks-details.js';
 import {selector} from '../selectors';
 
 require('./app.scss');
@@ -82,7 +83,9 @@ class App extends React.Component {
           }
 
           {selectedFrameworks.count() > 0 &&
-            (<Detail title="Framework(s)" />)
+            (<Detail title="Framework(s)">
+              <FrameworksDetail frameworks={slaveFrameworks} selectedFrameworks={selectedFrameworks} />
+            </Detail>)
           }
         </div>
       </div>);
