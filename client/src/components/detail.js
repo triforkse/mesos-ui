@@ -14,7 +14,7 @@ export default class Detail extends React.Component {
 
   handleEscape(e) {
     if (e.keyCode === 27) {
-      this.props.clear(); // Uncaught TypeError: Cannot read property 'clear' of undefined
+      this.props.clear();
     }
   }
 
