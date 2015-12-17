@@ -27,7 +27,7 @@ export function distributeNodes({master, nodes}, width, height) {
   const slaveFn = d => {
     return {
       pid: d.pid,
-      r: focusedOrSelected(d) ? d.layout.r * 1.5 : d.layout.r,
+      r: focusedOrSelected(d) ? d.layout.r * 1.25 : d.layout.r,
       focusedOrSelected: d.layout.focus || d.layout.selected,
       frameworks: d.frameworks.map(f => ({id: f.name})),
       anyFocusedOrSelected,
