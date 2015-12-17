@@ -14,14 +14,14 @@ export default class Detail extends React.Component {
 
   handleEscape(e) {
     if (e.keyCode === 27) {
-      this.props.clear();
+      this.props.close();
     }
   }
 
   render() {
     const {title} = this.props;
     return (<div className="detail">
-      <h4 className="detail-title">{title} <span className="clear" onClick={this.props.clear}>(clear)</span></h4>
+      <h4 className="detail-title">{title} <span className="close" onClick={this.props.close}>(close)</span></h4>
       {this.props.children}
     </div>);
   }
@@ -30,5 +30,5 @@ export default class Detail extends React.Component {
 Detail.propTypes = {
   title: React.PropTypes.string,
   children: React.PropTypes.object,
-  clear: React.PropTypes.func.isRequired,
+  close: React.PropTypes.func.isRequired,
 };

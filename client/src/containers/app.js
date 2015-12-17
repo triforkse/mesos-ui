@@ -80,13 +80,13 @@ class App extends React.Component {
             colors={frameworkColors} />
 
           {selectedSlaves.count() > 0 &&
-            (<Detail title="Agent(s)" clear={clearSlaves}>
+            (<Detail title="Agent(s)" close={clearSlaves}>
               <SlavesDetail slaves={slaveNodes} selectedSlaves={selectedSlaves} />
             </Detail>)
           }
 
           {selectedFrameworks.count() > 0 &&
-            (<Detail title="Framework(s)" clear={clearFrameworks}>
+            (<Detail title="Framework(s)" close={clearFrameworks}>
               <FrameworksDetail frameworks={slaveFrameworks} selectedFrameworks={selectedFrameworks} />
             </Detail>)
           }
