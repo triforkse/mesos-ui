@@ -2,7 +2,7 @@ import d3 from 'd3';
 import {saturateColor} from './calculations';
 
 export function updateFrameworkColors(colors, slave) {
-  const frameworkColors = slave.fixed || !slave.anyFocusedOrSelected
+  const frameworkColors = slave.focusedOrSelected || !slave.anyFocusedOrSelected
     ? colors
     : colors.map(saturateColor);
 

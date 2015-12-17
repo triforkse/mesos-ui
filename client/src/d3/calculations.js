@@ -28,7 +28,7 @@ export function distributeNodes({master, nodes}, width, height) {
     return {
       pid: d.pid,
       r: focusedOrSelected(d) ? d.layout.r * 1.5 : d.layout.r,
-      fixed: d.layout.focus || d.layout.selected,
+      focusedOrSelected: d.layout.focus || d.layout.selected,
       frameworks: d.frameworks.map(f => ({id: f.name})),
       anyFocusedOrSelected,
       master: false,
