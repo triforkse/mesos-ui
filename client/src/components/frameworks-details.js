@@ -22,7 +22,6 @@ export default class SlavesDetail extends React.Component {
     return frameworks.map(f => {
       const {cpus: usedCpus, mem: usedMem, disk: usedDisk} = f.used_resources.toJS();
       const {cpus: maxCpus, mem: maxMem, disk: maxDisk} = f.resources.toJS();
-      console.log('resources', f.resources.toJS(), f.used_resources.toJS());
 
       return (<TabPanel key={f.name}>
         <div className="details-container">
