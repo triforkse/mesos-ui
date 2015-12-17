@@ -12,7 +12,9 @@ client:
   environment:
     # You can set this to the VirtualBox VM IP if you are running
     # docker on Mac. This allows you to test the client and API
-    # together in Docker on Mac.
+    # together in Docker on Mac. Don't forget http://.
+    # For example:
+    # - API_ADDR=http://192.168.99.100:3000
     - API_ADDR
 
 e2e:

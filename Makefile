@@ -37,6 +37,7 @@ docker-e2e:
 	cd api && $(MAKE) build
 	docker-compose --project-name=app build
 	docker-compose --project-name=app run e2e
+	docker-compose --project-name=app kill
 
 docker-e2e-bust:
 	cd client && $(MAKE) build

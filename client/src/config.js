@@ -1,5 +1,5 @@
 const PRODUCTION_URL = 'REPLACEMEURL';
-const DEVELOPMENT_URL = 'localhost:3000';
+const DEVELOPMENT_URL = 'http://localhost:3000';
 
 window.onkeydown = (event) => {
   if (event.ctrlKey && event.keyCode === 68) {

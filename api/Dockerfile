@@ -4,11 +4,10 @@ RUN apk add --update make gcc g++ python
 
 ENV NODE_ENV=production
 
-ADD package.json /app/package.json
+COPY package.json /app/package.json
 RUN cd /app && npm install --production --quiet
 
-ADD . /app
-COPY ./build/ /app
+COPY ./build/ /app/build/
 
 WORKDIR /app
 

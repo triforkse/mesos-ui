@@ -5,10 +5,10 @@ set -e
 if [ "$API_ADDR" = "" ]
 then
   echo "Setting API_ADDR to Docker linked address."
-  API_ADDR=$APP_API_1_PORT_3000_TCP_ADDR
+  API_ADDR=http://$APP_API_1_PORT_3000_TCP_ADDR:$APP_API_1_PORT_3000_TCP_PORT
 fi
 
-sed "s/REPLACEMEURL/$API_ADDR/g" ./static/app.js > ./static/app2.js
+sed "s,REPLACEMEURL,$API_ADDR,g" ./static/app.js > ./static/app2.js
 mv ./static/app2.js ./static/app.js
 
 echo "API Address: $API_ADDR"

@@ -11,8 +11,8 @@ const innerText = (selector) => innerHTML(selector).trim();
 describe('Start Page', function() {
   this.timeout(15000);
 
-  const hostname = process.env.CLIENT_ADDR || 'localhost';
-  const base = "http://" + hostname + ":3001";
+  const hostname = process.env.CLIENT_ADDR || 'http://localhost';
+  const base = hostname + ":3001";
 
   let nightmare;
 
