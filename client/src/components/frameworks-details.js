@@ -1,6 +1,6 @@
 import React from 'react';
 import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
-import RingChart from './ring-chart';
+import RingCharts from './ring-charts';
 
 require('./detail.scss');
 
@@ -22,21 +22,33 @@ export default class SlavesDetail extends React.Component {
     return frameworks.map(f => {
       const {cpus: usedCpus, mem: usedMem, disk: usedDisk} = f.used_resources.toJS();
       const {cpus: maxCpus, mem: maxMem, disk: maxDisk} = f.resources.toJS();
+      const charts = [
+        {
+          id: 'cpus',
+          text: 'CPUS',
+          color: '#00CC00',
+          width: 60,
+          value: this.calculatePercent(usedCpus, maxCpus),
+        },
+        {
+          id: 'mem',
+          text: 'Memory',
+          color: '#CD0074',
+          width: 60,
+          value: this.calculatePercent(usedMem, maxMem),
+        },
+        {
+          id: 'disk',
+          text: 'Disk',
+          color: '#FF7400',
+          width: 60,
+          value: this.calculatePercent(usedDisk, maxDisk),
+        },
+      ];
 
       return (<TabPanel key={f.name}>
-        <div className="details-container">
-          <div>
-            <h4 className="details-container-title">CPUS</h4>
-            <RingChart value={this.calculatePercent(usedCpus, maxCpus)} width={60} color="#00CC00" id="cpus"/>
-          </div>
-          <div>
-            <h4 className="details-container-title">Memory</h4>
-            <RingChart value={this.calculatePercent(usedMem, maxMem)} width="60" color="#CD0074" id="mem"/>
-          </div>
-          <div>
-            <h4 className="details-container-title">Disk</h4>
-            <RingChart value={this.calculatePercent(usedDisk, maxDisk)} width={60} color="#FF7400" id="disk"/>
-          </div>
+        <div >
+            <RingCharts charts={charts} />
         </div>
       </TabPanel>);
     });
