@@ -2,10 +2,27 @@ import { createStore, applyMiddleware } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import createLogger from 'redux-logger';
 import rootReducer from '../reducers';
+import { Iterable } from 'immutable';
+
+const logger = createLogger({
+  stateTransformer: (state) => {
+    const newState = {};
+
+    for (const i of Object.keys(state)) {
+      if (Iterable.isIterable(state[i])) {
+        newState[i] = state[i].toJS();
+      } else {
+        newState[i] = state[i];
+      }
+    }
+
+    return newState;
+  },
+});
 
 const createStoreWithMiddleware = applyMiddleware(
   thunkMiddleware,
-  createLogger()
+  logger
 )(createStore);
 
 export default function configureStore(initialState) {
