@@ -14,6 +14,7 @@ class App extends React.Component {
     // TODO: We need to save a reference to this, so
     // we can disconnect.
     this.props.actions.connectWebSocket();
+    this.props.actions.connectWamp();
   }
 
   onNodeClick(node) {

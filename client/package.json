@@ -14,6 +14,7 @@
     "pre-commit": "npm run lint && npm run test"
   },
   "dependencies": {
+    "autobahn": "^0.9.9",
     "autoprefixer": "^6.1.0",
     "babel": "^5.8.21",
     "babel-core": "^5.8.22",
@@ -36,6 +37,7 @@
     "immutablediff": "^0.4.2",
     "isparta": "^3.5.3",
     "jsdom": "^7.0.2",
+    "json-loader": "^0.5.4",
     "lil-http": "^0.1.16",
     "lodash": "^3.10.1",
     "mocha": "^2.3.3",

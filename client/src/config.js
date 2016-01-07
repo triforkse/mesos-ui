@@ -1,5 +1,7 @@
 const PRODUCTION_URL = 'REPLACEMEURL';
 const DEVELOPMENT_URL = 'http://localhost:3000';
+const PRODUCTION_URL_WAMP = 'REPLACEMEURL_WAMP';
+const DEVELOPMENT_URL_WAMP = 'ws://localhost:8081/hamwe';
 
 window.onkeydown = (event) => {
   if (event.ctrlKey && event.keyCode === 68) {
@@ -20,6 +22,10 @@ export function isDevelopment() {
 
 export function apiAddress() {
   return isProduction() ? PRODUCTION_URL : DEVELOPMENT_URL;
+}
+
+export function wampAddress() {
+  return isProduction() ? PRODUCTION_URL_WAMP : DEVELOPMENT_URL_WAMP;
 }
 
 export function url(path) {

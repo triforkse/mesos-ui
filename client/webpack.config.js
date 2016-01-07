@@ -28,6 +28,10 @@ var config = {
       {
         test: /\.(eot|ttf|svg|woff2?)$/,
         loader: 'file'
+      },
+      {
+        test: /autobahn\/package.json$/,
+        loader: 'json'
       }
     ]
   },

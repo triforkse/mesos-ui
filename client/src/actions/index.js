@@ -5,6 +5,8 @@ export const API_STATUS_RECEIVED = 'API_STATUS_RECEIVED';
 export const WEB_SOCKET_CONNECTION_REQUESTED = 'WEB_SOCKET_CONNECTION_REQUESTED';
 export const WEB_SOCKET_INIT = 'WEB_SOCKET_INIT';
 export const WEB_SOCKET_DIFF = 'WEB_SOCKET_DIFF';
+export const WAMP_CONNECTION_REQUESTED = 'WAMP_CONNECTION_REQUESTED';
+export const WAMP_MESSAGE = 'WAMP_MESSAGE';
 export const CLUSTER_NODE_UPDATE = 'CLUSTER_NODE_UPDATE';
 export const CLUSTER_NODE_ADDED = 'CLUSTER_NODE_ADDED';
 export const CLUSTER_NODE_REMOVED = 'CLUSTER_NODE_REMOVED';
@@ -81,6 +83,23 @@ export function connectWebSocket() {
   };
 }
 
+export function connectWamp() {
+  console.log('connectWamp');
+  return dispatch => {
+    dispatch({
+      type: WAMP_CONNECTION_REQUESTED,
+    });
+
+    api.connectWamp(({topic, payload}) => {
+      dispatch({
+        type: WAMP_MESSAGE,
+        topic,
+        message: payload,
+      });
+    });
+  };
+}
+
 export function toggleSlave(pid) {
   return {
     type: SLAVE_TOGGLE,
@@ -144,6 +163,7 @@ let actionCreators = {
   addNodes,
   removeNodes,
   connectWebSocket,
+  connectWamp,
   selectNode,
   showDetails,
   focusFramework,
