@@ -84,7 +84,6 @@ export function connectWebSocket() {
 }
 
 export function connectWamp() {
-  console.log('connectWamp');
   return dispatch => {
     dispatch({
       type: WAMP_CONNECTION_REQUESTED,
