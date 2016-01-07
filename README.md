@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/triforkse/mesos-ui.svg)](https://travis-ci.org/triforkse/mesos-ui) [![Coverage Status](https://coveralls.io/repos/triforkse/mesos-ui/badge.svg?branch=master&service=github)](https://coveralls.io/github/triforkse/mesos-ui?branch=master)
+[![Build Status](https://travis-ci.org/triforkse/mesos-ui.svg)](https://travis-ci.org/triforkse/mesos-ui)
 
 # YAMU - Yet Another Mesos UI
 
