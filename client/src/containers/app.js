@@ -5,31 +5,17 @@ import * as actions from '../actions';
 import Button from '../components/button.js';
 import {selector} from '../selectors';
 import NodeView from '../components/node-view.js';
+import AppIntent from '../components/app-intent';
 
 require('./app.scss');
 
 class App extends React.Component {
 
   componentDidMount() {
-    // TODO: We need to save a reference to this, so
-    // we can disconnect.
-    this.props.actions.connectWebSocket();
     this.props.actions.connectWamp();
   }
 
-  onNodeClick(node) {
-    this.props.actions.selectNode(node);
-  }
-
-  onNodeMouseOver(node) {
-    this.props.actions.showDetails(node);
-  }
-
   render() {
-    if (this.props.connecting) {
-      return <div>Connecting...</div>;
-    }
-
     return (
       <div className="page">
         <div className="page__master">
@@ -49,6 +35,7 @@ class App extends React.Component {
         </div>
         <div className="page__slave">
           <NodeView
+            connecting={this.props.connecting}
             cluster={this.props.cluster}
             actions={this.props.actions}
             slaves={this.props.slaves}

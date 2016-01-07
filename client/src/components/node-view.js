@@ -8,7 +8,25 @@ import FrameworksDetail from '../components/frameworks-details.js';
 
 export default class NodeView extends Component {
 
+  componentDidMount() {
+    // TODO: We need to save a reference to this, so
+    // we can disconnect.
+    this.props.actions.connectWebSocket();
+  }
+
+  onNodeClick(node) {
+    this.props.actions.selectNode(node);
+  }
+
+  onNodeMouseOver(node) {
+    this.props.actions.showDetails(node);
+  }
+
   render() {
+    if (this.props.connecting) {
+      return <div>Connecting...</div>;
+    }
+
     const cluster = this.props.cluster;
     const selectedFrameworks = this.props.clusterLayout.selectedFrameworks;
     const selectedSlaves = this.props.clusterLayout.selectedSlaves;
@@ -59,4 +77,5 @@ NodeView.propTypes = {
   slaves: React.PropTypes.object.isRequired,
   clusterLayout: React.PropTypes.object.isRequired,
   frameworkColors: React.PropTypes.object.isRequired,
+  connecting: React.PropTypes.bool.isRequired,
 };
