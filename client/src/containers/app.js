@@ -2,13 +2,9 @@ import React from 'react';
 import {connect} from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from '../actions';
-import Galaxy from '../components/galaxy.js';
 import Button from '../components/button.js';
-import Frameworks from '../components/frameworks.js';
-import Detail from '../components/detail.js';
-import SlavesDetail from '../components/slaves-details.js';
-import FrameworksDetail from '../components/frameworks-details.js';
 import {selector} from '../selectors';
+import NodeView from '../components/node-view.js';
 
 require('./app.scss');
 
@@ -33,24 +29,6 @@ class App extends React.Component {
       return <div>Connecting...</div>;
     }
 
-    const cluster = this.props.cluster;
-    const selectedFrameworks = this.props.clusterLayout.selectedFrameworks;
-    const selectedSlaves = this.props.clusterLayout.selectedSlaves;
-    const frameworkColors = this.props.frameworkColors;
-    const slaveNodes = this.props.slaves;
-    const clearSlaves = this.props.actions.clearSlaves;
-    const slaveFrameworks = cluster.frameworks;
-    const clearFrameworks = this.props.actions.clearFrameworks;
-    const frameworksActions = {
-      focusFramework: this.props.actions.focusFramework,
-      blurFramework: this.props.actions.blurFramework,
-      toggleFramework: this.props.actions.toggleFramework,
-      clearFrameworks: this.props.actions.clearFrameworks,
-    };
-    const clusterActions = {
-      toggleSlave: this.props.actions.toggleSlave,
-    };
-
     return (
       <div className="page">
         <div className="page__master">
@@ -69,27 +47,12 @@ class App extends React.Component {
           </div>
         </div>
         <div className="page__slave">
-          <Galaxy
-            master={cluster.layout}
-            nodes={slaveNodes}
-            frameworkColors={frameworkColors}
-            actions={clusterActions}/>
-          <Frameworks frameworks={slaveFrameworks}
-            frameworksActions={frameworksActions}
-            active={selectedFrameworks}
-            colors={frameworkColors} />
-
-          {selectedSlaves.count() > 0 &&
-            (<Detail title="Agent(s)" close={clearSlaves}>
-              <SlavesDetail slaves={slaveNodes} selectedSlaves={selectedSlaves} />
-            </Detail>)
-          }
-
-          {selectedFrameworks.count() > 0 &&
-            (<Detail title="Framework(s)" close={clearFrameworks}>
-              <FrameworksDetail frameworks={slaveFrameworks} selectedFrameworks={selectedFrameworks} />
-            </Detail>)
-          }
+          <NodeView
+            cluster={this.props.cluster}
+            actions={this.props.actions}
+            slaves={this.props.slaves}
+            clusterLayout={this.props.clusterLayout}
+            frameworkColors={this.props.frameworkColors} />
         </div>
       </div>);
   }
