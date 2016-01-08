@@ -1,7 +1,7 @@
 const PRODUCTION_URL = 'REPLACEMEURL';
 const DEVELOPMENT_URL = 'http://localhost:3000';
 const PRODUCTION_URL_WAMP = 'REPLACEMEURL_WAMP';
-const DEVELOPMENT_URL_WAMP = 'ws://localhost:8081/hamwe';
+const DEVELOPMENT_URL_WAMP = 'ws://192.168.99.1:8080/ws-mesos-loader';
 
 window.onkeydown = (event) => {
   if (event.ctrlKey && event.keyCode === 68) {

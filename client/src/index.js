@@ -5,6 +5,8 @@ import { DevTools, DebugPanel, LogMonitor } from 'redux-devtools/lib/react'; // 
 import configureStore from './store/configureStore';
 import {ReduxRouter} from 'redux-router';
 
+import Polyfill from 'babel-core/polyfill'; //eslint-disable-line
+
 require('./index.scss');
 
 const store = configureStore();

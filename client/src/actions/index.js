@@ -5,8 +5,9 @@ export const API_STATUS_RECEIVED = 'API_STATUS_RECEIVED';
 export const WEB_SOCKET_CONNECTION_REQUESTED = 'WEB_SOCKET_CONNECTION_REQUESTED';
 export const WEB_SOCKET_INIT = 'WEB_SOCKET_INIT';
 export const WEB_SOCKET_DIFF = 'WEB_SOCKET_DIFF';
-export const WAMP_CONNECTION_REQUESTED = 'WAMP_CONNECTION_REQUESTED';
-export const WAMP_MESSAGE = 'WAMP_MESSAGE';
+export const LOADER_SUBSCRIPTIONS_REQUESTED = 'LOADER_SUBSCRIPTIONS_REQUESTED';
+export const LOADER_FRAMEWORKS = 'LOADER_FRAMEWORKS';
+export const LOADER_MESSAGE = 'LOADER_MESSAGE';
 export const CLUSTER_NODE_UPDATE = 'CLUSTER_NODE_UPDATE';
 export const CLUSTER_NODE_ADDED = 'CLUSTER_NODE_ADDED';
 export const CLUSTER_NODE_REMOVED = 'CLUSTER_NODE_REMOVED';
@@ -84,19 +85,25 @@ export function connectWebSocket() {
   };
 }
 
-export function connectWamp() {
+function framworkSubscriptionDispatcher(dispatch, framework) {
+  return message => dispatch({type: LOADER_MESSAGE, framework, message});
+}
+
+async function setupSubscriptions(dispatch) {
+  const session = await api.connectWamp();
+  const frameworks = await api.listLoaderFrameworks(session);
+  dispatch({type: LOADER_FRAMEWORKS, frameworks});
+  frameworks.forEach(framework =>
+    api.startSubsription(session, framework.name, framworkSubscriptionDispatcher(dispatch, framework.name)));
+}
+
+export function subscribeToLoaderFrameworks() {
   return dispatch => {
     dispatch({
-      type: WAMP_CONNECTION_REQUESTED,
+      type: LOADER_SUBSCRIPTIONS_REQUESTED,
     });
 
-    api.connectWamp(({topic, payload}) => {
-      dispatch({
-        type: WAMP_MESSAGE,
-        topic,
-        message: payload,
-      });
-    });
+    setupSubscriptions(dispatch);
   };
 }
 
@@ -178,7 +185,7 @@ let actionCreators = {
   addNodes,
   removeNodes,
   connectWebSocket,
-  connectWamp,
+  subscribeToLoaderFrameworks,
   selectNode,
   showDetails,
   focusFramework,

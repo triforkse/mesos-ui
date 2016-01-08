@@ -12,7 +12,7 @@ require('./app.scss');
 class App extends React.Component {
 
   componentDidMount() {
-    this.props.actions.connectWamp();
+    this.props.actions.subscribeToLoaderFrameworks();
   }
 
   render() {

@@ -2,6 +2,7 @@ import * as config from './config.js';
 import http from 'lil-http';
 import io from 'socket.io-client';
 import autobahn from 'autobahn';
+import Q from 'q';
 
 let socket = null;
 
@@ -26,20 +27,32 @@ export function connectWebSocket(cb) {
   socket.emit('greeting', 'hi from client');
 }
 
-export function connectWamp(cb) {
+export function connectWamp() {
+  const deferred = Q.defer();
   const base = config.wampAddress();
   const connection = new autobahn.Connection({
     url: base,
-    realm: 'realm1',
+    realm: 'mesos.loader',
   });
 
   connection.onopen = session => {
-    session.subscribe('hello', payload => cb({topic: 'hello', payload}));
+    deferred.resolve(session);
   };
 
   connection.onclose = reason => {
     console.error('Error connecting to wamp server', base, 'reason', reason);  // eslint-disable-line no-console
+    deferred.reject(reason);
   };
 
   connection.open();
+
+  return deferred.promise;
+}
+
+export function startSubsription(session, framework, cb) {
+  session.subscribe(framework, cb);
+}
+
+export function listLoaderFrameworks(session) {
+  return session.call('mesos.loader.list');
 }
