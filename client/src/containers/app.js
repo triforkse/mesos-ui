@@ -4,7 +4,8 @@ import { bindActionCreators } from 'redux';
 import * as actions from '../actions';
 import Button from '../components/button.js';
 import {selector} from '../selectors';
-import NodeView from '../components/node-view.js';
+// import NodeView from '../components/node-view.js';
+import AppIntent from '../components/app-intent';
 
 require('./app.scss');
 
@@ -33,13 +34,14 @@ class App extends React.Component {
           </div>
         </div>
         <div className="page__slave">
-          <NodeView
+          <AppIntent appIntent={this.props.appIntent} newRadarValue={this.props.actions.newRadarValue} />
+          {/* <NodeView
             connecting={this.props.connecting}
             cluster={this.props.cluster}
             actions={this.props.actions}
             slaves={this.props.slaves}
             clusterLayout={this.props.clusterLayout}
-            frameworkColors={this.props.frameworkColors} />
+            frameworkColors={this.props.frameworkColors} /> */}
         </div>
       </div>);
   }
@@ -54,6 +56,7 @@ App.propTypes = {
   slaves: React.PropTypes.object.isRequired,
   clusterLayout: React.PropTypes.object.isRequired,
   frameworkColors: React.PropTypes.object.isRequired,
+  appIntent: React.PropTypes.object,
 };
 
 function mapDispatchToProps(dispatch) {

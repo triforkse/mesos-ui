@@ -37,7 +37,7 @@ html,
 .page__slave {
   flex: 1 1 auto;
   align-self: stretch;
-  overflow: hidden;
+  overflow-y: scroll;
   position: relative;
 }
 

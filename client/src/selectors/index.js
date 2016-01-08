@@ -6,9 +6,10 @@ const stateSelector = state => state;
 const defaultSelector = createSelector(
   stateSelector,
   state => {
-    const {apiStatus, nodes, panel, router, clusterState, clusterLayout } = state;
+    const {apiStatus, appIntent, nodes, panel, router, clusterState, clusterLayout } = state;
     return {
       api: apiStatus,
+      appIntent,
       cluster: clusterState.cluster,
       connecting: clusterState.connecting,
       clusterLayout,

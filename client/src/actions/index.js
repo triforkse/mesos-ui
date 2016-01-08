@@ -19,6 +19,7 @@ export const FRAMEWORK_TOGGLE = 'FRAMEWORK_TOGGLE';
 export const FRAMEWORK_CLEAR = 'FRAMEWORK_CLEAR';
 export const SLAVE_TOGGLE = 'SLAVE_TOGGLE';
 export const SLAVE_CLEAR = 'SLAVE_CLEAR';
+export const INTENT_VALUE = 'INTENT_VALUE';
 
 export function requestApiStatus() {
   return {
@@ -153,6 +154,21 @@ export function clearFrameworks() {
   };
 }
 
+export function newRadarValue(layer, metric, value) {
+  let newValue = parseFloat(value);
+  if (Number.isNaN(newValue)) {
+    newValue = 0;
+  }
+  return {
+    type: INTENT_VALUE,
+    payload: {
+      metric,
+      layer,
+      value: newValue,
+    },
+  };
+}
+
 
 let actionCreators = {
   requestApiStatus,
@@ -171,6 +187,7 @@ let actionCreators = {
   toggleSlave,
   clearFrameworks,
   clearSlaves,
+  newRadarValue,
 };
 
 export function registerActionCreators(creators) {
