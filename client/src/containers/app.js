@@ -47,10 +47,8 @@ class App extends React.Component {
 
 App.propTypes = {
   api: React.PropTypes.object.isRequired,
-  socket: React.PropTypes.object.isRequired,
   nodes: React.PropTypes.object.isRequired,
   actions: React.PropTypes.object.isRequired,
-  panel: React.PropTypes.object.isRequired,
   cluster: React.PropTypes.object, // We might not have it yet.
   connecting: React.PropTypes.bool.isRequired,
   slaves: React.PropTypes.object.isRequired,
