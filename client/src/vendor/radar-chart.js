@@ -75,7 +75,6 @@ var RadarChart = {
         tt.append('text').classed("tooltip", true);
 
         // allow simple notation
-        console.log('DATA', data)
         data = data.map(function(datum) {
           if(datum instanceof Array) {
             datum = {axes: datum};
