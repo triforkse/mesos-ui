@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import SpiderGraph from './spider-graph';
+import SpiderGraph from '../spider-graph';
 import AppIntentForm from './app-intent-form';
 
 require('./app-intent.scss');

@@ -5,7 +5,7 @@ import * as actions from '../actions';
 import Button from '../components/button.js';
 import {selector} from '../selectors';
 // import NodeView from '../components/node-view.js';
-import AppIntent from '../components/app-intent';
+import AppIntent from '../components/app-intent/app-intent';
 
 require('./app.scss');
 
