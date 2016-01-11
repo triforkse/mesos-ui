@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 
 require('./app-intent-form.scss');
@@ -25,7 +25,7 @@ function renderTabPanels(appIntent, newRadarValue) {
   });
 }
 
-export default ({ appIntent, newRadarValue }) => (
+const AppIntentForm = ({ appIntent, newRadarValue }) => (
   <div className="app-intent-form">
     <Tabs>
       {renderTabHeaders(appIntent)}
@@ -33,3 +33,10 @@ export default ({ appIntent, newRadarValue }) => (
     </Tabs>
   </div>
 );
+
+AppIntentForm.propTypes = {
+  appIntent: PropTypes.object.isRequired,
+  newRadarValue: PropTypes.func.isRequired,
+};
+
+export default AppIntentForm;
