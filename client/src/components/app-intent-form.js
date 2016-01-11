@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 
+require('./app-intent-form.scss');
+
 export default class AppIntentForm extends Component {
 
   renderTabHeaders(appIntent) {
@@ -18,7 +20,7 @@ export default class AppIntentForm extends Component {
     return appIntent.map((dataMap, layer) => {
       const inputs = dataMap.map((value, metric) => {
         return (<div key={metric}>
-          {metric}: <input type="number" min="0.25" step="0.25" onChange={e => {
+          <label>{metric}:</label> <input type="number" min="0.25" step="0.25" onChange={e => {
             keypress(layer, metric, e);
           } } value={value} />
         </div>);

@@ -2,6 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import SpiderGraph from './spider-graph';
 import AppIntentForm from './app-intent-form';
 
+require('./app-intent.scss');
+
 export default class AppIntent extends Component {
 
   transformData(immutableData) {
@@ -23,9 +25,13 @@ export default class AppIntent extends Component {
   }
   render() {
     return (<div className="app-intent">
-      <p>Hard limit budget: ${this.calcCost('max', this.props.appIntent)} - Soft limit budget: ${this.calcCost('normal', this.props.appIntent)}</p>
-      <SpiderGraph data={this.transformData(this.props.appIntent)} />
-      <AppIntentForm appIntent={this.props.appIntent} newRadarValue={this.props.newRadarValue} />
+      <div className="intent">
+        <SpiderGraph data={this.transformData(this.props.appIntent)} />
+        <div className="intent-form">
+          <div className="intent-cost">Hard limit budget: ${this.calcCost('max', this.props.appIntent)} - Soft limit budget: ${this.calcCost('normal', this.props.appIntent)}</div>
+          <AppIntentForm appIntent={this.props.appIntent} newRadarValue={this.props.newRadarValue} />
+        </div>
+      </div>
     </div>);
   }
 }

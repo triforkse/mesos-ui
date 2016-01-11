@@ -1,0 +1,19 @@
+.intent {
+  display: flex;
+  flex-wrap: wrap;
+
+  .intent-form {
+    flex: 1 1 auto;
+    width: 300px;
+  }
+
+  .intent-cost {
+    margin: 25px;
+  }
+
+  .spider-graph {
+    flex: 0 1 auto;
+    bottom: 0;
+    width: 600px;
+  }
+}
