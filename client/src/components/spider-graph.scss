@@ -97,14 +97,13 @@ $max: #FF928C;
 .area.normal {
   stroke: #fff;
   fill: #fff;
-  fill-opacity: 1;
+  fill-opacity: 0.75;
   pointer-events: none;
   z-index: 30;
 }
 .area.max {
-  stroke: $max;
   fill: $max;
-  fill-opacity: 1;
+  fill-opacity: 0.25;
   pointer-events: none;
   z-index: 40;
 }

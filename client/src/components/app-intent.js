@@ -1,13 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import SpiderGraph from './spider-graph';
 import AppIntentForm from './app-intent-form';
-import { fromJS } from 'immutable';
 
 export default class AppIntent extends Component {
-
-  componentDidMount() {
-    this.props.newRadarValue('normal', 'cpu', 10);
-  }
 
   transformData(immutableData) {
     const data = immutableData.toJS();
@@ -21,36 +16,16 @@ export default class AppIntent extends Component {
       };
     });
   }
+
+  calcCost(layer, data) {
+    const value = data.get(layer).reduce((previousValue, currentValue) => previousValue + currentValue);
+    return value * 10;
+  }
   render() {
-    // For monitoring all data should come fromJS
-    // WAMP. For appIntent we shouldn't display monitoring
-    // data (because there is none)
-    const fakeData = fromJS({
-      reservedres: {
-        cpu: 3,
-        ram: 4,
-        disk: 1,
-        bandwidth: 6,
-        cpu2: 7,
-        ram2: 3,
-        disk2: 3,
-        bandwidth2: 4,
-      },
-      actual: {
-        cpu: 2,
-        ram: 2,
-        disk: 1,
-        bandwidth: 2,
-        cpu2: 4,
-        ram2: 3,
-        disk2: 3,
-        bandwidth2: 4,
-      },
-    });
-    const data = this.transformData(this.props.appIntent.merge(fakeData));
     return (<div className="app-intent">
+      <p>Hard limit budget: ${this.calcCost('max', this.props.appIntent)} - Soft limit budget: ${this.calcCost('normal', this.props.appIntent)}</p>
+      <SpiderGraph data={this.transformData(this.props.appIntent)} />
       <AppIntentForm appIntent={this.props.appIntent} newRadarValue={this.props.newRadarValue} />
-      <SpiderGraph data={data} />
     </div>);
   }
 }

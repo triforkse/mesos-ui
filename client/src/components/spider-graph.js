@@ -13,7 +13,7 @@ export default class SpiderGraph extends Component {
   componentDidMount() {
     this.svg = d3.select(ReactDOM.findDOMNode(this)).append('svg')
       .attr('width', cfg.w)
-      .attr('height', cfg.h + cfg.h / 4);
+      .attr('height', cfg.h);
     this.svg.append('g').classed('single', 1).datum(this.props.data).call(chart);
   }
 

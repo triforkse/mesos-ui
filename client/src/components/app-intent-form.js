@@ -18,7 +18,7 @@ export default class AppIntentForm extends Component {
     return appIntent.map((dataMap, layer) => {
       const inputs = dataMap.map((value, metric) => {
         return (<div key={metric}>
-          {metric}: <input type="number" step="0.25" onChange={e => {
+          {metric}: <input type="number" min="0.25" step="0.25" onChange={e => {
             keypress(layer, metric, e);
           } } value={value} />
         </div>);
@@ -30,7 +30,6 @@ export default class AppIntentForm extends Component {
   }
   render() {
     return (<div className="app-intent-form">
-      Hello from App Intent Form
       <Tabs>
         {this.renderTabHeaders(this.props.appIntent)}
         {this.renderTabPanels(this.props.appIntent)}
