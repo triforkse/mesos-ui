@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import SpiderGraph from '../spider-graph';
 import AppIntentForm from './app-intent-form';
+import AppIntentCost from './app-intent-cost';
 
 require('./app-intent.scss');
 
@@ -26,10 +27,7 @@ export default class AppIntent extends Component {
     });
   }
 
-  calcCost(layer, data) {
-    const value = data.get(layer).reduce((previousValue, currentValue) => previousValue + currentValue);
-    return value * 10;
-  }
+
   render() {
     const convertTable = {
       'cpu': 1,
@@ -42,7 +40,7 @@ export default class AppIntent extends Component {
       <div className="intent">
         <SpiderGraph data={this.transformData(this.props.appIntent, convertTable)} />
         <div className="intent-form">
-          <div className="intent-cost">Hard limit budget: ${this.calcCost('max', this.props.appIntent)} - Soft limit budget: ${this.calcCost('normal', this.props.appIntent)}</div>
+          <AppIntentCost appIntent={this.props.appIntent} />
           <AppIntentForm appIntent={this.props.appIntent} newRadarValue={this.props.newRadarValue} />
         </div>
       </div>
