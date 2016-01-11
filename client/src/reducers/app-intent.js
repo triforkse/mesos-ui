@@ -4,9 +4,9 @@ import { fromJS } from 'immutable';
 const initialState = fromJS({
   normal: {
     cpu: 8,
-    ram: 8,
-    disk: 8,
-    bandwidth: 8,
+    ram: 4,
+    disk: 80,
+    bandwidth: 80,
     cpu2: 8,
     ram2: 8,
     disk2: 8,
@@ -14,9 +14,9 @@ const initialState = fromJS({
   },
   max: {
     cpu: 10,
-    ram: 10,
-    disk: 10,
-    bandwidth: 10,
+    ram: 5,
+    disk: 100,
+    bandwidth: 100,
     cpu2: 10,
     ram2: 10,
     disk2: 10,
