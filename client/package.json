@@ -47,7 +47,7 @@
     "precss": "^1.3.0",
     "q": "^1.4.1",
     "raw-loader": "^0.5.1",
-    "react": "^0.14.2",
+    "react": "^0.14.6",
     "react-dom": "^0.14.2",
     "react-redux": "^4.0.0",
     "react-tabs": "^0.5.1",
