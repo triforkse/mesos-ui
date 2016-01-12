@@ -2,6 +2,8 @@ import { jsdom } from 'jsdom';
 import register from 'ignore-styles';
 register(['.sass', '.scss']);
 
+process.env.NODE_ENV = 'testing';
+
 global.chai = require('chai');
 global.expect = global.chai.expect;
 global.spyOn = global.expect.spyOn;
