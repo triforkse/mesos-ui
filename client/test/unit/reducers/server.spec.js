@@ -17,7 +17,6 @@ describe('reducers - cluster-layout', () => {
         frameworks: [{name: 'test-framework'}],
       };
       const result = clusterState(new ServerState(), {type: WEB_SOCKET_INIT, message: data}).toJS();
-      console.log('result', result);
 
       expect(result.cluster.slaves[0].pid).to.equal('test-pid');
       expect(result.cluster.slaves[0].resources.cpus).to.equal(0);
