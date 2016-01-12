@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 
 require('./button.scss');
 
@@ -7,7 +7,10 @@ const Button = props => (
 );
 
 Button.propTypes = {
-  children: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.object]),
+  children: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.object,
+  ]),
 };
 
 export default Button;
