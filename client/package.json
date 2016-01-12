@@ -105,6 +105,7 @@
     "ignore-styles": "^1.2.0",
     "immutablepatch": "^0.2.2",
     "istanbul": "^0.4.0",
+    "react-addons-test-utils": "^0.14.6",
     "react-router": "^1.0.0",
     "redux-devtools": "^2.1.5",
     "skin-deep": "^0.13.2"
