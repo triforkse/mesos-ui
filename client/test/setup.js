@@ -1,4 +1,6 @@
 import { jsdom } from 'jsdom';
+import register from 'ignore-styles';
+register(['.sass', '.scss']);
 
 global.chai = require('chai');
 global.expect = global.chai.expect;
