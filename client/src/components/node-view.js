@@ -16,8 +16,6 @@ export default class NodeView extends Component {
     // TODO: We need to save a reference to this, so
     // we can disconnect.
     this.props.actions.connectWebSocket();
-
-    console.log('CREATING NodeView');
   }
 
   onNodeClick(node) {
