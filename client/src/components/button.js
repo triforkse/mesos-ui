@@ -7,7 +7,7 @@ const Button = props => (
 );
 
 Button.propTypes = {
-  children: React.PropTypes.string,
+  children: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.object]),
 };
 
 export default Button;

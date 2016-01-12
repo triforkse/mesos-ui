@@ -63,3 +63,9 @@ export const ClientState = Record({
   colors: new Colors(),
   frameworkList: new FrameworkList(),
 });
+
+export const Wizard = Record({
+  step: 1,
+  prev: false,
+  next: true,
+});

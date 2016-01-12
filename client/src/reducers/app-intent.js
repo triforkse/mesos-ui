@@ -1,4 +1,5 @@
-import { INTENT_VALUE } from '../actions';
+import { INTENT_VALUE, WIZARD_NEXT, WIZARD_PREV } from '../actions';
+import { Wizard } from '../records';
 import { fromJS } from 'immutable';
 
 const initialState = fromJS({
@@ -24,6 +25,8 @@ const initialState = fromJS({
   },
 });
 
+const initialStateWizard = new Wizard();
+
 export function appIntent(state = initialState, action) {
   switch (action.type) {
   case INTENT_VALUE:
@@ -35,6 +38,35 @@ export function appIntent(state = initialState, action) {
       newState = newState.setIn(['normal', action.payload.metric], action.payload.value);
     }
     return newState;
+  default:
+    return state;
+  }
+}
+
+function moveWizardToNext(state, size) {
+  return state.update(s => {
+    const next = s.step + 1;
+    return s.set('step', next > size ? s.step : next)
+      .set('prev', next > 1)
+      .set('next', next < size);
+  });
+}
+
+function moveWizardToPrev(state, size) {
+  return state.update(s => {
+    const prev = s.step - 1;
+    return s.set('step', prev < 1 ? s.step : prev)
+      .set('prev', prev > 1)
+      .set('next', prev < size);
+  });
+}
+
+export function appIntentWizard(state = initialStateWizard, action) {
+  switch (action.type) {
+  case WIZARD_NEXT:
+    return moveWizardToNext(state, action.size);
+  case WIZARD_PREV:
+    return moveWizardToPrev(state, action.size);
   default:
     return state;
   }

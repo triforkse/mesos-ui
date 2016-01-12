@@ -1,5 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import SpiderGraph from '../spider-graph';
+import {connect} from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as actions from '../../actions';
+import {selector} from '../../selectors';
 import AppIntentForm from './app-intent-form';
 import AppIntentCost from './app-intent-cost';
 
@@ -41,7 +45,7 @@ export default class AppIntent extends Component {
         <SpiderGraph data={this.transformData(this.props.appIntent, convertTable)} />
         <div className="intent-form">
           <AppIntentCost appIntent={this.props.appIntent} />
-          <AppIntentForm appIntent={this.props.appIntent} newRadarValue={this.props.newRadarValue} />
+          <AppIntentForm appIntent={this.props.appIntent} newRadarValue={this.props.actions.newRadarValue} />
         </div>
       </div>
     </div>);
@@ -51,5 +55,16 @@ export default class AppIntent extends Component {
 AppIntent.propTypes = {
   appIntent: PropTypes.object.isRequired,
   children: PropTypes.object,
-  newRadarValue: PropTypes.func.isRequired,
+  actions: PropTypes.object.isRequired,
 };
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(actions.getActionCreators(), dispatch),
+  };
+}
+
+export default connect(
+  selector,
+  mapDispatchToProps,
+)(AppIntent);

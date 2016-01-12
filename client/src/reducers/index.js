@@ -3,7 +3,7 @@ import {apiStatus} from './api';
 import {socketStatus} from './webSockets';
 import {clusterState} from './server';
 import {clusterLayout} from './cluster-layout';
-import {appIntent} from './app-intent';
+import {appIntent, appIntentWizard} from './app-intent';
 import {nodes} from './nodes';
 import { routerStateReducer } from 'redux-router';
 
@@ -14,6 +14,7 @@ const reducers = {
   clusterState,
   clusterLayout,
   appIntent,
+  appIntentWizard,
   router: routerStateReducer,
 };
 

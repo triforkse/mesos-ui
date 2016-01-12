@@ -1,4 +1,8 @@
 import React, { Component, PropTypes } from 'react';
+import {connect} from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as actions from '../actions';
+import {selector} from '../selectors';
 
 import Galaxy from '../components/galaxy.js';
 import Frameworks from '../components/frameworks.js';
@@ -12,6 +16,8 @@ export default class NodeView extends Component {
     // TODO: We need to save a reference to this, so
     // we can disconnect.
     this.props.actions.connectWebSocket();
+
+    console.log('CREATING NodeView');
   }
 
   onNodeClick(node) {
@@ -79,3 +85,14 @@ NodeView.propTypes = {
   frameworkColors: React.PropTypes.object.isRequired,
   connecting: React.PropTypes.bool.isRequired,
 };
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(actions.getActionCreators(), dispatch),
+  };
+}
+
+export default connect(
+  selector,
+  mapDispatchToProps,
+)(NodeView);

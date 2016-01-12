@@ -21,6 +21,8 @@ export const FRAMEWORK_CLEAR = 'FRAMEWORK_CLEAR';
 export const SLAVE_TOGGLE = 'SLAVE_TOGGLE';
 export const SLAVE_CLEAR = 'SLAVE_CLEAR';
 export const INTENT_VALUE = 'INTENT_VALUE';
+export const WIZARD_NEXT = 'WIZARD_NEXT';
+export const WIZARD_PREV = 'WIZARD_PREV';
 
 export function requestApiStatus() {
   return {
@@ -82,6 +84,20 @@ export function connectWebSocket() {
         });
       }
     });
+  };
+}
+
+export function wizardNext(size) {
+  return {
+    type: WIZARD_NEXT,
+    size,
+  };
+}
+
+export function wizardPrev(size) {
+  return {
+    type: WIZARD_PREV,
+    size,
   };
 }
 
@@ -195,6 +211,8 @@ let actionCreators = {
   clearFrameworks,
   clearSlaves,
   newRadarValue,
+  wizardNext,
+  wizardPrev,
 };
 
 export function registerActionCreators(creators) {

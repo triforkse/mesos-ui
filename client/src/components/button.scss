@@ -1,5 +1,5 @@
 .button {
-  background-color: transparent;
+  background-color: #292c3e;
   border-radius: 2px;
   border: solid 1px white;
   color: white;
@@ -11,6 +11,10 @@
   transition: background-color 0.1s;
 }
 
+.button:disabled {
+  background-color: gray;
+}
+
 .button:hover {
-  background-color: rgba(255,255,255,0.2);
+  background-color: rgba(0,0,0,0.2);
 }
