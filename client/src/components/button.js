@@ -2,12 +2,12 @@ import React from 'react';
 
 require('./button.scss');
 
-export default class Button extends React.Component {
-  render() {
-    return <button {...this.props} className="button" type="button">{this.props.children}</button>;
-  }
-}
+const Button = props => (
+  <button {...props} className="button" type="button">{props.children}</button>
+);
 
 Button.propTypes = {
   children: React.PropTypes.string,
 };
+
+export default Button;
