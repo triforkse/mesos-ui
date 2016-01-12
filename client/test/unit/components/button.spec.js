@@ -22,7 +22,11 @@ describe('Button Component', () => {
     expect(vdom.props.className).to.eql('button');
   });
 
-  it('should display children inside it', () => {
+  it('should have props children set', () => {
     expect(vdom.props).to.have.property('children', 'Foo');
+  });
+
+  it('should display children text', () => {
+    expect(tree.textIn('.button')).to.eql('Foo');
   });
 });
