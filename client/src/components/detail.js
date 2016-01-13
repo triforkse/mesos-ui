@@ -20,7 +20,7 @@ export default class Detail extends React.Component {
 
   render() {
     const {title} = this.props;
-    return (<div className="detail">
+    return (<div className="detail paper">
       <h4 className="detail-title">{title} <span className="close" onClick={this.props.close}>(close)</span></h4>
       {this.props.children}
     </div>);

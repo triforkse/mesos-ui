@@ -26,7 +26,7 @@ describe('Detail Component', () => {
   });
 
   it('should render with a correct class name', () => {
-    expect(vdom.props.className).to.eql('detail');
+    expect(vdom.props.className).to.eql('detail paper');
   });
 
   it('should have children', () => {

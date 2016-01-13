@@ -65,19 +65,19 @@ export default class NodeView extends Component {
           frameworksActions={frameworksActions}
           active={selectedFrameworks}
           colors={frameworkColors} />
-      </div>
 
-      {selectedSlaves.count() > 0 &&
-        (<Detail title="Agent(s)" close={clearSlaves}>
-          <SlavesDetail slaves={slaveNodes} selectedSlaves={selectedSlaves} />
+        {selectedSlaves.count() > 0 &&
+          (<Detail title="Agent(s)" close={clearSlaves}>
+            <SlavesDetail slaves={slaveNodes} selectedSlaves={selectedSlaves} />
+          </Detail>)
+        }
+
+        {selectedFrameworks.count() > 0 &&
+          (<Detail title="Framework(s)" close={clearFrameworks}>
+          <FrameworksDetail frameworks={slaveFrameworks} selectedFrameworks={selectedFrameworks} />
         </Detail>)
-      }
-
-      {selectedFrameworks.count() > 0 &&
-        (<Detail title="Framework(s)" close={clearFrameworks}>
-        <FrameworksDetail frameworks={slaveFrameworks} selectedFrameworks={selectedFrameworks} />
-      </Detail>)
-      }
+        }
+      </div>
     </div>);
   }
 }
