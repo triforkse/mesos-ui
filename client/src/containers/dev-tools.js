@@ -1,0 +1,17 @@
+import React from 'react';
+
+// https://github.com/gaearon/redux-devtools#use-devtoolsinstrument-store-enhancer
+
+import { createDevTools } from 'redux-devtools';
+
+import LogMonitor from 'redux-devtools-log-monitor';
+import DockMonitor from 'redux-devtools-dock-monitor';
+
+const DevTools = createDevTools(
+  <DockMonitor toggleVisibilityKey="ctrl-h"
+               changePositionKey="ctrl-q">
+    <LogMonitor theme="tomorrow" />
+  </DockMonitor>
+);
+
+export default DevTools;

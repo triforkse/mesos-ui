@@ -1,11 +1,12 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import createLogger from 'redux-logger';
-import { devTools, persistState } from 'redux-devtools';
+import { persistState } from 'redux-devtools';
 import rootReducer from '../reducers';
 import { reduxReactRouter} from 'redux-router';
 import { createHistory } from 'history';
 import routes from '../routes';
+import DevTools from '../containers/dev-tools';
 
 const finalCreateStore = compose(
   applyMiddleware(
@@ -16,9 +17,9 @@ const finalCreateStore = compose(
     routes,
     createHistory,
   }),
-  devTools(),
   // Lets you write ?debug_session=<name> in address bar to persist debug sessions
-  persistState(window.location.href.match(/[?&]debug_session=([^&]+)\b/))
+  persistState(window.location.href.match(/[?&]debug_session=([^&]+)\b/)),
+  DevTools.instrument()
 )(createStore);
 
 export default function configureStore(initialState) {
