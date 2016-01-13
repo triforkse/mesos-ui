@@ -28,4 +28,12 @@ describe('Start Page', function() {
     const title = yield nightmare.goto(base).title();
     expect(title).to.equal('Mesos UI');
   });
+
+  it("#app should have children", function * () {
+    const hasChildren = yield nightmare.goto(base)
+      .evaluate(() => {
+        return document.getElementById('app').children.length ? true : false;
+      })
+    expect(hasChildren).to.be.true;
+  });
 });
