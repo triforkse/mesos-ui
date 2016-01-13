@@ -24,7 +24,7 @@ export default class App extends React.Component {
               <Button><Link to="/" className="menu__label">Cluster</Link></Button>
             </div>
             <div className="menu__button">
-              <Button><Link to="appIntent" className="menu__label">Add Framework</Link></Button>
+              <Button><Link to="appIntent" className="menu__label">Compose your App</Link></Button>
             </div>
           </div>
         </div>

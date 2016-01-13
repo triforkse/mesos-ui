@@ -69,3 +69,14 @@ export const Wizard = Record({
   prev: false,
   next: true,
 });
+
+export const Service = Record({
+  name: null,
+  id: null,
+  abbreviation: null,
+});
+
+export const AppConfiguration = Record({
+  availableServices: fromJS([]),
+  selectedServices: fromJS([]),
+});

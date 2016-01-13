@@ -1,0 +1,16 @@
+.app-intent-add__available-frameworks,
+.app-intent-add__selected-frameworks {
+  border: 1px solid black;
+  margin: 10px 10px 10px 0px;
+  padding: 10px;
+}
+
+.app-intent-add__available-frameworks__list,
+.app-intent-add__selected-frameworks__list {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.app-intent-add__selected-frameworks {
+  min-height: 300px;
+}

@@ -23,6 +23,8 @@ export const SLAVE_CLEAR = 'SLAVE_CLEAR';
 export const INTENT_VALUE = 'INTENT_VALUE';
 export const WIZARD_NEXT = 'WIZARD_NEXT';
 export const WIZARD_PREV = 'WIZARD_PREV';
+export const SERVICE_ADD = 'SERVICE_ADD';
+export const SERVICE_REMOVE = 'SERVICE_REMOVE';
 
 export function requestApiStatus() {
   return {
@@ -84,20 +86,6 @@ export function connectWebSocket() {
         });
       }
     });
-  };
-}
-
-export function wizardNext(size) {
-  return {
-    type: WIZARD_NEXT,
-    size,
-  };
-}
-
-export function wizardPrev(size) {
-  return {
-    type: WIZARD_PREV,
-    size,
   };
 }
 
@@ -192,6 +180,33 @@ export function newRadarValue(layer, metric, value) {
   };
 }
 
+export function wizardNext(size) {
+  return {
+    type: WIZARD_NEXT,
+    size,
+  };
+}
+
+export function wizardPrev(size) {
+  return {
+    type: WIZARD_PREV,
+    size,
+  };
+}
+
+export function addService(framework) {
+  return {
+    type: SERVICE_ADD,
+    framework,
+  };
+}
+
+export function removeService(index) {
+  return {
+    type: SERVICE_REMOVE,
+    index,
+  };
+}
 
 let actionCreators = {
   requestApiStatus,
@@ -213,6 +228,8 @@ let actionCreators = {
   newRadarValue,
   wizardNext,
   wizardPrev,
+  addService,
+  removeService,
 };
 
 export function registerActionCreators(creators) {

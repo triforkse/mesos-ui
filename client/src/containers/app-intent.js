@@ -7,12 +7,15 @@ import AppIntent from '../components/app-intent/app-intent';
 import AppIntentAdd from '../components/app-intent/app-intent-add';
 import Button from '../components/button';
 
+require('./app-intent.scss');
+
 export default class AppIntentContainer extends Component {
 
   static propTypes() {
     return {
       appIntent: PropTypes.object.isRequired,
       wizard: PropTypes.object.isRequired,
+      appConfiguration: PropTypes.object.isRequired,
       children: PropTypes.object,
       actions: PropTypes.object.isRequired,
     };
@@ -25,7 +28,7 @@ export default class AppIntentContainer extends Component {
   generateWizardStep(step) {
     switch (step) {
     case 1:
-      return <AppIntentAdd />;
+      return <AppIntentAdd appConfiguration={this.props.appConfiguration} actions={this.props.actions} />;
     case 2:
       return <AppIntent />;
     default:
@@ -36,8 +39,8 @@ export default class AppIntentContainer extends Component {
   render() {
     const {next, prev, step} = this.props.wizard;
 
-    return (<div>
-      <h2>Add framework</h2>
+    return (<div className="app-intent">
+      <h2>Compose your App</h2>
       <div>
         <Button onClick={() => this.props.actions.wizardPrev(2)} disabled={!prev}>Prev</Button>
         <Button onClick={() => this.props.actions.wizardNext(2)} disabled={!next}>Next</Button>
