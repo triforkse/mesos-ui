@@ -10,6 +10,8 @@ import Detail from '../components/detail.js';
 import SlavesDetail from '../components/slaves-details.js';
 import FrameworksDetail from '../components/frameworks-details.js';
 
+require('./node-view.scss');
+
 export default class NodeView extends Component {
 
   componentDidMount() {
@@ -50,15 +52,20 @@ export default class NodeView extends Component {
     };
 
     return (<div>
-      <Galaxy
-        master={cluster.layout}
-        nodes={slaveNodes}
-        frameworkColors={frameworkColors}
-        actions={clusterActions}/>
-      <Frameworks frameworks={slaveFrameworks}
-        frameworksActions={frameworksActions}
-        active={selectedFrameworks}
-        colors={frameworkColors} />
+      <div className="node-view paper">
+        <div className="galaxy__container">
+          <Galaxy
+            master={cluster.layout}
+            nodes={slaveNodes}
+            frameworkColors={frameworkColors}
+            actions={clusterActions}/>
+        </div>
+
+        <Frameworks frameworks={slaveFrameworks}
+          frameworksActions={frameworksActions}
+          active={selectedFrameworks}
+          colors={frameworkColors} />
+      </div>
 
       {selectedSlaves.count() > 0 &&
         (<Detail title="Agent(s)" close={clearSlaves}>

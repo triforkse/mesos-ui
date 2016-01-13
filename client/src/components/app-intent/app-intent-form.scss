@@ -1,14 +1,11 @@
 .app-intent-form {
   label {
     display: inline-block;
-    float: left;
-    clear: left;
     width: 150px;
     text-align: right;
   }
   input {
     display: inline-block;
-    float: left;
     font-family: LatoLatinWeb,Helvetica,sans-serif;
     width: 75px;
     border: 0;
@@ -17,7 +14,7 @@
   }
   input:focus {
     outline-width: 0;
-    border-color: #292c3e;
+    border-color: $bg-color;
   }
 
   label, input {

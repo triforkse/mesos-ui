@@ -15,8 +15,8 @@ export default class Cluster {
       .on('zoom', zoomed);
 
     const svg = d3.select(el)
-        .attr('width', width)
-        .attr('height', height)
+        .attr('width', '100%')
+        .attr('height', '100%')
         .append('g')
         .attr('transform', 'translate(' + 0 + ',' + 0 + ')')
         .call(zoom);

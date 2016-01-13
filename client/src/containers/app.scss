@@ -38,7 +38,14 @@ html,
   flex: 1 1 auto;
   align-self: stretch;
   overflow-y: scroll;
-  position: relative;
+  background-color: #E7E9EC;
+}
+
+.paper {
+  background-color: white;
+  margin: 10px 0 0;
+  padding: 10px;
+  box-shadow: 0 1px 1px rgba(0,0,0,0.15),-1px 0 0 rgba(0,0,0,0.03),1px 0 0 rgba(0,0,0,0.03),0 1px 0 rgba(0,0,0,0.12);
 }
 
 .page__details {

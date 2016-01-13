@@ -40,10 +40,12 @@ export default class AppIntent extends Component {
       'bandwidth': 0.1,
     };
 
-    return (<div className="app-intent">
+    return (<div>
       <div className="intent">
-        <SpiderGraph data={this.transformData(this.props.appIntent, convertTable)} />
-        <div className="intent-form">
+        <div className="paper">
+          <SpiderGraph data={this.transformData(this.props.appIntent, convertTable)} />
+        </div>
+        <div className="intent-form paper">
           <AppIntentCost appIntent={this.props.appIntent} />
           <AppIntentForm appIntent={this.props.appIntent} newRadarValue={this.props.actions.newRadarValue} />
         </div>

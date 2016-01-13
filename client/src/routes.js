@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, IndexRoute } from 'react-router';
 import App from './containers/app';
-import NodeView from './components/node-view';
+import NodeView from './containers/node-view';
 import AppIntentContainer from './containers/app-intent';
 
 const Error404 = React.createClass({

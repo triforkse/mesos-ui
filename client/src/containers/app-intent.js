@@ -40,10 +40,12 @@ export default class AppIntentContainer extends Component {
     const {next, prev, step} = this.props.wizard;
 
     return (<div className="app-intent">
-      <h2>Compose your App</h2>
-      <div>
-        <Button onClick={() => this.props.actions.wizardPrev(2)} disabled={!prev}>Prev</Button>
-        <Button onClick={() => this.props.actions.wizardNext(2)} disabled={!next}>Next</Button>
+      <div className="app-intent__navigation paper">
+        <h2>Compose your App</h2>
+        <div>
+          <Button onClick={() => this.props.actions.wizardPrev(2)} disabled={!prev}>Prev</Button>
+          <Button onClick={() => this.props.actions.wizardNext(2)} disabled={!next}>Next</Button>
+        </div>
       </div>
       {this.generateWizardStep(step)}
     </div>);
