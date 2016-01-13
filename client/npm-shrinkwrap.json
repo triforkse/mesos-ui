@@ -210,7 +210,14 @@
     "babel-core": {
       "version": "5.8.34",
       "from": "babel-core@>=5.8.22 <6.0.0",
-      "resolved": "https://registry.npmjs.org/babel-core/-/babel-core-5.8.34.tgz"
+      "resolved": "https://registry.npmjs.org/babel-core/-/babel-core-5.8.34.tgz",
+      "dependencies": {
+        "js-tokens": {
+          "version": "1.0.1",
+          "from": "js-tokens@1.0.1",
+          "resolved": "https://registry.npmjs.org/js-tokens/-/js-tokens-1.0.1.tgz"
+        }
+      }
     },
     "babel-eslint": {
       "version": "3.1.30",
@@ -1095,7 +1102,8 @@
           "dependencies": {
             "amdefine": {
               "version": "1.0.0",
-              "from": "amdefine@>=0.0.4"
+              "from": "amdefine@1.0.0",
+              "resolved": "https://registry.npmjs.org/amdefine/-/amdefine-1.0.0.tgz"
             }
           }
         }
@@ -2075,6 +2083,11 @@
       "from": "hawk@>=3.1.0 <3.2.0",
       "resolved": "https://registry.npmjs.org/hawk/-/hawk-3.1.2.tgz"
     },
+    "history": {
+      "version": "1.17.0",
+      "from": "history@>=1.13.1 <2.0.0",
+      "resolved": "https://registry.npmjs.org/history/-/history-1.17.0.tgz"
+    },
     "hoek": {
       "version": "2.16.3",
       "from": "hoek@>=2.0.0 <3.0.0",
@@ -2151,6 +2164,11 @@
       "version": "0.4.2",
       "from": "immutablediff@>=0.4.2 <0.5.0",
       "resolved": "https://registry.npmjs.org/immutablediff/-/immutablediff-0.4.2.tgz"
+    },
+    "immutablepatch": {
+      "version": "0.2.2",
+      "from": "immutablepatch@>=0.2.2 <0.3.0",
+      "resolved": "https://registry.npmjs.org/immutablepatch/-/immutablepatch-0.2.2.tgz"
     },
     "indexes-of": {
       "version": "1.0.1",
@@ -2344,7 +2362,8 @@
       "dependencies": {
         "esprima": {
           "version": "2.7.0",
-          "from": "esprima@>=2.1.0 <3.0.0"
+          "from": "esprima@2.7.0",
+          "resolved": "https://registry.npmjs.org/esprima/-/esprima-2.7.0.tgz"
         },
         "object-assign": {
           "version": "4.0.1",
@@ -2407,9 +2426,9 @@
       "resolved": "https://registry.npmjs.org/js-stylesheet/-/js-stylesheet-0.0.1.tgz"
     },
     "js-tokens": {
-      "version": "1.0.1",
-      "from": "js-tokens@1.0.1",
-      "resolved": "https://registry.npmjs.org/js-tokens/-/js-tokens-1.0.1.tgz"
+      "version": "1.0.2",
+      "from": "js-tokens@>=1.0.1 <2.0.0",
+      "resolved": "https://registry.npmjs.org/js-tokens/-/js-tokens-1.0.2.tgz"
     },
     "js-yaml": {
       "version": "3.3.1",
@@ -3589,11 +3608,6 @@
       "from": "react-dom@>=0.14.2 <0.15.0",
       "resolved": "https://registry.npmjs.org/react-dom/-/react-dom-0.14.3.tgz"
     },
-    "react-json-tree": {
-      "version": "0.1.9",
-      "from": "react-json-tree@>=0.1.9 <0.2.0",
-      "resolved": "https://registry.npmjs.org/react-json-tree/-/react-json-tree-0.1.9.tgz"
-    },
     "react-mixin": {
       "version": "1.7.0",
       "from": "react-mixin@>=1.7.0 <2.0.0",
@@ -3615,6 +3629,11 @@
       "version": "4.0.0",
       "from": "react-redux@>=4.0.0 <5.0.0",
       "resolved": "https://registry.npmjs.org/react-redux/-/react-redux-4.0.0.tgz"
+    },
+    "react-router": {
+      "version": "1.0.3",
+      "from": "react-router@>=1.0.0 <2.0.0",
+      "resolved": "https://registry.npmjs.org/react-router/-/react-router-1.0.3.tgz"
     },
     "react-tabs": {
       "version": "0.5.1",
@@ -3700,9 +3719,21 @@
       }
     },
     "redux": {
-      "version": "3.0.4",
-      "from": "redux@>=3.0.4 <4.0.0",
-      "resolved": "https://registry.npmjs.org/redux/-/redux-3.0.4.tgz"
+      "version": "3.0.5",
+      "from": "redux@3.0.5",
+      "resolved": "https://registry.npmjs.org/redux/-/redux-3.0.5.tgz"
+    },
+    "redux-devtools": {
+      "version": "3.0.1",
+      "from": "redux-devtools@3.0.1",
+      "resolved": "https://registry.npmjs.org/redux-devtools/-/redux-devtools-3.0.1.tgz",
+      "dependencies": {
+        "redux": {
+          "version": "3.0.5",
+          "from": "redux@>=3.0.0 <4.0.0",
+          "resolved": "https://registry.npmjs.org/redux/-/redux-3.0.5.tgz"
+        }
+      }
     },
     "redux-logger": {
       "version": "2.0.4",
